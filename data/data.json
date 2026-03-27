@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "version": "2.0",
+    "savedAt": "",
+    "publishedAt": "",
+    "taxaCount": 0,
+    "githubRepo": "bogmanplantenstein/bogmangallery"
+  },
+  "taxa": [],
+  "habitats": [
+    { "id": "sphagnum_bog",        "name": "Sphagnum Bog" },
+    { "id": "sandplain_heath",     "name": "Sandplain Heath" },
+    { "id": "tropical_savanna",    "name": "Tropical Savanna Wetland" },
+    { "id": "mediterranean",       "name": "Mediterranean Scrub & Heath" },
+    { "id": "cloud_forest",        "name": "Cloud Forest & Fog Belt" },
+    { "id": "limestone_karst",     "name": "Limestone Cliff & Karst" },
+    { "id": "tepui_outcrop",       "name": "Tepui & Rocky Outcrop" },
+    { "id": "subtropical_bog",     "name": "Subtropical Bog & Fen" },
+    { "id": "tropical_rainforest", "name": "Tropical Rainforest" },
+    { "id": "coastal_wetland",     "name": "Coastal Plain Wetland" }
+  ],
+  "climates": [
+    { "id": "highland_tropical", "name": "Highland Tropical" },
+    { "id": "lowland_tropical",  "name": "Lowland Tropical" },
+    { "id": "mediterranean",     "name": "Mediterranean" },
+    { "id": "subtropical",       "name": "Subtropical" },
+    { "id": "temperate",         "name": "Temperate" }
+  ],
+  "extSites": [
+    { "id": "cpphotofinder", "name": "CP Photo Finder",  "baseUrl": "https://cpphotofinder.com",   "searchUrl": "https://cpphotofinder.com/search?q={taxon}" },
+    { "id": "fierceflora",   "name": "Fierce Flora",     "baseUrl": "https://www.fierceflora.com", "searchUrl": "https://www.fierceflora.com/?s={taxon}" },
+    { "id": "icps",          "name": "ICPS Taxonomy",    "baseUrl": "https://www.carnivorousplants.org", "searchUrl": "https://www.carnivorousplants.org/cp/taxonomy" }
+  ],
+  "genusCoverPhotos": {},
+  "genusGroups": {
+    "Drosera":      ["Pygmy", "Subtropical", "Temperate", "Tropical", "Tuberous", "Winter Growing"],
+    "Pinguicula":   [],
+    "Utricularia":  [],
+    "Byblis":       [],
+    "Drosophyllum": [],
+    "Dionaea":      []
+  },
+  "groupCareDefaults": {},
+  "extLinkTemplates": {
+    "genus": {},
+    "group": {}
+  },
+  "extSiteIndex": {
+    "cppf": {},
+    "fierceflora": {},
+    "icps": {}
+  }
+}

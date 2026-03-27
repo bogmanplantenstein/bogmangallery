@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bogman Gallery — Migration Tool</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #1a1a1a;
+    color: #e0d8c8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+  h1 {
+    font-family: 'Georgia', serif;
+    font-size: 2rem;
+    color: #c9a96e;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .subtitle {
+    color: #8a8070;
+    font-size: 0.9rem;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  .card {
+    background: #242424;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 28px 32px;
+    width: 100%;
+    max-width: 680px;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #c9a96e;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  p { color: #a09080; font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
+  ul { color: #a09080; font-size: 0.9rem; line-height: 1.8; padding-left: 20px; margin-bottom: 10px; }
+  code {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: monospace;
+    font-size: 0.85em;
+    color: #c9a96e;
+  }
+  .btn {
+    display: inline-block;
+    padding: 10px 22px;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+  }
+  .btn-primary { background: #c9a96e; color: #1a1a1a; }
+  .btn-primary:hover { background: #d4b87e; }
+  .btn-primary:disabled { background: #555; color: #888; cursor: not-allowed; }
+  .btn-secondary { background: #333; color: #e0d8c8; margin-left: 10px; }
+  .btn-secondary:hover { background: #3a3a3a; }
+  .log {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 16px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 16px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  .log-ok   { color: #6dbf8a; }
+  .log-warn { color: #e0a843; }
+  .log-err  { color: #e05555; }
+  .log-info { color: #7ab8e0; }
+  .stat {
+    display: inline-block;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    margin: 4px;
+    color: #c9a96e;
+  }
+  .stat span { display: block; font-size: 1.4rem; font-weight: 700; }
+  #stats { margin: 16px 0; }
+  .separator { border: none; border-top: 1px solid #333; margin: 20px 0; }
+  textarea {
+    width: 100%;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: #e0d8c8;
+    font-family: monospace;
+    font-size: 0.8rem;
+    padding: 12px;
+    resize: vertical;
+    min-height: 80px;
+    margin-top: 8px;
+  }
+  textarea::placeholder { color: #555; }
+  label { font-size: 0.85rem; color: #a09080; }
+  .actions { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<h1>Bogman Gallery v2</h1>
+<div class="subtitle">One-time migration from v1 localStorage → data.json</div>
+
+<!-- Step 1: Detect -->
+<div class="card" id="card-detect">
+  <h2>Step 1 — Detect v1 Data</h2>
+  <p>This tool reads your old admin's <code>localStorage</code> and converts it to the new
+     <code>data.json</code> format. Open this file in the <strong>same browser</strong> you
+     used to run the old Bogman admin.</p>
+  <p>Keys it looks for:</p>
+  <ul>
+    <li><code>bogman_taxa</code> / <code>bogman_admin_data</code> — taxa array</li>
+    <li><code>bogman_care_defaults</code> — group care defaults</li>
+    <li><code>bogman_config</code> / <code>bogman_admin_config</code> — genus groups, habitats</li>
+  </ul>
+  <button class="btn btn-primary" onclick="detectData()">Scan localStorage</button>
+  <div class="log" id="log-detect" style="display:none"></div>
+</div>
+
+<!-- Step 2: Stats + Options -->
+<div class="card" id="card-options" style="display:none">
+  <h2>Step 2 — Review &amp; Options</h2>
+  <div id="stats"></div>
+  <hr class="separator">
+  <label>
+    <strong>Photo URL prefix</strong> — how are photos stored in v1?
+  </label>
+  <p style="margin-top:6px">
+    If photos are Squarespace CDN URLs, they'll be prefixed with <code>sq:</code>.<br>
+    If they're Google Drive file IDs, they'll be prefixed with <code>drive:</code>.<br>
+    If mixed or unsure, choose "Auto-detect".
+  </p>
+  <select id="photo-mode" style="margin-top:8px; background:#111; border:1px solid #333; color:#e0d8c8; padding:8px 12px; border-radius:6px; font-size:0.9rem;">
+    <option value="auto">Auto-detect (recommended)</option>
+    <option value="sq">All Squarespace (sq:)</option>
+    <option value="drive">All Google Drive (drive:)</option>
+    <option value="raw">Keep raw (no prefix)</option>
+  </select>
+  <hr class="separator">
+  <label><strong>Paste any extra taxa JSON here</strong> (optional — merges with detected data)</label>
+  <textarea id="extra-taxa" placeholder='[{"id":"drosera_capensis","genus":"Drosera",...}]'></textarea>
+  <div class="actions">
+    <button class="btn btn-primary" onclick="runMigration()">Convert to data.json</button>
+  </div>
+  <div class="log" id="log-migrate" style="display:none"></div>
+</div>
+
+<!-- Step 3: Download -->
+<div class="card" id="card-download" style="display:none">
+  <h2>Step 3 — Download &amp; Install</h2>
+  <p>Your migrated <code>data.json</code> is ready. Download it and place it at:</p>
+  <p><code>F:\Apps\Bogman Gallery\v2\data\data.json</code></p>
+  <p>It will overwrite the empty template that was created during setup.</p>
+  <div class="actions">
+    <button class="btn btn-primary" id="btn-download" onclick="downloadJson()">Download data.json</button>
+    <button class="btn btn-secondary" onclick="previewJson()">Preview JSON</button>
+  </div>
+  <div class="log" id="log-preview" style="display:none"></div>
+</div>
+
+<script>
+'use strict';
+
+// ─── Globals ───────────────────────────────────────────────────────────────
+
+let detectedTaxa       = [];
+let detectedCareDefaults = {};
+let detectedConfig     = {};
+let migratedData       = null;
+
+// ─── Logging ──────────────────────────────────────────────────────────────
+
+function log(id, msg, cls = '') {
+  const el = document.getElementById(id);
+  el.style.display = 'block';
+  const line = document.createElement('div');
+  if (cls) line.className = cls;
+  line.textContent = msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+// ─── Step 1: Detect ───────────────────────────────────────────────────────
+
+function detectData() {
+  const logEl = document.getElementById('log-detect');
+  logEl.innerHTML = '';
+
+  // Possible keys for taxa
+  const taxaKeys   = ['bogman_taxa', 'bogman_admin_data', 'bmg_taxa', 'bogman_gallery_taxa'];
+  const careKeys   = ['bogman_care_defaults', 'bmg_care_defaults', 'bogman_group_care'];
+  const configKeys = ['bogman_config', 'bogman_admin_config', 'bmg_config'];
+
+  let foundTaxa  = null, foundCare = null, foundConfig = null;
+
+  log('log-detect', '── Scanning localStorage ──', 'log-info');
+  log('log-detect', `Total keys: ${localStorage.length}`);
+
+  // Dump all keys so user can see what's there
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    const len = (localStorage.getItem(k) || '').length;
+    log('log-detect', `  ${k}  (${len} chars)`);
+  }
+
+  // Try each known key
+  for (const k of taxaKeys) {
+    const raw = localStorage.getItem(k);
+    if (!raw) continue;
+    try {
+      const parsed = JSON.parse(raw);
+      const arr = Array.isArray(parsed) ? parsed : (parsed.taxa || parsed.data || []);
+      if (arr.length > 0) {
+        foundTaxa = arr;
+        log('log-detect', `✓ Found taxa in "${k}": ${arr.length} entries`, 'log-ok');
+        break;
+      }
+    } catch (e) {
+      log('log-detect', `  Could not parse "${k}": ${e.message}`, 'log-warn');
+    }
+  }
+
+  for (const k of careKeys) {
+    const raw = localStorage.getItem(k);
+    if (!raw) continue;
+    try {
+      foundCare = JSON.parse(raw);
+      log('log-detect', `✓ Found care defaults in "${k}"`, 'log-ok');
+      break;
+    } catch(e) {}
+  }
+
+  for (const k of configKeys) {
+    const raw = localStorage.getItem(k);
+    if (!raw) continue;
+    try {
+      foundConfig = JSON.parse(raw);
+      log('log-detect', `✓ Found config in "${k}"`, 'log-ok');
+      break;
+    } catch(e) {}
+  }
+
+  if (!foundTaxa) {
+    log('log-detect', '⚠ No taxa found. Try opening this file in your old admin browser, or paste JSON manually in Step 2.', 'log-warn');
+    foundTaxa = [];
+  }
+
+  detectedTaxa         = foundTaxa;
+  detectedCareDefaults = foundCare || {};
+  detectedConfig       = foundConfig || {};
+
+  // Show stats card
+  const statsEl = document.getElementById('stats');
+  statsEl.innerHTML = `
+    <div class="stat">Taxa detected<span>${detectedTaxa.length}</span></div>
+    <div class="stat">Care defaults<span>${Object.keys(detectedCareDefaults).length}</span></div>
+    <div class="stat">Config keys<span>${Object.keys(detectedConfig).length}</span></div>
+  `;
+  document.getElementById('card-options').style.display = '';
+}
+
+// ─── Step 2: Migrate ──────────────────────────────────────────────────────
+
+function runMigration() {
+  const logEl = document.getElementById('log-migrate');
+  logEl.innerHTML = '';
+  const photoMode = document.getElementById('photo-mode').value;
+
+  let allTaxa = [...detectedTaxa];
+
+  // Merge extra taxa if provided
+  const extraRaw = document.getElementById('extra-taxa').value.trim();
+  if (extraRaw) {
+    try {
+      const extra = JSON.parse(extraRaw);
+      const arr = Array.isArray(extra) ? extra : [extra];
+      allTaxa = mergeTaxa(allTaxa, arr);
+      log('log-migrate', `Merged ${arr.length} extra taxa`, 'log-ok');
+    } catch(e) {
+      log('log-migrate', `Could not parse extra taxa: ${e.message}`, 'log-err');
+      return;
+    }
+  }
+
+  log('log-migrate', `Converting ${allTaxa.length} taxa…`, 'log-info');
+
+  let ok = 0, warn = 0;
+  const converted = allTaxa.map(t => {
+    try {
+      const c = convertTaxon(t, photoMode);
+      ok++;
+      return c;
+    } catch(e) {
+      log('log-migrate', `  ⚠ ${t.id || t.name || '?'}: ${e.message}`, 'log-warn');
+      warn++;
+      return null;
+    }
+  }).filter(Boolean);
+
+  log('log-migrate', `Converted: ${ok} ok, ${warn} warnings`, ok > 0 ? 'log-ok' : 'log-warn');
+
+  // Build care defaults
+  const careDefaults = buildCareDefaults(detectedCareDefaults, detectedConfig);
+
+  // Build genus groups from config or infer from taxa
+  const genusGroups = buildGenusGroups(detectedConfig, converted);
+
+  // Build group care defaults using the new schema
+  const groupCareDefaults = {};
+  for (const [group, care] of Object.entries(careDefaults)) {
+    groupCareDefaults[group] = normalizeCare(care);
+  }
+
+  // Build the v2 data.json
+  migratedData = {
+    meta: {
+      version: '2.0',
+      migratedAt: new Date().toISOString(),
+      savedAt: '',
+      publishedAt: '',
+      taxaCount: converted.length,
+      githubRepo: 'YOUR_GITHUB_USER/bogman-gallery'
+    },
+    taxa: converted,
+    habitats: detectedConfig.habitats || defaultHabitats(),
+    climates:  detectedConfig.climates || defaultClimates(),
+    extSites:  defaultExtSites(),
+    genusCoverPhotos: detectedConfig.genusCoverPhotos || {},
+    genusGroups,
+    groupCareDefaults,
+    extLinkTemplates: { genus: {}, group: {} },
+    extSiteIndex:     { cppf: {}, fierceflora: {}, icps: {} }
+  };
+
+  log('log-migrate', `✓ Migration complete. ${converted.length} taxa ready.`, 'log-ok');
+  document.getElementById('card-download').style.display = '';
+}
+
+// ─── Taxon conversion ────────────────────────────────────────────────────
+
+function convertTaxon(t, photoMode) {
+  // Determine id
+  const id = t.id || generateId(t.genus, t.species || t.name);
+
+  // Parse photos
+  const photos = parsePhotos(t, photoMode);
+
+  // Parse care
+  const care = parseCare(t);
+
+  // Parse external links
+  const extLinks = parseExtLinks(t);
+
+  // Determine genus
+  const genus = t.genus || inferGenus(t.species || t.name || '');
+
+  // Determine entry type
+  const entryType = t.entryType || t.entry_type || inferEntryType(t);
+
+  // Display name
+  const displayName = t.displayName || t.display_name || buildDisplayName(t);
+
+  return {
+    id,
+    genus,
+    species:     t.species     || '',
+    hybrid:      t.hybrid      || t.isHybrid || false,
+    cultivar:    t.cultivar    || '',
+    commonName:  t.commonName  || t.common_name  || t.commonname || '',
+    displayName,
+    entryType,
+    group:       t.group       || t.section || '',
+    habitat:     t.habitat     || '',
+    climate:     t.climate     || '',
+    origin:      t.origin      || t.location || '',
+    native:      t.native      || t.nativeRange || '',
+    shopUrl:     t.shopUrl     || t.shop_url || t.shoplink || '',
+    shopType:    t.shopType    || t.shop_type || inferShopType(t),
+    notes:       t.notes       || '',
+    flagged:     t.flagged     || false,
+    photos,
+    care,
+    extLinks
+  };
+}
+
+function generateId(genus, species) {
+  const g = (genus  || 'unknown').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const s = (species|| 'sp'     ).toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/\s+/g,'_');
+  return `${g}_${s}_${Math.random().toString(36).slice(2,6)}`;
+}
+
+function inferGenus(name) {
+  const genera = ['Drosera','Pinguicula','Utricularia','Byblis','Drosophyllum','Dionaea','Nepenthes','Sarracenia','Cephalotus'];
+  for (const g of genera) {
+    if (name.startsWith(g)) return g;
+  }
+  return name.split(/\s+/)[0] || '';
+}
+
+function inferEntryType(t) {
+  if (t.entryType || t.entry_type) return t.entryType || t.entry_type;
+  if (t.hybrid || t.isHybrid) return 'hybrid';
+  if (t.cultivar) return 'cultivar';
+  return 'species';
+}
+
+function inferShopType(t) {
+  if (t.shopType || t.shop_type) return t.shopType || t.shop_type;
+  if (t.shopUrl || t.shop_url) return 'external';
+  return '';
+}
+
+function buildDisplayName(t) {
+  let name = '';
+  if (t.genus && t.species) {
+    name = `${t.genus} ${t.species}`;
+  } else if (t.name) {
+    name = t.name;
+  }
+  if (t.cultivar) name += ` '${t.cultivar}'`;
+  return name;
+}
+
+function parsePhotos(t, photoMode) {
+  const rawPhotos = t.photos || t.images || [];
+
+  if (!rawPhotos.length && (t.photoUrl || t.photo_url || t.image || t.thumbnail)) {
+    // Single photo field
+    const url = t.photoUrl || t.photo_url || t.image || t.thumbnail || '';
+    if (url) rawPhotos.push(url);
+  }
+
+  return rawPhotos.map((p, i) => {
+    let src = typeof p === 'string' ? p : (p.src || p.url || p.id || '');
+    let caption = typeof p === 'object' ? (p.caption || p.alt || '') : '';
+    let primary  = typeof p === 'object' ? (p.primary || i === 0) : i === 0;
+
+    src = prefixPhotoUrl(src, photoMode);
+
+    return { src, caption, primary };
+  }).filter(p => p.src);
+}
+
+function prefixPhotoUrl(src, mode) {
+  if (!src) return src;
+  // Already prefixed
+  if (src.startsWith('sq:') || src.startsWith('drive:')) return src;
+
+  if (mode === 'auto') {
+    if (src.includes('squarespace-cdn.com') || src.includes('static1.squarespace') || src.startsWith('https://images.sq')) {
+      return 'sq:' + src;
+    }
+    // Google Drive file IDs are alphanumeric strings ~30-50 chars, no slashes
+    if (/^[A-Za-z0-9_-]{20,60}$/.test(src)) {
+      return 'drive:' + src;
+    }
+    if (src.includes('drive.google.com') || src.includes('lh3.googleusercontent')) {
+      // Extract file ID from URL
+      const m = src.match(/\/d\/([A-Za-z0-9_-]+)/);
+      if (m) return 'drive:' + m[1];
+    }
+    // Unknown — keep with sq: as best guess if it's a full URL
+    if (src.startsWith('http')) return 'sq:' + src;
+    return src;
+  }
+
+  if (mode === 'sq') return 'sq:' + src;
+  if (mode === 'drive') {
+    // Try to extract ID if it's a full URL
+    const m = src.match(/\/d\/([A-Za-z0-9_-]+)/);
+    return m ? 'drive:' + m[1] : 'drive:' + src;
+  }
+  return src; // raw
+}
+
+function parseCare(t) {
+  // Old flat schema: care_light, care_water, care_soil, care_humidity, care_temperature, care_dormancy, care_feeding, care_notes
+  // New nested schema: care.light, care.water, etc.
+  if (t.care && typeof t.care === 'object') {
+    return {
+      override:    t.care.override    !== false,
+      light:       t.care.light       || '',
+      water:       t.care.water       || '',
+      soil:        t.care.soil        || '',
+      humidity:    t.care.humidity    || '',
+      temperature: t.care.temperature || '',
+      dormancy:    t.care.dormancy    || '',
+      feeding:     t.care.feeding     || '',
+      notes:       t.care.notes       || ''
+    };
+  }
+  // Flat fields
+  const hasAny = t.care_light || t.care_water || t.care_soil || t.care_humidity ||
+                  t.care_temperature || t.care_dormancy || t.care_feeding;
+  return {
+    override:    !!hasAny,
+    light:       t.care_light       || t.light       || '',
+    water:       t.care_water       || t.water       || '',
+    soil:        t.care_soil        || t.soil        || '',
+    humidity:    t.care_humidity    || t.humidity    || '',
+    temperature: t.care_temperature || t.temperature || '',
+    dormancy:    t.care_dormancy    || t.dormancy    || '',
+    feeding:     t.care_feeding     || t.feeding     || '',
+    notes:       t.care_notes       || ''
+  };
+}
+
+function parseExtLinks(t) {
+  const links = {};
+  // Old flat fields
+  const mappings = [
+    ['cppf',        'cppf', 'cpphotofinder', 'cp_photo_finder'],
+    ['fierceflora', 'fierceflora', 'fierce_flora', 'ffUrl'],
+    ['icps',        'icps', 'icps_url', 'icpsUrl']
+  ];
+  for (const [key, ...candidates] of mappings) {
+    for (const c of candidates) {
+      if (t[c] || (t.extLinks && t.extLinks[c])) {
+        links[key] = t[c] || t.extLinks[c];
+        break;
+      }
+    }
+  }
+  if (t.extLinks && typeof t.extLinks === 'object') {
+    Object.assign(links, t.extLinks);
+  }
+  return links;
+}
+
+// ─── Care defaults ────────────────────────────────────────────────────────
+
+function normalizeCare(c) {
+  if (!c || typeof c !== 'object') return {};
+  return {
+    light:       c.light       || '',
+    water:       c.water       || '',
+    soil:        c.soil        || '',
+    humidity:    c.humidity    || '',
+    temperature: c.temperature || '',
+    dormancy:    c.dormancy    || '',
+    feeding:     c.feeding     || '',
+    notes:       c.notes       || ''
+  };
+}
+
+function buildCareDefaults(careObj, config) {
+  // Merge from both sources
+  const result = {};
+  const sources = [careObj, config.careDefaults, config.groupCareDefaults, config.care_defaults];
+  for (const src of sources) {
+    if (!src || typeof src !== 'object') continue;
+    for (const [k, v] of Object.entries(src)) {
+      if (typeof v === 'object') result[k] = { ...result[k], ...v };
+    }
+  }
+  return result;
+}
+
+function buildGenusGroups(config, taxa) {
+  const defaults = {
+    'Drosera':      ['Pygmy', 'Subtropical', 'Temperate', 'Tropical', 'Tuberous', 'Winter Growing'],
+    'Pinguicula':   [],
+    'Utricularia':  [],
+    'Byblis':       [],
+    'Drosophyllum': [],
+    'Dionaea':      []
+  };
+
+  const result = config.genusGroups || config.genus_groups || { ...defaults };
+
+  // Also infer from taxa groups
+  for (const t of taxa) {
+    if (t.genus && t.group) {
+      if (!result[t.genus]) result[t.genus] = [];
+      if (!result[t.genus].includes(t.group)) result[t.genus].push(t.group);
+    }
+  }
+
+  return result;
+}
+
+function mergeTaxa(base, extra) {
+  const map = new Map(base.map(t => [t.id, t]));
+  for (const t of extra) {
+    if (t.id && map.has(t.id)) {
+      map.set(t.id, { ...map.get(t.id), ...t });
+    } else {
+      map.set(t.id || Math.random().toString(36).slice(2), t);
+    }
+  }
+  return [...map.values()];
+}
+
+// ─── Defaults ────────────────────────────────────────────────────────────
+
+function defaultHabitats() {
+  return [
+    { id: 'sphagnum_bog',        name: 'Sphagnum Bog' },
+    { id: 'sandplain_heath',     name: 'Sandplain Heath' },
+    { id: 'tropical_savanna',    name: 'Tropical Savanna Wetland' },
+    { id: 'mediterranean',       name: 'Mediterranean Scrub & Heath' },
+    { id: 'cloud_forest',        name: 'Cloud Forest & Fog Belt' },
+    { id: 'limestone_karst',     name: 'Limestone Cliff & Karst' },
+    { id: 'tepui_outcrop',       name: 'Tepui & Rocky Outcrop' },
+    { id: 'subtropical_bog',     name: 'Subtropical Bog & Fen' },
+    { id: 'tropical_rainforest', name: 'Tropical Rainforest' },
+    { id: 'coastal_wetland',     name: 'Coastal Plain Wetland' }
+  ];
+}
+
+function defaultClimates() {
+  return [
+    { id: 'highland_tropical', name: 'Highland Tropical' },
+    { id: 'lowland_tropical',  name: 'Lowland Tropical' },
+    { id: 'mediterranean',     name: 'Mediterranean' },
+    { id: 'subtropical',       name: 'Subtropical' },
+    { id: 'temperate',         name: 'Temperate' }
+  ];
+}
+
+function defaultExtSites() {
+  return [
+    { id: 'cpphotofinder', name: 'CP Photo Finder',  baseUrl: 'https://cpphotofinder.com',   searchUrl: 'https://cpphotofinder.com/search?q={taxon}' },
+    { id: 'fierceflora',   name: 'Fierce Flora',     baseUrl: 'https://www.fierceflora.com', searchUrl: 'https://www.fierceflora.com/?s={taxon}' },
+    { id: 'icps',          name: 'ICPS Taxonomy',    baseUrl: 'https://www.carnivorousplants.org', searchUrl: 'https://www.carnivorousplants.org/cp/taxonomy' }
+  ];
+}
+
+// ─── Step 3: Download ─────────────────────────────────────────────────────
+
+function downloadJson() {
+  if (!migratedData) return;
+  const blob = new Blob([JSON.stringify(migratedData, null, 2)], { type: 'application/json' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = 'data.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function previewJson() {
+  if (!migratedData) return;
+  const el = document.getElementById('log-preview');
+  el.style.display = 'block';
+  el.textContent = JSON.stringify(migratedData, null, 2).slice(0, 4000) + '\n\n… (truncated to 4000 chars for preview)';
+}
+</script>
+</body>
+</html>

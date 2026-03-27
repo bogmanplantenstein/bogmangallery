@@ -1,0 +1,19 @@
+# Credentials — NEVER commit these
+credentials/
+.env
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Local backups
+data/*.bak
+data/*.backup.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp

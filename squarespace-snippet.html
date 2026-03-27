@@ -1,0 +1,48 @@
+<!--
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │  BOGMAN GALLERY — Squarespace Code Block                            │
+  │                                                                     │
+  │  Paste this ONCE into a Squarespace Code Block.                     │
+  │  Never change it again — updates are automatic via GitHub.          │
+  │                                                                     │
+  │  Repo: bogmanplantenstein/bogmangallery                             │
+  │  To pin a release, change @main to a version tag (e.g. @v2.0)      │
+  │                                                                     │
+  └─────────────────────────────────────────────────────────────────────┘
+-->
+
+<div id="bmg-root"></div>
+<script src="https://cdn.jsdelivr.net/gh/bogmanplantenstein/bogmangallery@main/gallery.js"></script>
+
+<!--
+  HOW IT WORKS
+  ────────────
+  • gallery.js is served by jsDelivr CDN from your GitHub repo.
+  • It auto-detects your GitHub repo from its own URL and fetches
+    data.json from raw.githubusercontent.com (always the latest commit).
+  • When you publish from the admin app, it commits data.json and pushes
+    to GitHub — the gallery updates within seconds, no changes here needed.
+
+  PINNING A VERSION
+  ─────────────────
+  If you want the gallery code frozen at a specific release:
+    @main     → always latest (recommended during active development)
+    @v2.0     → pinned to the v2.0 git tag
+    @abc1234  → pinned to a specific commit hash
+
+  CUSTOMISATION
+  ─────────────
+  All appearance is controlled by CSS custom properties. You can override
+  them in a Squarespace Custom CSS block:
+
+    #bmg-root {
+      --bmg-accent:     #c9a96e;   /* gold accent colour */
+      --bmg-bg:         #1a1a1a;   /* page background */
+      --bmg-card-bg:    #222;      /* card background */
+      --bmg-text:       #e0d8c8;   /* primary text */
+      --bmg-text-muted: #8a8070;   /* secondary text */
+      --bmg-font-serif: 'Cormorant Garamond', Georgia, serif;
+      --bmg-font-sans:  'Josefin Sans', system-ui, sans-serif;
+      --bmg-radius:     12px;
+    }
+-->

@@ -1,0 +1,21 @@
+{
+  "name": "bogman-gallery",
+  "version": "2.0.0",
+  "description": "Bogman Plantenstein — Gallery Admin Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "googleapis": "^140.0.0",
+    "node-fetch": "^3.3.2",
+    "dotenv": "^16.4.5",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "UNLICENSED"
+}
