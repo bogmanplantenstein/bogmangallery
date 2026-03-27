@@ -14,7 +14,6 @@ const { execSync, exec } = require('child_process');
 
 const PORT          = process.env.PORT || 3001;
 const DATA_FILE     = path.join(__dirname, 'data', 'data.json');
-const CREDS_FILE    = path.join(__dirname, 'credentials', 'service-account.json');
 const GITHUB_REPO   = process.env.GITHUB_REPO || '';   // USER/repo
 const GITHUB_TOKEN  = process.env.GITHUB_TOKEN || '';  // Personal Access Token (repo scope)
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
@@ -138,20 +137,53 @@ app.post('/api/publish', (req, res) => {
   }
 });
 
-// ── Google Drive ────────────────────────────────────────────────
+// ── Google Drive (OAuth2 Desktop flow) ─────────────────────────
+
+const { google }  = require('googleapis');
+const TOKEN_FILE  = path.join(__dirname, 'credentials', 'token.json');
 
 let driveClient = null;
 
+// Find the client_secret*.json file the user dropped in credentials/
+function findClientSecretFile() {
+  try {
+    const dir = path.join(__dirname, 'credentials');
+    const match = fs.readdirSync(dir).find(f => f.startsWith('client_secret') && f.endsWith('.json'));
+    return match ? path.join(dir, match) : null;
+  } catch (e) { return null; }
+}
+
+function getOAuthClient() {
+  const secretFile = findClientSecretFile();
+  if (!secretFile) return null;
+  try {
+    const raw    = JSON.parse(fs.readFileSync(secretFile, 'utf8'));
+    const creds  = raw.installed || raw.web;
+    return new google.auth.OAuth2(
+      creds.client_id,
+      creds.client_secret,
+      `http://localhost:${PORT}/auth/callback`
+    );
+  } catch (e) {
+    console.error('OAuth client init error:', e.message);
+    return null;
+  }
+}
+
 function getDrive() {
   if (driveClient) return driveClient;
-  if (!fs.existsSync(CREDS_FILE)) return null;
+  if (!fs.existsSync(TOKEN_FILE)) return null;
   try {
-    const { google } = require('googleapis');
-    const auth = new google.auth.GoogleAuth({
-      keyFile: CREDS_FILE,
-      scopes: ['https://www.googleapis.com/auth/drive.readonly']
+    const oAuth2Client = getOAuthClient();
+    if (!oAuth2Client) return null;
+    const token = JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8'));
+    oAuth2Client.setCredentials(token);
+    // Persist refreshed tokens automatically
+    oAuth2Client.on('tokens', tokens => {
+      const saved = fs.existsSync(TOKEN_FILE) ? JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf8')) : {};
+      fs.writeFileSync(TOKEN_FILE, JSON.stringify({ ...saved, ...tokens }, null, 2));
     });
-    driveClient = google.drive({ version: 'v3', auth });
+    driveClient = google.drive({ version: 'v3', auth: oAuth2Client });
     return driveClient;
   } catch (e) {
     console.error('Drive init error:', e.message);
@@ -159,12 +191,58 @@ function getDrive() {
   }
 }
 
+// GET /auth/google — kick off the OAuth consent screen
+app.get('/auth/google', (req, res) => {
+  const client = getOAuthClient();
+  if (!client) return res.status(503).send('<h2>No client_secret.json found in credentials/</h2>');
+  const url = client.generateAuthUrl({
+    access_type: 'offline',
+    scope: ['https://www.googleapis.com/auth/drive.readonly'],
+    prompt: 'consent'   // force refresh_token to be returned every time
+  });
+  res.redirect(url);
+});
+
+// GET /auth/callback — Google redirects here after user approves
+app.get('/auth/callback', async (req, res) => {
+  const { code, error } = req.query;
+  if (error) return res.send(`<h2 style="font-family:sans-serif;color:red">Auth failed: ${error}</h2>`);
+  try {
+    const client = getOAuthClient();
+    const { tokens } = await client.getToken(code);
+    fs.writeFileSync(TOKEN_FILE, JSON.stringify(tokens, null, 2));
+    driveClient = null;  // reset so next call re-initialises with new token
+    res.send(`
+      <html><body style="font-family:sans-serif;padding:40px;background:#1a1a1a;color:#fff">
+        <h2 style="color:#c9a84c">✓ Google Drive connected!</h2>
+        <p>You can close this tab and return to the admin.</p>
+        <script>setTimeout(()=>window.close(), 2500)</script>
+      </body></html>
+    `);
+  } catch (e) {
+    res.status(500).send(`<h2 style="font-family:sans-serif;color:red">Token error: ${e.message}</h2>`);
+  }
+});
+
+// GET /api/drive/auth-status — is Drive connected?
+app.get('/api/drive/auth-status', (req, res) => {
+  const hasSecret  = !!findClientSecretFile();
+  const hasToken   = fs.existsSync(TOKEN_FILE);
+  res.json({ hasSecret, hasToken, connected: hasSecret && hasToken });
+});
+
+// POST /api/drive/disconnect — revoke stored token
+app.post('/api/drive/disconnect', (req, res) => {
+  if (fs.existsSync(TOKEN_FILE)) fs.unlinkSync(TOKEN_FILE);
+  driveClient = null;
+  res.json({ ok: true });
+});
+
 // POST /api/drive/scan — recursively scan a folder and return structure
-// Body: { folderId }  OR leave folderId empty to list root-shared folders
+// Body: { folderId }
 app.post('/api/drive/scan', async (req, res) => {
   const drive = getDrive();
-  if (!drive) return res.status(503).json({ error: 'Google Drive credentials not found. Place service-account.json in credentials/ folder.' });
-
+  if (!drive) return res.status(503).json({ error: 'Google Drive not connected. Click "Connect Drive" in Settings.' });
   try {
     const { folderId } = req.body || {};
 
@@ -182,9 +260,7 @@ app.post('/api/drive/scan', async (req, res) => {
       const result = [];
       for (const f of files) {
         const node = { id: f.id, name: f.name, type: f.mimeType === 'application/vnd.google-apps.folder' ? 'folder' : 'file' };
-        if (node.type === 'folder' && depth < 3) {
-          node.children = await listFolder(f.id, depth + 1);
-        }
+        if (node.type === 'folder' && depth < 3) node.children = await listFolder(f.id, depth + 1);
         result.push(node);
       }
       return result;
@@ -200,7 +276,7 @@ app.post('/api/drive/scan', async (req, res) => {
 // GET /api/drive/files/:folderId — list files in a folder (shallow)
 app.get('/api/drive/files/:folderId', async (req, res) => {
   const drive = getDrive();
-  if (!drive) return res.status(503).json({ error: 'Drive credentials not configured.' });
+  if (!drive) return res.status(503).json({ error: 'Drive not connected.' });
   try {
     const resp = await drive.files.list({
       q: `'${req.params.folderId}' in parents and trashed = false and mimeType != 'application/vnd.google-apps.folder'`,
@@ -363,9 +439,13 @@ app.post('/api/index/icps', async (req, res) => {
 
 // GET /api/config — return non-secret server config to admin UI
 app.get('/api/config', (req, res) => {
-  const driveReady = fs.existsSync(CREDS_FILE);
+  const hasSecret  = !!findClientSecretFile();
+  const hasToken   = fs.existsSync(TOKEN_FILE);
   res.json({
-    driveReady,
+    driveReady:      hasSecret && hasToken,
+    driveHasSecret:  hasSecret,
+    driveHasToken:   hasToken,
+    driveAuthUrl:    '/auth/google',
     githubRepo:      GITHUB_REPO,
     hasAnthropicKey: !!ANTHROPIC_KEY,
     hasGithubToken:  !!GITHUB_TOKEN,
@@ -385,9 +465,15 @@ app.listen(PORT, () => {
   console.log(`  ║   http://localhost:${PORT}              ║`);
   console.log('  ╚══════════════════════════════════════╝');
   console.log('');
-  if (!fs.existsSync(CREDS_FILE)) {
-    console.log('  ⚠  Drive credentials not found.');
-    console.log('     Place service-account.json in credentials/');
+  if (!findClientSecretFile()) {
+    console.log('  ⚠  Google Drive: no client_secret.json found in credentials/');
+    console.log('');
+  } else if (!fs.existsSync(TOKEN_FILE)) {
+    console.log('  ℹ  Google Drive: client secret found but not yet connected.');
+    console.log(`     Open http://localhost:${PORT}/auth/google to connect.`);
+    console.log('');
+  } else {
+    console.log('  ✓  Google Drive connected.');
     console.log('');
   }
   if (!ANTHROPIC_KEY) {
