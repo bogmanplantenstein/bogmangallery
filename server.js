@@ -16,6 +16,7 @@ const PORT          = process.env.PORT || 3001;
 const DATA_FILE     = path.join(__dirname, 'data', 'data.json');
 const CREDS_FILE    = path.join(__dirname, 'credentials', 'service-account.json');
 const GITHUB_REPO   = process.env.GITHUB_REPO || '';   // USER/repo
+const GITHUB_TOKEN  = process.env.GITHUB_TOKEN || '';  // Personal Access Token (repo scope)
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
 
 const app = express();
@@ -41,6 +42,16 @@ function writeData(data) {
 
 function runGit(cmd) {
   return execSync(cmd, { cwd: __dirname, encoding: 'utf8' }).trim();
+}
+
+// Build an authenticated push URL from GITHUB_REPO + GITHUB_TOKEN.
+// Falls back to plain 'git push' if no token is set (uses system credential manager).
+function gitPushCmd() {
+  if (GITHUB_TOKEN && GITHUB_REPO) {
+    const [owner, repo] = GITHUB_REPO.split('/');
+    return `git push https://${owner}:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git HEAD:main`;
+  }
+  return 'git push';
 }
 
 // ── Data API ───────────────────────────────────────────────────
@@ -119,7 +130,7 @@ app.post('/api/publish', (req, res) => {
       return res.json({ ok: true, message: 'Nothing to publish — data is already up to date.', noChanges: true });
     }
     runGit(`git commit -m "${msg.replace(/"/g, "'")}"`);
-    runGit('git push');
+    runGit(gitPushCmd());
 
     res.json({ ok: true, message: msg, pushedAt: new Date().toISOString() });
   } catch (e) {
@@ -355,10 +366,11 @@ app.get('/api/config', (req, res) => {
   const driveReady = fs.existsSync(CREDS_FILE);
   res.json({
     driveReady,
-    githubRepo: GITHUB_REPO,
+    githubRepo:      GITHUB_REPO,
     hasAnthropicKey: !!ANTHROPIC_KEY,
-    dataFile: DATA_FILE,
-    rawDataUrl: GITHUB_REPO
+    hasGithubToken:  !!GITHUB_TOKEN,
+    dataFile:        DATA_FILE,
+    rawDataUrl:      GITHUB_REPO
       ? `https://raw.githubusercontent.com/${GITHUB_REPO}/main/data/data.json`
       : null
   });
@@ -380,6 +392,12 @@ app.listen(PORT, () => {
   }
   if (!ANTHROPIC_KEY) {
     console.log('  ⚠  ANTHROPIC_API_KEY not set in .env');
+    console.log('');
+  }
+  if (!GITHUB_TOKEN) {
+    console.log('  ⚠  GITHUB_TOKEN not set in .env');
+    console.log('     Publish will fall back to system credential manager.');
+    console.log('     Get a token at: https://github.com/settings/tokens/new');
     console.log('');
   }
 });
