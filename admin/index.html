@@ -886,6 +886,15 @@ async function saveData() {
   }
 }
 
+// Render immediately (optimistic), then persist in background.
+// Use this instead of saveData().then(render) so buttons feel instant.
+function saveAndRender(successMsg) {
+  render();
+  saveData()
+    .then(() => { if (successMsg) showToast(successMsg, 'success'); })
+    .catch(() => {}); // saveData already shows the error toast
+}
+
 function getDefaultData() {
   return {
     meta: {version:'2.0', savedAt:'', publishedAt:'', taxaCount:0},
@@ -1969,7 +1978,7 @@ function attachPageEvents() {
       const t = APP_DATA.taxa.find(x => x.id === delId);
       if (confirm('Delete "' + (t?.displayName||delId) + '"?')) {
         APP_DATA.taxa = APP_DATA.taxa.filter(x => x.id !== delId);
-        saveData().then(()=>{ showToast('Deleted', 'success'); render(); });
+        saveAndRender('Deleted');
       }
       return;
     }
@@ -2043,7 +2052,7 @@ function attachPageEvents() {
     const rmGP = e.target.closest('[data-remove-genus-photo]')?.dataset.removeGenusPhoto;
     if (rmGP) { const [g,i] = rmGP.split(':');
       if (APP_DATA.genusCoverPhotos[g]) { APP_DATA.genusCoverPhotos[g].splice(parseInt(i),1); }
-      saveData().then(render); return; }
+      saveAndRender(); return; }
 
     // Add genus photo (save on blur of inputs)
     if (e.target.id === 'save-habitats-btn') { doSaveHabitats(); return; }
@@ -2073,9 +2082,9 @@ function attachPageEvents() {
     const rmGrp = e.target.closest('[data-remove-group]')?.dataset.removeGroup;
     if (rmGrp) { const [g,i]=rmGrp.split(':');
       APP_DATA.genusGroups[g]?.splice(parseInt(i),1);
-      saveData().then(render); return; }
+      saveAndRender(); return; }
     const syncGrp = e.target.closest('[data-sync-genus]')?.dataset.syncGenus;
-    if (syncGrp) { syncGenusGroupsFromTaxa(); saveData().then(render); return; }
+    if (syncGrp) { syncGenusGroupsFromTaxa(); saveAndRender(); return; }
 
     // Mass mode
     if (e.target.id === 'mass-mode-btn') { MASS_MODE = !MASS_MODE; MASS_SELECTED.clear(); render(); return; }
@@ -2096,16 +2105,16 @@ function attachPageEvents() {
     // Link templates
     const addTplG = e.target.closest('[data-add-tpl-genus]')?.dataset.addTplGenus;
     if (addTplG) { if (!APP_DATA.extLinkTemplates.genus[addTplG]) APP_DATA.extLinkTemplates.genus[addTplG]=[];
-      APP_DATA.extLinkTemplates.genus[addTplG].push({site:''}); saveData().then(render); return; }
+      APP_DATA.extLinkTemplates.genus[addTplG].push({site:''}); saveAndRender(); return; }
     const addTplGr = e.target.closest('[data-add-tpl-group]')?.dataset.addTplGroup;
     if (addTplGr) { if (!APP_DATA.extLinkTemplates.group[addTplGr]) APP_DATA.extLinkTemplates.group[addTplGr]=[];
-      APP_DATA.extLinkTemplates.group[addTplGr].push({site:''}); saveData().then(render); return; }
+      APP_DATA.extLinkTemplates.group[addTplGr].push({site:''}); saveAndRender(); return; }
     const rmTplG = e.target.closest('[data-remove-tpl-genus]')?.dataset.removeTplGenus;
     if (rmTplG) { const [g,i]=rmTplG.split(':');
-      APP_DATA.extLinkTemplates.genus[g]?.splice(parseInt(i),1); saveData().then(render); return; }
+      APP_DATA.extLinkTemplates.genus[g]?.splice(parseInt(i),1); saveAndRender(); return; }
     const rmTplGr = e.target.closest('[data-remove-tpl-group]')?.dataset.removeTplGroup;
     if (rmTplGr) { const [g,i]=rmTplGr.split(':');
-      APP_DATA.extLinkTemplates.group[g]?.splice(parseInt(i),1); saveData().then(render); return; }
+      APP_DATA.extLinkTemplates.group[g]?.splice(parseInt(i),1); saveAndRender(); return; }
   });
 
   // Live filter events for taxa list
@@ -2336,7 +2345,7 @@ function doMassSetGroup() {
     if (t) t.group = g === '__clear__' ? '' : g;
   });
   syncGenusGroupsFromTaxa();
-  saveData().then(() => { showToast('Group updated', 'success'); render(); });
+  saveAndRender('Group updated');
 }
 
 function doMassDelete() {
@@ -2344,7 +2353,7 @@ function doMassDelete() {
   if (!confirm('Delete ' + n + ' selected taxa?')) return;
   APP_DATA.taxa = APP_DATA.taxa.filter(t => !MASS_SELECTED.has(t.id));
   MASS_SELECTED.clear(); MASS_MODE = false;
-  saveData().then(() => { showToast('Deleted ' + n + ' taxa', 'success'); render(); });
+  saveAndRender('Deleted ' + n + ' taxa');
 }
 
 async function doMassAI() {
@@ -2544,7 +2553,7 @@ function doAddGroup(genus) {
   if (!val) return;
   if (!APP_DATA.genusGroups[genus]) APP_DATA.genusGroups[genus]=[];
   if (!APP_DATA.genusGroups[genus].includes(val)) APP_DATA.genusGroups[genus].push(val);
-  saveData().then(render);
+  saveAndRender();
 }
 
 // ═══ GENUS PHOTOS SAVE ═══════════════════════════════════════
