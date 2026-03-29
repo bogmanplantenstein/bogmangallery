@@ -43,14 +43,16 @@ function runGit(cmd) {
   return execSync(cmd, { cwd: __dirname, encoding: 'utf8' }).trim();
 }
 
-// Build an authenticated push URL from GITHUB_REPO + GITHUB_TOKEN.
-// Falls back to plain 'git push' if no token is set (uses system credential manager).
+// Build an authenticated push URL. Always uses an explicit remote URL so the
+// repo doesn't need a pre-configured 'origin'. Token is embedded when available;
+// otherwise falls back to the plain HTTPS URL (uses system credential manager).
 function gitPushCmd() {
-  if (GITHUB_TOKEN && GITHUB_REPO) {
-    const [owner, repo] = GITHUB_REPO.split('/');
+  if (!GITHUB_REPO) throw new Error('GITHUB_REPO is not set in .env — cannot push. Add GITHUB_REPO=owner/repo to your .env file.');
+  if (GITHUB_TOKEN) {
+    const [owner] = GITHUB_REPO.split('/');
     return `git push https://${owner}:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git HEAD:main`;
   }
-  return 'git push';
+  return `git push https://github.com/${GITHUB_REPO}.git HEAD:main`;
 }
 
 // ── Data API ───────────────────────────────────────────────────
@@ -118,22 +120,28 @@ app.get('/api/git/status', (req, res) => {
 app.post('/api/publish', (req, res) => {
   const { message } = req.body || {};
   try {
-    const data     = readData();
-    const count    = data?.taxa?.length ?? '?';
-    const msg      = message || `Published: ${count} taxa · ${new Date().toISOString().slice(0,10)}`;
+    const data  = readData();
+    const count = data?.taxa?.length ?? '?';
+    const msg   = (message || `Published: ${count} taxa · ${new Date().toISOString().slice(0,10)}`).replace(/"/g, "'");
 
     runGit('git add data/data.json');
-    // Check if there's anything staged
     const staged = runGit('git diff --cached --name-only');
     if (!staged) {
-      return res.json({ ok: true, message: 'Nothing to publish — data is already up to date.', noChanges: true });
+      return res.json({ ok: true, noChanges: true });
     }
-    runGit(`git commit -m "${msg.replace(/"/g, "'")}"`);
-    runGit(gitPushCmd());
+
+    runGit(`git commit -m "${msg}"`);
+
+    // Build push command first — throws a friendly error if GITHUB_REPO not set
+    const pushCmd = gitPushCmd();
+    runGit(pushCmd);
 
     res.json({ ok: true, message: msg, pushedAt: new Date().toISOString() });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    // execSync throws with stderr in e.message; extract the useful part
+    const raw = (e.stderr || e.message || String(e)).toString();
+    const friendly = raw.split('\n').filter(l => l.trim() && !l.startsWith('hint:')).join(' ').slice(0, 300);
+    res.status(500).json({ error: friendly || e.message });
   }
 });
 

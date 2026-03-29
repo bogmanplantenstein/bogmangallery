@@ -840,24 +840,28 @@ let AI_RUNNING    = false;
 let COPY_CARE_DRAFT = null; // taxon whose care is being previewed for copy
 
 // SECTION 3: Server API helpers
+async function extractError(r) {
+  const text = await r.text();
+  try { const j = JSON.parse(text); return j.error || j.message || text; } catch(e) { return text; }
+}
 async function apiGet(path) {
   const r = await fetch(path);
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) throw new Error(await extractError(r));
   return r.json();
 }
 async function apiPost(path, body) {
   const r = await fetch(path, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) throw new Error(await extractError(r));
   return r.json();
 }
 async function apiPut(path, body) {
   const r = await fetch(path, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) throw new Error(await extractError(r));
   return r.json();
 }
 async function apiDelete(path) {
   const r = await fetch(path, {method:'DELETE'});
-  if (!r.ok) throw new Error(await r.text());
+  if (!r.ok) throw new Error(await extractError(r));
   return r.json();
 }
 
@@ -1433,10 +1437,10 @@ function renderTabCare(t) {
     // Fill from product page
     '<div style="margin-top:10px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);">' +
     '<div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Fill From Product Page</div>' +
-    '<div style="display:flex;gap:8px;">' +
-    '<input type="text" id="product-page-url" placeholder="Squarespace product URL" style="flex:1;">' +
-    '<button class="btn btn-secondary btn-sm" id="fill-care-btn" type="button">Parse Care</button></div>' +
-    '<textarea id="product-page-paste" rows="4" placeholder="Or paste page HTML here…" style="margin-top:8px;display:none;"></textarea>' +
+    '<div style="font-size:11px;color:var(--dimmer);margin-bottom:8px;">Paste the product page HTML below, then click Parse Care.</div>' +
+    '<div style="display:flex;gap:8px;align-items:flex-start;">' +
+    '<textarea id="product-page-paste" rows="4" placeholder="Paste product page HTML here…" style="flex:1;"></textarea>' +
+    '<button class="btn btn-secondary btn-sm" id="fill-care-btn" type="button" style="flex-shrink:0;margin-top:2px;">Parse Care</button></div>' +
     '</div></div>';
 }
 
@@ -2025,6 +2029,9 @@ function attachPageEvents() {
     // Copy care preview
     if (e.target.id === 'copy-care-preview-btn') { doCopyCarePreview(); return; }
 
+    // Apply copied care fields (delegated — avoids duplicate listeners from repeated previews)
+    if (e.target.id === 'apply-copy-care-btn') { doApplyCopyCare(); return; }
+
     // Fill care from product page
     if (e.target.id === 'fill-care-btn') { doFillCare(); return; }
 
@@ -2127,6 +2134,15 @@ function attachPageEvents() {
     if (e.target.id==='groupcare-sel')    { render(); }
     // Auto-generate display name when identity fields change
     if (['f-genus','f-species','f-subspecies','f-entry-type'].includes(e.target.id)) { autoDisplayName(); }
+    // Mark display name as manually edited so autoDisplayName stops overwriting it
+    if (e.target.id === 'f-display-name') { e.target.dataset.manuallyEdited = '1'; }
+    // Parent search datalist — auto-populate the hidden f-parent-id field
+    if (e.target.id === 'f-parent-search') {
+      const val = e.target.value.trim();
+      const match = APP_DATA.taxa.find(t => t.displayName === val || t.id === val);
+      const hidEl = document.getElementById('f-parent-id');
+      if (hidEl) hidEl.value = match ? match.id : '';
+    }
     // Genus photo inputs — save on change
     if (e.target.classList.contains('genus-photo-input')) { scheduleGenusPhotoSave(e.target); }
     // Group name rename (on blur below)
@@ -2218,6 +2234,8 @@ function doCopyCarePreview() {
   if (!source) { preview.innerHTML = ''; return; }
   const care = getEffectiveCare(source);
   const fields = CARE_KEYS.filter(k => care[k]);
+  // Store source ID so the delegated click handler can look up care data
+  preview.dataset.sourceId = source.id;
   preview.innerHTML = '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-top:4px;">' +
     '<div style="font-size:10px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">'+escHtml(source.displayName)+'</div>' +
     fields.map(k =>
@@ -2229,31 +2247,27 @@ function doCopyCarePreview() {
     ).join('') +
     (fields.length ? '<button class="btn btn-accent btn-sm" id="apply-copy-care-btn" type="button" style="margin-top:4px;">Apply Selected Fields</button>' : '<div style="color:var(--dimmer);font-size:11px;">No care data on this taxon.</div>') +
     '</div>';
-  document.getElementById('apply-copy-care-btn')?.addEventListener('click', () => {
-    document.querySelectorAll('.copy-care-cb:checked').forEach(cb => {
-      const k = cb.dataset.careKey;
-      const ta = document.getElementById('f-care-'+k);
-      if (ta) ta.value = care[k] || '';
-    });
-    showToast('Care fields copied', 'success');
-    const ovEl = document.getElementById('f-care-override');
-    if (ovEl && !ovEl.checked) { ovEl.checked = true; toggleCareOverride(true); }
+}
+
+function doApplyCopyCare() {
+  const preview = document.getElementById('copy-care-preview');
+  if (!preview?.dataset.sourceId) return;
+  const source = APP_DATA.taxa.find(t => t.id === preview.dataset.sourceId);
+  if (!source) return;
+  const care = getEffectiveCare(source);
+  document.querySelectorAll('.copy-care-cb:checked').forEach(cb => {
+    const k = cb.dataset.careKey;
+    const ta = document.getElementById('f-care-'+k);
+    if (ta) ta.value = care[k] || '';
   });
+  showToast('Care fields copied', 'success');
+  const ovEl = document.getElementById('f-care-override');
+  if (ovEl && !ovEl.checked) { ovEl.checked = true; toggleCareOverride(true); }
 }
 
 async function doFillCare() {
-  const url   = document.getElementById('product-page-url')?.value?.trim();
-  const paste = document.getElementById('product-page-paste');
-  let html = '';
-  if (url) {
-    try {
-      const r = await fetch('/api/ai/research', {method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({action:'fetch-url', url})});
-      if (r.ok) { const d=await r.json(); html = d.html||''; }
-    } catch(e) {}
-  }
-  if (!html && paste) { paste.style.display=''; html = paste.value; }
-  if (!html) { showToast('No page content — paste HTML in the textarea', 'error'); if(paste) paste.style.display=''; return; }
+  const html = document.getElementById('product-page-paste')?.value?.trim() || '';
+  if (!html) { showToast('Paste the product page HTML in the textarea first', 'error'); return; }
   const care = parseCareFromHtml(html);
   if (!care) { showToast('No Growing Information section found in this page', 'error'); return; }
   CARE_KEYS.forEach(k => { if (care[k]) { const ta=document.getElementById('f-care-'+k); if(ta) ta.value=care[k]; }});
@@ -2299,11 +2313,11 @@ function removePhotoRow(idx) {
 function attachPhotoDrop() {
   const zone = document.getElementById('photo-drop-zone');
   if (!zone) return;
-  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-active'); });
-  zone.addEventListener('dragleave', () => zone.classList.remove('drag-active'));
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
   zone.addEventListener('drop', e => {
     e.preventDefault();
-    zone.classList.remove('drag-active');
+    zone.classList.remove('drag-over');
     const url = e.dataTransfer.getData('text/uri-list') ||
                 e.dataTransfer.getData('text/plain') ||
                 (e.dataTransfer.getData('text/html')||'').match(/src="([^"]+)"/)?.[1] || '';
@@ -2380,13 +2394,12 @@ async function doPublish() {
   const res = document.getElementById('publish-result');
   try {
     const data = await apiPost('/api/publish', { message: msg });
-    DIRTY = false;
-    updatePublishBadge();
+    if (!data.noChanges) { DIRTY = false; updatePublishBadge(); }
     if (res) res.innerHTML = '<div class="validation-ok">' +
-      (data.noChanges ? '✓ Already up to date' : '✓ Published — gallery will update within seconds') +
+      (data.noChanges ? '✓ Already up to date — no changes to publish' : '✓ Published — gallery will update within seconds') +
       '</div>';
-    showToast('Published!', 'success');
-    setTimeout(loadGitStatus, 500);
+    showToast(data.noChanges ? 'Already up to date' : 'Published!', 'success');
+    setTimeout(loadGitStatus, 800);
   } catch(e) {
     if (res) res.innerHTML = '<div class="validation-warn">⚠ '+escHtml(e.message)+'</div>';
     showToast('Publish failed: ' + e.message, 'error');
@@ -2526,8 +2539,9 @@ function doAddHabitat() {
   const id   = document.getElementById('new-hab-id')?.value?.trim();
   const name = document.getElementById('new-hab-name')?.value?.trim();
   if (!id||!name) { showToast('ID and name required','error'); return; }
+  if (!APP_DATA.habitats) APP_DATA.habitats = [];
   APP_DATA.habitats.push({id,name});
-  saveData().then(render);
+  saveAndRender();
 }
 
 function doSaveExtSites() {
@@ -2543,8 +2557,9 @@ function doSaveExtSites() {
 }
 
 function doAddExtSite() {
+  if (!APP_DATA.extSites) APP_DATA.extSites = [];
   APP_DATA.extSites.push({id:'new_site_'+Date.now(),name:'New Site',baseUrl:'',searchUrl:''});
-  saveData().then(render);
+  saveAndRender();
 }
 
 function doAddGroup(genus) {
