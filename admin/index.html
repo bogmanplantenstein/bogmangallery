@@ -3007,7 +3007,10 @@ function csvField(row, ...names) {
 }
 
 const FORMAT_SUFFIXES = ['Plant','Seeds','Gemmae','Tuber','Cutting','Rhizome','Division'];
-const FORMAT_RE = new RegExp('\\s+(' + FORMAT_SUFFIXES.join('|') + ')\\s*$', 'i');
+// Matches suffix form: "Name Seeds" or "Name - Seeds"
+const FORMAT_SUFFIX_RE = new RegExp('[\\s\\-–]+(' + FORMAT_SUFFIXES.join('|') + ')\\s*$', 'i');
+// Matches prefix form: "SEEDS - Name" or "Gemmae – Name"
+const FORMAT_PREFIX_RE = new RegExp('^(' + FORMAT_SUFFIXES.join('|') + ')\\s*[-–]\\s*', 'i');
 
 function parseSquarespaceCSV(text) {
   const lines = text.split(/\r?\n/);
@@ -3030,13 +3033,24 @@ function parseSquarespaceCSV(text) {
     return isCarnivorous || genusInTitle;
   });
 
-  // Strip format suffix to get base name; track which formats exist per base name
+  // Strip format prefix OR suffix; track which formats exist per base name
   const grouped = {}; // baseName → [{row, format}]
   plantRows.forEach(r => {
-    const raw   = (r['Title']||'').trim();
-    const match = raw.match(FORMAT_RE);
-    const fmt   = match ? match[1] : 'Plant';        // e.g. 'Seeds', or 'Plant' if no suffix
-    const base  = match ? raw.slice(0, match.index).trim() : raw;
+    const raw = (r['Title']||'').trim();
+    let fmt = 'Plant', base = raw;
+    // Check prefix first: "GEMMAE - Drosera x"
+    const pfxMatch = raw.match(FORMAT_PREFIX_RE);
+    if (pfxMatch) {
+      fmt  = pfxMatch[1].charAt(0).toUpperCase() + pfxMatch[1].slice(1).toLowerCase();
+      base = raw.slice(pfxMatch[0].length).trim();
+    } else {
+      // Check suffix: "Drosera x Seeds" or "Drosera x - Seeds"
+      const sfxMatch = raw.match(FORMAT_SUFFIX_RE);
+      if (sfxMatch) {
+        fmt  = sfxMatch[1].charAt(0).toUpperCase() + sfxMatch[1].slice(1).toLowerCase();
+        base = raw.slice(0, sfxMatch.index).trim();
+      }
+    }
     if (!grouped[base]) grouped[base] = [];
     grouped[base].push({ row: r, format: fmt });
   });
