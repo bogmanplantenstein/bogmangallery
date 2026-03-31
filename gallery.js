@@ -111,26 +111,28 @@
   border-bottom: 1px solid var(--bmg-border);
 }
 .bmg-header-eyebrow {
-  font-size: 10px;
-  letter-spacing: 0.3em;
+  font-size: 12px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--bmg-dimmer);
+  color: var(--bmg-dim);
   margin-bottom: 12px;
 }
 .bmg-header-title {
   font-family: var(--bmg-font-d);
-  font-size: clamp(38px, 5vw, 64px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
+  font-size: clamp(44px, 5.5vw, 72px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
   line-height: 1;
   color: var(--bmg-white);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .bmg-header-sub {
-  font-size: 11px;
-  letter-spacing: 0.15em;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--bmg-dimmer);
+  color: var(--bmg-off-white);
+  opacity: 0.6;
 }
 
 /* ── SEARCH + FILTERS ── */
@@ -153,24 +155,24 @@
 }
 .bmg-search-icon {
   position: absolute;
-  left: 15px;
+  left: 18px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--bmg-dimmer);
-  font-size: 17px;
+  font-size: 20px;
   pointer-events: none;
   line-height: 1;
 }
 .bmg-search {
   width: 100%;
-  padding: 13px 16px 13px 46px;
+  padding: 16px 18px 16px 54px;
   background: transparent;
   border: 1px solid var(--bmg-border);
   color: var(--bmg-white);
   font-family: var(--bmg-font-u);
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 300;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   outline: none;
   transition: border-color var(--bmg-t), background var(--bmg-t);
 }
@@ -179,12 +181,12 @@
 
 .bmg-filter-row {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
   align-items: center;
 }
 .bmg-filter-label {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--bmg-dimmer);
@@ -197,26 +199,26 @@
   border: 1px solid var(--bmg-border);
   color: var(--bmg-white);
   font-family: var(--bmg-font-u);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 300;
-  letter-spacing: 0.04em;
-  padding: 10px 30px 10px 12px;
+  letter-spacing: 0.03em;
+  padding: 12px 34px 12px 14px;
   outline: none;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23555'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 10px center;
+  background-position: right 12px center;
   transition: border-color var(--bmg-t);
   flex: 1;
-  min-width: 130px;
+  min-width: 156px;
 }
 .bmg-filter-select:focus { border-color: var(--bmg-border-hi); }
 .bmg-filter-select option { background: #111; color: var(--bmg-white); }
 
 .bmg-results-count {
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.12em;
   color: var(--bmg-dimmer);
   text-transform: uppercase;
@@ -915,8 +917,13 @@
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .bmg-header { padding: 36px 20px 28px; }
-  .bmg-controls { padding: 16px 20px; gap: 12px; }
-  .bmg-filter-select { min-width: calc(50% - 4px); font-size: 12px; padding: 11px 28px 11px 10px; }
+  .bmg-header-sub { font-size: 11px; }
+  .bmg-controls { padding: 18px 20px; gap: 12px; }
+  .bmg-search { font-size: 16px; padding: 14px 16px 14px 48px; }
+  .bmg-search-icon { font-size: 18px; left: 16px; }
+  .bmg-filter-select { min-width: calc(50% - 5px); font-size: 14px; padding: 11px 28px 11px 12px; }
+  .bmg-filter-label { font-size: 12px; }
+  .bmg-results-count { font-size: 13px; }
   .bmg-breadcrumb { padding: 10px 20px; }
   .bmg-main { padding: 28px 20px; }
   .bmg-genus-grid { grid-template-columns: 1fr; }
@@ -928,7 +935,7 @@
   .bmg-footer { padding: 24px 20px; }
 }
 @media (max-width: 480px) {
-  .bmg-header-title { font-size: 36px; }
+  .bmg-header-title { font-size: 40px; }
   .bmg-search { font-size: 16px; } /* prevent iOS zoom on focus */
   .bmg-filter-select { min-width: 100%; font-size: 16px; } /* prevent iOS zoom + full width */
   .bmg-species-grid { grid-template-columns: repeat(2, 1fr); }
