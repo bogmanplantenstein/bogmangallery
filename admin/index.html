@@ -1892,40 +1892,58 @@ function renderCSVImport() {
 
 function renderCSVPreview() {
   const c = new Intl.Collator('en', {sensitivity:'base'});
-  const sorted   = [...CSV_PREVIEW].sort((a,b) => c.compare(a.displayName, b.displayName));
-  const newTaxa  = sorted.filter(t => !APP_DATA.taxa.find(x => x.displayName === t.displayName));
-  const dupes    = sorted.filter(t =>  APP_DATA.taxa.find(x => x.displayName === t.displayName));
-  const selCount = sorted.filter(t => CSV_SELECTED.has(t.displayName)).length;
+  const sorted    = [...CSV_PREVIEW].sort((a,b) => c.compare(a.displayName, b.displayName));
+  const selCount  = sorted.filter(t => CSV_SELECTED.has(t.displayName)).length;
+  const newCount  = sorted.filter(t => t._diff?.isNew).length;
+  const updCount  = sorted.filter(t => !t._diff?.isNew && t._diff?.hasChanges).length;
+  const sameCount = sorted.filter(t => !t._diff?.hasChanges).length;
+
   return '<div class="card">' +
     '<div class="card-header"><span class="card-title">Preview</span>' +
-    '<span style="font-size:11px;color:var(--dimmer);">' + newTaxa.length + ' new · ' + dupes.length + ' existing</span></div>' +
-    // Selection controls
+    '<span style="font-size:11px;color:var(--dimmer);">' +
+      newCount + ' new · ' + updCount + ' with updates · ' + sameCount + ' unchanged' +
+    '</span></div>' +
     '<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">' +
     '<span style="font-size:11px;color:var(--accent);" id="csv-sel-count">' + selCount + ' selected</span>' +
-    '<button class="btn btn-secondary btn-sm" id="csv-sel-all-btn">Select All</button>' +
-    '<button class="btn btn-secondary btn-sm" id="csv-sel-new-btn">Select New Only</button>' +
-    '<button class="btn btn-secondary btn-sm" id="csv-sel-none-btn">Deselect All</button>' +
+    '<button class="btn btn-secondary btn-sm" id="csv-sel-all-btn">All</button>' +
+    '<button class="btn btn-secondary btn-sm" id="csv-sel-new-btn">New Only</button>' +
+    '<button class="btn btn-secondary btn-sm" id="csv-sel-upd-btn">Updates Only</button>' +
+    '<button class="btn btn-secondary btn-sm" id="csv-sel-none-btn">None</button>' +
     '</div>' +
-    '<div style="max-height:400px;overflow-y:auto;">' +
+    '<div style="max-height:480px;overflow-y:auto;">' +
     sorted.map(t => {
-      const isNew = !APP_DATA.taxa.find(x => x.displayName === t.displayName);
+      const diff    = t._diff || { isNew: true, hasChanges: true };
       const checked = CSV_SELECTED.has(t.displayName);
-      const hasCare = t.care && t.care.override && (t.care.light || t.care.water || t.care.soil);
-      // Format badges: Plant is implicit (no badge), show others
-      const fmts = (t._formats || []);
-      const hasOnlyPlant = fmts.length === 0 || (fmts.length === 1 && fmts[0] === 'Plant');
-      const fmtBadges = fmts.filter(f => f !== 'Plant')
-        .map(f => '<span style="font-size:9px;padding:1px 5px;border-radius:8px;background:rgba(90,122,158,0.25);color:var(--blue);flex-shrink:0;">' + escHtml(f) + '</span>').join('');
-      return '<div class="csv-import-row' + (checked ? ' csv-row-checked' : '') + '" data-csv-name="' + escHtml(t.displayName) + '" style="display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:3px;border-radius:var(--r);border:1px solid ' + (checked ? 'rgba(200,169,110,0.4)' : 'var(--border)') + ';background:' + (checked ? 'var(--accent-bg)' : 'transparent') + ';cursor:pointer;user-select:none;transition:background 0.1s,border-color 0.1s;">' +
-        '<div class="mass-sel-indicator" style="' + (checked ? 'border-color:var(--accent);background:var(--accent);color:var(--bg);' : '') + '">' + (checked ? '✓' : '') + '</div>' +
-        '<span class="pill ' + (isNew ? 'green' : 'blue') + '" style="flex-shrink:0;">' + (isNew ? 'New' : 'Update') + '</span>' +
+      // Status badge
+      let badgeCls, badgeTxt;
+      if (diff.isNew)              { badgeCls = 'green'; badgeTxt = 'New'; }
+      else if (diff.hasChanges)    { badgeCls = 'blue';  badgeTxt = 'Update'; }
+      else                         { badgeCls = '';       badgeTxt = 'No change'; }
+      // Format variant badges (Gemmae / Seeds / etc.)
+      const fmtBadges = (t._formats || []).filter(f => f !== 'Plant')
+        .map(f => '<span style="font-size:9px;padding:1px 5px;border-radius:8px;background:rgba(90,122,158,0.2);color:var(--blue);flex-shrink:0;">' + escHtml(f) + '</span>').join('');
+      // Diff detail chips for existing-with-changes
+      const diffChips = (!diff.isNew && diff.hasChanges) ? [
+        diff.newPhotos?.length  ? '<span style="font-size:9px;color:var(--accent);">+' + diff.newPhotos.length + ' 📷</span>' : '',
+        diff.newShopLinks?.length ? '<span style="font-size:9px;color:var(--green);">+' + diff.newShopLinks.length + ' 🛒</span>' : '',
+        diff.newCare   ? '<span style="font-size:9px;color:var(--green);">+ care</span>' : '',
+        diff.newGroup  ? '<span style="font-size:9px;color:var(--accent);">+ group</span>' : '',
+      ].filter(Boolean).join('') : '';
+      // Dim rows with no changes
+      const rowOpacity = (!diff.hasChanges && !checked) ? 'opacity:0.45;' : '';
+      return '<div class="csv-import-row' + (checked ? ' csv-row-checked' : '') +
+        '" data-csv-name="' + escHtml(t.displayName) + '" style="display:flex;align-items:center;gap:8px;' +
+        'padding:7px 10px;margin-bottom:2px;border-radius:var(--r);' +
+        'border:1px solid ' + (checked ? 'rgba(200,169,110,0.4)' : 'var(--border)') + ';' +
+        'background:' + (checked ? 'var(--accent-bg)' : 'transparent') + ';' +
+        'cursor:pointer;user-select:none;transition:background 0.1s,border-color 0.1s;' + rowOpacity + '">' +
+        '<div class="mass-sel-indicator" style="flex-shrink:0;' + (checked ? 'border-color:var(--accent);background:var(--accent);color:var(--bg);' : '') + '">' + (checked ? '✓' : '') + '</div>' +
+        '<span class="pill ' + badgeCls + '" style="flex-shrink:0;min-width:62px;text-align:center;">' + badgeTxt + '</span>' +
         '<span style="font-style:italic;font-family:var(--font-d);font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escHtml(t.displayName) + '</span>' +
         fmtBadges +
-        '<span style="font-size:10px;color:var(--dimmer);flex-shrink:0;">' + escHtml(t.genus) + '</span>' +
-        (t.group ? '<span class="pill" style="flex-shrink:0;">' + escHtml(t.group) + '</span>' : '') +
-        (hasCare ? '<span style="font-size:10px;color:var(--green);flex-shrink:0;">✓ Care</span>' : '') +
-        (t.photos && t.photos.length ? '<span style="font-size:10px;color:var(--accent);flex-shrink:0;">' + t.photos.length + ' 📷</span>' : '') +
-        (t.shopLinks && t.shopLinks.length ? '<span style="font-size:10px;color:var(--dimmer);flex-shrink:0;">🛒 ' + t.shopLinks.length + '</span>' : '') +
+        diffChips +
+        (t.shopLinks?.length ? '<span style="font-size:9px;color:var(--dimmer);flex-shrink:0;">🛒 ' + t.shopLinks.length + '</span>' : '') +
+        (diff.isNew && t.photos?.length ? '<span style="font-size:9px;color:var(--accent);flex-shrink:0;">' + t.photos.length + ' 📷</span>' : '') +
         '</div>';
     }).join('') + '</div>' +
     '<div style="display:flex;gap:10px;margin-top:14px;align-items:center;">' +
@@ -2324,7 +2342,12 @@ function attachPageEvents() {
     if (e.target.id === 'csv-sel-none-btn') { CSV_SELECTED.clear(); refreshCSVPreview(); return; }
     if (e.target.id === 'csv-sel-new-btn')  {
       CSV_SELECTED.clear();
-      CSV_PREVIEW.forEach(r => { if (!APP_DATA.taxa.find(t => t.displayName === r.displayName)) CSV_SELECTED.add(r.displayName); });
+      CSV_PREVIEW.forEach(r => { if (r._diff?.isNew) CSV_SELECTED.add(r.displayName); });
+      refreshCSVPreview(); return;
+    }
+    if (e.target.id === 'csv-sel-upd-btn') {
+      CSV_SELECTED.clear();
+      CSV_PREVIEW.forEach(r => { if (r._diff?.hasChanges) CSV_SELECTED.add(r.displayName); });
       refreshCSVPreview(); return;
     }
     // CSV row click — toggle selection
@@ -2973,6 +2996,30 @@ async function runAIResearch(taxon, fields) {
 
 // ═══ CSV PARSING (Squarespace) ════════════════════════════════
 
+function computeCSVDiff(incoming) {
+  // Returns a diff object describing what the CSV would add to the existing taxon.
+  // If no existing taxon: diff.isNew = true.
+  const existing = APP_DATA.taxa.find(x => x.displayName === incoming.displayName);
+  if (!existing) return { isNew: true, hasChanges: true };
+
+  const existingPhotoSet = new Set(existing.photos || []);
+  const existingUrlSet   = new Set((existing.shopLinks || []).map(l => l.url));
+
+  const newPhotos    = (incoming.photos    || []).filter(p => !existingPhotoSet.has(p));
+  const newShopLinks = (incoming.shopLinks || []).filter(l => l.url && !existingUrlSet.has(l.url));
+
+  const inCare = incoming.care;
+  const exCare = existing.care;
+  const newCare = inCare && inCare.override &&
+    (inCare.light || inCare.water || inCare.soil || inCare.dormancy || inCare.temp) &&
+    !(exCare && exCare.override && (exCare.light || exCare.water || exCare.soil));
+
+  const newGroup = incoming.group && !existing.group;
+
+  const hasChanges = newPhotos.length > 0 || newShopLinks.length > 0 || newCare || newGroup;
+  return { isNew: false, hasChanges, newPhotos, newShopLinks, newCare, newGroup };
+}
+
 function doParseCSV() {
   const input = document.getElementById('csv-file-input');
   if (!input?.files?.[0]) { showToast('Select a CSV file first','error'); return; }
@@ -2981,13 +3028,22 @@ function doParseCSV() {
   reader.onload = e => {
     try {
       CSV_PREVIEW = parseSquarespaceCSV(e.target.result);
-      // Auto-select only new taxa (not already in the database)
+      // Compute diff for every entry against the live database
+      CSV_PREVIEW.forEach(t => { t._diff = computeCSVDiff(t); });
+      // Auto-select: new taxa + existing taxa that actually have new data
       CSV_SELECTED = new Set(
-        CSV_PREVIEW.filter(t => !APP_DATA.taxa.find(x => x.displayName === t.displayName))
-                   .map(t => t.displayName)
+        CSV_PREVIEW.filter(t => t._diff.hasChanges).map(t => t.displayName)
       );
       render();
-      showToast('Parsed ' + CSV_PREVIEW.length + ' taxa — ' + CSV_SELECTED.size + ' new selected', 'success');
+      const newCount     = CSV_PREVIEW.filter(t => t._diff.isNew).length;
+      const updatedCount = CSV_PREVIEW.filter(t => !t._diff.isNew && t._diff.hasChanges).length;
+      const noChangeCount = CSV_PREVIEW.filter(t => !t._diff.hasChanges).length;
+      showToast(
+        'Parsed ' + CSV_PREVIEW.length + ' taxa — ' +
+        newCount + ' new, ' + updatedCount + ' with updates' +
+        (noChangeCount ? ', ' + noChangeCount + ' unchanged' : ''),
+        'success'
+      );
     } catch(err) { showToast('CSV parse error: ' + err.message, 'error'); }
   };
   reader.readAsText(file, 'utf-8');
@@ -3197,6 +3253,7 @@ function doImportCSV() {
     const t = { ...incoming };
     delete t._parentHint;
     delete t._formats;
+    delete t._diff;
 
     const idx = APP_DATA.taxa.findIndex(x => x.displayName === t.displayName);
     if (idx >= 0) {
