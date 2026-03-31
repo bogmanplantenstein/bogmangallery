@@ -2062,7 +2062,17 @@ async function doDriveScan() {
     const simCount  = DRIVE_PREVIEW.filter(t => t.driveMatch === 'similar').length;
     showToast('Found ' + DRIVE_PREVIEW.length + ' folders — ' + newCount + ' new, ' + simCount + ' similar (flagged)', 'success');
   } catch(e) {
-    showToast('Scan failed: ' + e.message, 'error');
+    // Show error persistently on the page, not just as a toast
+    const root = document.getElementById('drive-preview-root');
+    if (root) {
+      const isApiDisabled = e.message && e.message.includes('has not been used');
+      root.innerHTML = '<div class="card" style="border-color:var(--red);margin-top:16px;">' +
+        '<div style="color:var(--red);font-weight:400;margin-bottom:8px;">⚠ Scan failed</div>' +
+        '<div style="font-size:12px;line-height:1.6;color:var(--white);">' + escHtml(e.message) + '</div>' +
+        (isApiDisabled ? '<div style="margin-top:12px;"><a href="https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=408982510067" target="_blank" class="btn btn-accent btn-sm">Enable Google Drive API →</a></div>' : '') +
+        '</div>';
+    }
+    showToast('Scan failed — see error below', 'error', 6000);
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = '📁 Scan'; }
   }
