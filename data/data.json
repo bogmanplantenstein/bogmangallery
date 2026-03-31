@@ -1,9 +1,9 @@
 {
   "meta": {
     "version": "2.0",
-    "savedAt": "2026-03-31T08:42:09.453Z",
+    "savedAt": "2026-03-31T08:43:01.323Z",
     "publishedAt": "",
-    "taxaCount": 318,
+    "taxaCount": 313,
     "githubRepo": "bogmanplantenstein/bogmangallery"
   },
   "taxa": [
@@ -5674,35 +5674,6 @@
       "flagged": false
     },
     {
-      "id": "txn_l8a1y1rduoe",
-      "genus": "Cephalotus",
-      "species": "Ex. Hummer's Giant",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Cephalotus Ex. Hummer's Giant",
-      "commonName": "",
-      "group": "",
-      "photos": [
-        "drive:1_4lGElj8t_Lf5YcF28i3JN1bXLw9JqLd",
-        "drive:1Wkmlh7Y-qM5NonZda86dnaFvATlCHhx5"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
       "id": "txn_pi9ipe0ubcb",
       "genus": "Dionaea",
       "species": "007",
@@ -10287,122 +10258,6 @@
       "externalLinks": [],
       "notes": "",
       "parentId": "txn_xa4dhfyad9",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_08bkhev2qxkh",
-      "genus": "Genlisea",
-      "species": "africana",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Genlisea africana",
-      "commonName": "",
-      "group": "",
-      "photos": [
-        "drive:1MLSx4NpWMSBIA3UQZNbwqXCKIBJ4m6mZ"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_kf9693pri4i",
-      "genus": "Genlisea",
-      "species": "aurea",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Genlisea aurea",
-      "commonName": "",
-      "group": "",
-      "photos": [
-        "drive:1pwzoqLgyIqj8xTAAMwtbM1iAaXjctODx"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_vvhkmphwtfc",
-      "genus": "Genlisea",
-      "species": "flexuosa",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Genlisea flexuosa",
-      "commonName": "",
-      "group": "",
-      "photos": [
-        "drive:1OSzi4b0sPLS8NdNQ7MVuSKlW646U9Qif",
-        "drive:1_qacFLwDc-kxaOLSDf786RepOBLTyhEi",
-        "drive:1ANZFEYZs7sbanZ2pNhvplc8qBXJhd2vS"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_j3re4h9a3sd",
-      "genus": "Genlisea",
-      "species": "sp Venezuela",
-      "subspecies": "nigrocaulis",
-      "entryType": "location",
-      "displayName": "Genlisea sp Venezuela (nigrocaulis)",
-      "commonName": "",
-      "group": "",
-      "photos": [
-        "drive:1txGsCneVbDOyqDnteY8tcyRAaIpZMo1X",
-        "drive:1OavFoA_pJHEglzR5A1UpqQ_mM5kUSFLx",
-        "drive:1veRaeCwtoDKINLlPnu8_aAg6rp06FbyL"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
       "flagged": false,
