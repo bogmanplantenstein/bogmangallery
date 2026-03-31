@@ -135,45 +135,47 @@
 
 /* ── SEARCH + FILTERS ── */
 .bmg-controls {
-  padding: 20px 48px;
+  padding: 24px 48px;
   border-bottom: 1px solid var(--bmg-border);
   display: flex;
-  gap: 16px;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 14px;
   background: rgba(255,255,255,0.02);
+}
+.bmg-search-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 .bmg-search-wrap {
   position: relative;
   flex: 1;
-  min-width: 180px;
-  max-width: 300px;
 }
 .bmg-search-icon {
   position: absolute;
-  left: 12px;
+  left: 15px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--bmg-dimmer);
-  font-size: 14px;
+  font-size: 17px;
   pointer-events: none;
   line-height: 1;
 }
 .bmg-search {
   width: 100%;
-  padding: 9px 12px 9px 34px;
+  padding: 13px 16px 13px 46px;
   background: transparent;
   border: 1px solid var(--bmg-border);
   color: var(--bmg-white);
   font-family: var(--bmg-font-u);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
   letter-spacing: 0.05em;
   outline: none;
-  transition: border-color var(--bmg-t);
+  transition: border-color var(--bmg-t), background var(--bmg-t);
 }
 .bmg-search::placeholder { color: var(--bmg-dimmer); }
-.bmg-search:focus { border-color: var(--bmg-border-hi); }
+.bmg-search:focus { border-color: var(--bmg-border-hi); background: rgba(255,255,255,0.03); }
 
 .bmg-filter-row {
   display: flex;
@@ -186,17 +188,19 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--bmg-dimmer);
-  margin-right: 4px;
+  white-space: nowrap;
+  margin-right: 2px;
+  flex-shrink: 0;
 }
 .bmg-filter-select {
   background: transparent;
   border: 1px solid var(--bmg-border);
   color: var(--bmg-white);
   font-family: var(--bmg-font-u);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 300;
-  letter-spacing: 0.05em;
-  padding: 7px 28px 7px 10px;
+  letter-spacing: 0.04em;
+  padding: 10px 30px 10px 12px;
   outline: none;
   cursor: pointer;
   appearance: none;
@@ -205,6 +209,8 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
   transition: border-color var(--bmg-t);
+  flex: 1;
+  min-width: 130px;
 }
 .bmg-filter-select:focus { border-color: var(--bmg-border-hi); }
 .bmg-filter-select option { background: #111; color: var(--bmg-white); }
@@ -214,8 +220,8 @@
   letter-spacing: 0.12em;
   color: var(--bmg-dimmer);
   text-transform: uppercase;
-  margin-left: auto;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ── BREADCRUMB ── */
@@ -909,11 +915,8 @@
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .bmg-header { padding: 36px 20px 28px; }
-  .bmg-controls { padding: 14px 20px; gap: 10px; flex-direction: column; align-items: stretch; }
-  .bmg-search-wrap { max-width: 100%; }
-  .bmg-filter-row { gap: 6px; }
-  .bmg-filter-select { font-size: 11px; padding: 7px 24px 7px 8px; }
-  .bmg-results-count { margin-left: 0; }
+  .bmg-controls { padding: 16px 20px; gap: 12px; }
+  .bmg-filter-select { min-width: calc(50% - 4px); font-size: 12px; padding: 11px 28px 11px 10px; }
   .bmg-breadcrumb { padding: 10px 20px; }
   .bmg-main { padding: 28px 20px; }
   .bmg-genus-grid { grid-template-columns: 1fr; }
@@ -926,6 +929,8 @@
 }
 @media (max-width: 480px) {
   .bmg-header-title { font-size: 36px; }
+  .bmg-search { font-size: 16px; } /* prevent iOS zoom on focus */
+  .bmg-filter-select { min-width: 100%; font-size: 16px; } /* prevent iOS zoom + full width */
   .bmg-species-grid { grid-template-columns: repeat(2, 1fr); }
   .bmg-cultivars-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1385,16 +1390,18 @@
         '<select class="bmg-filter-select" id="bmg-filter-habitat">' + habitatOptions + '</select>' +
         '<select class="bmg-filter-select" id="bmg-filter-country">' + countryOptions + '</select>' +
         '<select class="bmg-filter-select" id="bmg-filter-climate">' + climateOptions + '</select>' +
-        '</div>' +
-        '<div class="bmg-results-count">' + count + ' ' + (count === 1 ? 'taxon' : 'taxa') + '</div>';
+        '</div>';
     }
 
     return '<div class="bmg-controls">' +
-      '<div class="bmg-search-wrap">' +
-      '<span class="bmg-search-icon">\u2315</span>' +
-      '<input id="bmg-search-input" class="bmg-search" type="text" ' +
-        'placeholder="Search species, cultivar, region..." ' +
-        'value="' + esc(STATE.search) + '">' +
+      '<div class="bmg-search-row">' +
+        '<div class="bmg-search-wrap">' +
+          '<span class="bmg-search-icon">\u2315</span>' +
+          '<input id="bmg-search-input" class="bmg-search" type="text" ' +
+            'placeholder="Search species, cultivar, region..." ' +
+            'value="' + esc(STATE.search) + '">' +
+        '</div>' +
+        (filtersHtml ? '<div class="bmg-results-count">' + filtered.length + ' ' + (filtered.length === 1 ? 'taxon' : 'taxa') + '</div>' : '') +
       '</div>' +
       filtersHtml +
       '</div>';
