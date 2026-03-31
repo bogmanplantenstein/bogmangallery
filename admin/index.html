@@ -845,8 +845,8 @@ const ENTRY_TYPES = [
   {id:'grex',           label:'Grex Hybrid (photo grid only)'}
 ];
 const SHOP_TYPES  = ['Plant','Seeds','Gemmae','Tuber','Cutting','Other'];
-const CARE_KEYS   = ['light','water','soil','dormancy','temp','notes'];
-const CARE_LABELS = {light:'Light',water:'Water',soil:'Soil',dormancy:'Dormancy',temp:'Temperature / Climate',notes:'Notes'};
+const CARE_KEYS   = ['temp','light','water','soil','feeding','dormancy','notes'];
+const CARE_LABELS = {temp:'Climate',light:'Light',water:'Water',soil:'Soil',feeding:'Feeding',dormancy:'Dormancy',notes:'Notes'};
 
 // SECTION 2: State variables
 let APP_DATA      = null;   // full data.json from server
@@ -3363,18 +3363,43 @@ function parseSpeciesFromTitle(title, genus) {
 }
 
 function parseCareFromHtml(html) {
-  // Strip HTML tags
-  const text = html.replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ');
-  const section = text.match(/growing information[:\s]*([\s\S]*?)(?:description:|$)/i)?.[1] || text;
-  const get = key => section.match(new RegExp(key+':\\s*([^\\n]+)','i'))?.[1]?.trim() || '';
-  const light    = get('light');
-  const water    = get('water');
-  const soil     = get('soil');
-  const dormancy = get('dormancy');
-  const temp     = get('climate') || get('temperature') || get('temp');
-  const notes    = get('notes') || get('growing') || '';
-  if (!light && !water && !soil) return null;
-  return { light, water, soil, dormancy, temp, notes, override: true };
+  // Strip HTML tags, decode common entities, collapse whitespace to single spaces
+  const text = html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&#\d+;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  // Isolate the Growing Information section if present
+  const giIdx = text.search(/growing information/i);
+  const section = giIdx >= 0 ? text.slice(giIdx) : text;
+
+  // All known field label names (covers both 'Climate' and 'Temperature' variants)
+  const LABELS = ['Climate', 'Temperature', 'Light', 'Water', 'Soil', 'Feeding', 'Dormancy', 'Notes'];
+  const labelAlt = LABELS.join('|');
+
+  // Capture each field from "Label:" to the next "Label:" or end-of-string
+  const fieldRe = new RegExp('(' + labelAlt + '):\\s*(.*?)(?=(?:' + labelAlt + '):|$)', 'gi');
+  const raw = {};
+  let m;
+  while ((m = fieldRe.exec(section)) !== null) {
+    const key = m[1].toLowerCase();
+    const val = m[2].trim().replace(/\s+/g, ' ');
+    if (val && !raw[key]) raw[key] = val; // first match wins
+  }
+
+  const care = {};
+  if (raw.climate || raw.temperature) care.temp     = raw.climate || raw.temperature;
+  if (raw.light)                       care.light    = raw.light;
+  if (raw.water)                       care.water    = raw.water;
+  if (raw.soil)                        care.soil     = raw.soil;
+  if (raw.feeding)                     care.feeding  = raw.feeding;
+  if (raw.dormancy)                    care.dormancy = raw.dormancy;
+  if (raw.notes)                       care.notes    = raw.notes;
+
+  if (!care.light && !care.water && !care.soil) return null;
+  return { ...care, override: true };
 }
 
 function doImportCSV() {

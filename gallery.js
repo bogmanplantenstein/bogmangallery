@@ -1687,8 +1687,8 @@
     const badge = typeBadges[t.entryType] || t.entryType;
 
     // ── Care grid ──
-    const careKeys   = ['light', 'water', 'soil', 'dormancy', 'temp', 'notes'];
-    const careLabels = { light: 'Light', water: 'Water', soil: 'Soil', dormancy: 'Dormancy', temp: 'Temperature', notes: 'Notes' };
+    const careKeys   = ['temp', 'light', 'water', 'soil', 'feeding', 'dormancy', 'notes'];
+    const careLabels = { temp: 'Climate', light: 'Light', water: 'Water', soil: 'Soil', feeding: 'Feeding', dormancy: 'Dormancy', notes: 'Notes' };
     let careItemsHtml = '';
     careKeys.forEach(function (k) {
       if (t.care[k]) {
