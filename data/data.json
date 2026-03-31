@@ -1,9 +1,9 @@
 {
   "meta": {
     "version": "2.0",
-    "savedAt": "2026-03-31T08:33:40.249Z",
+    "savedAt": "2026-03-31T08:36:48.270Z",
     "publishedAt": "",
-    "taxaCount": 326,
+    "taxaCount": 318,
     "githubRepo": "bogmanplantenstein/bogmangallery"
   },
   "taxa": [
@@ -392,7 +392,7 @@
       "entryType": "species",
       "displayName": "Utricularia prehensilis",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/e319c824-d7bc-4961-9d92-169ae55b0527/IMG_0829.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/3a3f2b7f-cb05-412a-823a-07cd0fc8b626/IMG_8295.JPEG",
@@ -536,7 +536,7 @@
       "entryType": "location",
       "displayName": "Utricularia fulva (Rockhole, Western Australia)",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/7c57e1cd-6659-463e-a197-0e7c1cf2b1a6/IMG_9973.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/1710397919304-KBF54HLM8KNWQG5BUPN9/IMG_9974.jpg",
@@ -578,7 +578,7 @@
       "entryType": "species",
       "displayName": "Utricularia subulata",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/1712967210732-5GIH8WK775E11X6TEK2S/IMG_0410.JPEG",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/1712966657629-4R6LNHSKDL1M0B6C17OQ/IMG_6726.jpg",
@@ -968,7 +968,7 @@
       "entryType": "cultivar_reg",
       "displayName": "Pinguicula x 'Pirouette'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/84ca9c4c-f710-4fcf-8b41-f4e26b01bf7d/IMG_0008.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/10edc73f-2843-41db-818e-a2da56e229d3/IMG_2691.jpg",
@@ -1013,7 +1013,7 @@
       "entryType": "species",
       "displayName": "Pinguicula cyclosecta",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/6cd01fea-ca97-480d-b78a-5b6c317f392c/IMG_2689.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/6c095056-cb9c-43a7-8d1a-4875e8bbd4ea/IMG_9509.jpg",
@@ -1059,7 +1059,7 @@
       "entryType": "cultivar_unreg",
       "displayName": "Pinguicula ehlersiae \"Victoria\"",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/4a40c683-8830-4e8e-bdea-024b10f9bbba/IMG_2690.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/efb724b6-47af-4449-832d-01a2547da161/image.jpg",
@@ -1103,7 +1103,7 @@
       "entryType": "species",
       "displayName": "Pinguicula moranensis f. orchidioides",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/85b5135c-0c5b-4532-b4a8-45c8e4f6b0f1/IMG_9779-2.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/d65edfab-8fae-4b8f-afd1-e0c09fb47996/IMG_3194small.jpg",
@@ -1153,7 +1153,7 @@
       "entryType": "cultivar_reg",
       "displayName": "Pinguicula x 'Titan'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/736c5f81-8e4c-4a83-8ab9-ae45251de3af/IMG_9751.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/874bcbb9-f18c-478a-8ab9-c7302b7f2075/IMG_9750.jpg",
@@ -1198,7 +1198,7 @@
       "entryType": "species",
       "displayName": "Utricularia blanchetii",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/83c40a9f-c1d0-44e9-b535-369d6ada0cc7/IMG_6171.JPEG",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/213fb310-4d8a-4c1a-91b2-9e8152879ce2/IMG_9967-2.jpg",
@@ -1677,7 +1677,7 @@
       "entryType": "species",
       "displayName": "Pinguicula laueana",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/6a36ca8f-7095-455e-be62-ee1187361d1c/IMG_9575.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/285afd8d-9eb8-4b74-b0ad-86bd0ead802e/IMG_0040.jpg",
@@ -2356,7 +2356,7 @@
       "entryType": "cultivar_unreg",
       "displayName": "Pinguicula agnata \"True Blue\"",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/901cab59-2880-4fb7-b7ba-b8c8f2fe968e/IMG_8059.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/ac7826b5-50fa-45b5-82a1-6ae9d883aa00/IMG_8052.jpg",
@@ -2398,7 +2398,7 @@
       "entryType": "species",
       "displayName": "Pinguicula gigantea",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/ba291f85-789e-405c-98fd-6d7b637064e0/IMG_4742.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/c008df6b-fa72-4bac-9baf-2386b9d2c2d9/IMG_4747.jpg",
@@ -2439,7 +2439,7 @@
       "entryType": "species",
       "displayName": "Utricularia livida",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/6409bae0-c6f7-40f5-8275-dfffc329cd52/IMG_9991.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/a0cfa22c-edf1-440c-9009-6052229bda3d/IMG_9989-2.jpg",
@@ -2481,7 +2481,7 @@
       "entryType": "cultivar_unreg",
       "displayName": "Utricularia sandersonii \"Blue\"",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/cbe9a733-59cd-4403-8aa2-0c654ce4a0e5/IMG_9965.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/c1e80dcf-f162-45d5-9013-42890bb1acd5/IMG_9993+%282%29.jpg",
@@ -2525,7 +2525,7 @@
       "entryType": "species",
       "displayName": "Utricularia graminifolia",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/14b6c69e-35c5-4e70-aa6b-8bb50dea60ff/IMG_9242.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/d98132cf-1ffd-4de1-b0c7-363b04f6a657/IMG_9239.jpg",
@@ -3060,7 +3060,7 @@
       "entryType": "named_hybrid",
       "displayName": "Pinguicula agnata \"True Blue\" x gigantea",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/f05c71a8-cf79-4ee3-82e2-dfd2b377e71a/IMG_4499.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/c32e786f-4ce1-4016-b5d4-8659d6cda517/IMG_4495.jpg",
@@ -3451,7 +3451,7 @@
       "entryType": "species",
       "displayName": "Utricularia bisquamata 'Betty's Bay'",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/37135925-3eb6-49cd-97a0-30fed2fd6119/IMG_9490.JPEG",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/b0da3614-3c06-421c-8a9a-1bc2b8b324d3/IMG_9559.jpg",
@@ -3839,7 +3839,7 @@
       "entryType": "cultivar_unreg",
       "displayName": "Pinguicula ehlersiae \"Cotton Candy\"",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/4d5ef6ad-812a-408a-aafc-6253e5e6cbe6/IMG_9676.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/fda5bf68-d99c-42a5-b20a-cde5b8595088/IMG_9674.jpg",
@@ -3880,7 +3880,7 @@
       "entryType": "location",
       "displayName": "Pinguicula rotundiflora (Aramberri, Nuevo León)",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/1e25285c-5d53-4cf9-ba96-7477140a80da/IMG_4504.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/e45b5473-5bf3-4e60-a585-70f3a0251820/IMG_9514.jpg",
@@ -3922,7 +3922,7 @@
       "entryType": "named_hybrid",
       "displayName": "Pinguicula emarginata x moctezumae",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/886e6f6f-720d-41da-bda2-322ed2b660ce/IMG_9738.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/8844dbde-4c7c-4767-bad4-639ad1a45a84/IMG_9998+%282%29.jpg",
@@ -3966,7 +3966,7 @@
       "entryType": "species",
       "displayName": "Utricularia flaccida",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/0f3df077-96ec-455f-8570-0f4dbc0177d8/IMG_1945.JPEG",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/7d2723c5-7009-441a-9fa2-95c7bc1ca90b/IMG_9394.jpg",
@@ -4002,7 +4002,7 @@
       "entryType": "location",
       "displayName": "Pinguicula gypsicola (Buena Vista, San Luis Potosí)",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/2c2236a8-1a26-4bfa-b457-89170e74fff4/IMG_9648.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/6e759b05-ed0a-4e18-8964-6ceeddb33e87/IMG_9455.jpg",
@@ -4044,7 +4044,7 @@
       "entryType": "species",
       "displayName": "Pinguicula moctezumae",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/8d219705-2105-47a6-9e44-28a1464632c2/IMG_8074.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/ff80e4bc-31e2-4426-8770-cbac72dbc45e/IMG_2684.jpg",
@@ -4086,7 +4086,7 @@
       "entryType": "species",
       "displayName": "Pinguicula zecheri",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/03c1bc1b-c292-47dc-923a-900655ef69bf/IMG_9997.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/f7c67184-25cf-4254-aad7-b6f03b4d2a83/IMG_9999.jpg",
@@ -4733,7 +4733,7 @@
       "entryType": "cultivar_unreg",
       "displayName": "Utricularia blanchetii \"pink flower\"",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/7a826453-6609-4f51-b455-052351b24ac1/IMG_0020.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/67142ad7-1ec3-4151-81ab-ead085fa3eec/IMG_0044.jpg",
@@ -4778,7 +4778,7 @@
       "entryType": "species",
       "displayName": "Utricularia pubescens",
       "commonName": "",
-      "group": "",
+      "group": "Terrestrial",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/7a6e7e7a-b8d0-461c-a30d-5771f16ba026/IMG_9968.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/694eda7b-ec62-44c0-a612-cb05373d3798/IMG_9970.jpg",
@@ -4821,7 +4821,7 @@
       "entryType": "species",
       "displayName": "Pinguicula martinezii",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/edd26acc-8d82-4900-8a52-14e2d240693b/IMG_8231.JPEG",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/1a199c97-d6b2-41ec-838d-d0626cf18480/IMG_9386.jpg",
@@ -10236,246 +10236,6 @@
       "nativeHabitat": ""
     },
     {
-      "id": "txn_meiu2fuayvm",
-      "genus": "Nepenthes",
-      "species": "aristolochioides",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Nepenthes aristolochioides",
-      "commonName": "",
-      "group": "Highland",
-      "photos": [
-        "drive:1XtW62b9QTPMlKtFtoggPJFlgTlU8Pyms",
-        "drive:1z5LXf53HM1J8bwzixoxWMv2wFEtnLHew"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_612s8ym3525",
-      "genus": "Nepenthes",
-      "species": "bongso",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Nepenthes bongso",
-      "commonName": "",
-      "group": "Highland",
-      "photos": [
-        "drive:1V723KKIm-IAad1TGsycypcNo0lXIhqBC",
-        "drive:1F1PF5btZkOcPAdoFMBuMPinwjPWHyvbV"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_of1vynjqf4",
-      "genus": "Nepenthes",
-      "species": "edwardsiana",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Nepenthes edwardsiana",
-      "commonName": "",
-      "group": "Highland",
-      "photos": [
-        "drive:1hGX5bJ5j-MIUBMo9BqVTsLRHtcXJAsOA",
-        "drive:1WNWO8TkgMW9dopLo7Fz0ICj8DLsJaLSB"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_qv2y9b7t3g",
-      "genus": "Nepenthes",
-      "species": "glabrata",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Nepenthes glabrata",
-      "commonName": "",
-      "group": "Highland",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_ddp8co7dsgf",
-      "genus": "Nepenthes",
-      "species": "glabrata",
-      "subspecies": "Gunung Katopasa",
-      "entryType": "species",
-      "displayName": "Nepenthes glabrata Gunung Katopasa",
-      "commonName": "",
-      "group": "Highland",
-      "photos": [
-        "drive:1aOG5jRE9duRSbA7HKiAsZP5ifKwiXHJR",
-        "drive:1ZS_c1Rjucy5ifdCNa7fKowTwTR4ILJ8M",
-        "drive:1xpAFos1sjDYgy7_96n0YJAWTjYa7zh9a",
-        "drive:1mAJWQSov3WgDBAQVdvhaOfXeMrs730Qe"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "txn_qv2y9b7t3g",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_gvx7qyujoig",
-      "genus": "Nepenthes",
-      "species": "hamata",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Nepenthes hamata",
-      "commonName": "",
-      "group": "Highland",
-      "photos": [
-        "drive:1MbetiiqJLn79B1o92d5dp2r5GtveWX_j",
-        "drive:10QDesqrfqatnQeeWBW2M3fOy547jCMc3",
-        "drive:1Waa2ZGI0s2NRrKUWLWDSjUKCVn6lgGgI",
-        "drive:1TG5keeV6s2t2gPQvLwBREuL7HRITKP_S",
-        "drive:1O-PZWaeMt2cvJRYgRSSwC5y52q9cbxPl",
-        "drive:1jnDJYubiHnxSQ1Qt9ax4lQCwmpNCj_3y",
-        "drive:15GyT6xmvPQcx5VqiFisdpJkbWuOJ1wX5",
-        "drive:1wqK_hnx8ycmXTHB5jrE1cxAZ73WPanwe",
-        "drive:1WPemLVOj7a-rvJ8OqH-sq8HF9PL3sOvI",
-        "drive:1xyJak4oVKDyfpLr_2wjgNbhMvJjYHNCN",
-        "drive:1BWujrDdmw-pC5XOq6MqPc3CSte_PSDGr"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_4t4ho2huyix",
-      "genus": "Nepenthes",
-      "species": "truncata",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Nepenthes truncata",
-      "commonName": "",
-      "group": "Highland",
-      "photos": [
-        "drive:1l_E4AWGpxCzsnVuGuVUoHvjKcmIN1COO",
-        "drive:1r0oRIsbDBu1kfhg15mIR7toG-RHVs24_",
-        "drive:1JRjwSxDMEOMSSf2fWtTX15Guu4R_fZLO"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_wj5pv7qx30n",
-      "genus": "Nepenthes",
-      "species": "villosa",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Nepenthes villosa",
-      "commonName": "",
-      "group": "Highland",
-      "photos": [
-        "drive:1RK-umSLLseigpy92iPxvMRPWo9rjjS0j"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
       "id": "txn_0w9eayxq1gx",
       "genus": "Pinguicula",
       "species": "Hybrids",
@@ -10483,7 +10243,7 @@
       "entryType": "species",
       "displayName": "Pinguicula Hybrids",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [],
       "care": {
         "override": false
@@ -10509,7 +10269,7 @@
       "entryType": "named_hybrid",
       "displayName": "Pinguicula Hybrids Pinguicula moctezumae x ehlersiae Victoria",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1d6keONDezTpMXIGmeKFASpJNW0GBI9Wc",
         "drive:1kOzv89CY-lvqOnTay5HW-v7KGlsXmeiH",
@@ -10547,7 +10307,7 @@
       "entryType": "named_hybrid",
       "displayName": "Pinguicula Hybrids Pinguicula moctezumae x moranensis f. orchidioides",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1s3prtaWVBcnu4l7SEjyzvXAyODXMjDzj",
         "drive:1Ar5vEkAto6Mobv_Y1OlR45lNCRUaK3sE",
@@ -10582,7 +10342,7 @@
       "entryType": "named_hybrid",
       "displayName": "Pinguicula Hybrids Pinguicula moctezumae x rotundiflora Aramberri",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1u_wL5e7QZJX9iJbgEXjZjehpQyVQG5Wa",
         "drive:1JfDd8e6WBYAXiSeYHNn5f6BOnoZP1qYK",
@@ -10614,7 +10374,7 @@
       "entryType": "species",
       "displayName": "Pinguicula 'Golden Eye'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1Ya9MLaF9qDnk5l8RAPaiIEuajt6bJMjU"
       ],
@@ -10642,7 +10402,7 @@
       "entryType": "species",
       "displayName": "Pinguicula 'Marciano'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1ltyCF_dB_o7_p3FFCJ8x9TmdS4ouf_CW",
         "drive:1knAOGBIg94qKzpC28EUB8Z4MwciDbksW",
@@ -10674,7 +10434,7 @@
       "entryType": "species",
       "displayName": "Pinguicula 'Mehitable'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:17J_-X_4J_IdzMG_FHHHWl4nX4o7z4pWv",
         "drive:1mktFiznfDAKJ6m6-gHOq2M9oPJcPRIcf",
@@ -10706,7 +10466,7 @@
       "entryType": "cultivar_reg",
       "displayName": "Pinguicula ehlersiae Pinguicula ehlersiae 'Cotton Candy'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1PK1hAoS6bkzq0xoSxKpWFtGKTTvaHSTE",
         "drive:1xCJeCJcR29tO5qH6OlYFqUM7rXZhyklH",
@@ -10743,7 +10503,7 @@
       "entryType": "location",
       "displayName": "Pinguicula ehlersiae Pinguicula ehlersiae (Victoria)",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1wdpxlTD3EST-XGJTbevCY-xBmpr4Cm63",
         "drive:1YkRzDlJBywFTksC-2jwngkuUwGZFayQ7",
@@ -10779,7 +10539,7 @@
       "entryType": "species",
       "displayName": "Pinguicula esseriana",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1Vod9rRQ9u5RV7yNfhRd2M4CMbs0lcvyo",
         "drive:10FdyP1Yk3lx7-d3h2sZC2w6KSLsNrYW4",
@@ -10825,7 +10585,7 @@
       "entryType": "species",
       "displayName": "Pinguicula filifolia",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1bNkZzKWWnx-zLKwA6RqlzY1kjSDPIIgo"
       ],
@@ -10853,7 +10613,7 @@
       "entryType": "species",
       "displayName": "Pinguicula gigantea Pinguicula gigantea Red Flush",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1JpNs1FXomJ6pycIJWEIs7Uhfn0LgaILn"
       ],
@@ -10881,7 +10641,7 @@
       "entryType": "species",
       "displayName": "Pinguicula gigantea \"Alfred Lau #13\"",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:19pf9GqAYamKdzw0tUQswS-kk1Qofu8t_"
       ],
@@ -10909,7 +10669,7 @@
       "entryType": "species",
       "displayName": "Pinguicula gracilis",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:120FnvvtjH7hKDGBYHwrAg24TF9MTLtUK",
         "drive:13MY_3O7TnlhRvlTPXWTbdnBXh_-ZgQ4R",
@@ -10941,7 +10701,7 @@
       "entryType": "species",
       "displayName": "Pinguicula hemiepiphytica",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1066ZLifVnYhaVmzvqv6trK35dsVmsAvz",
         "drive:1fUg0EwI5WA_PYkxVKnlmYbw7JynZYIHF",
@@ -10971,7 +10731,7 @@
       "entryType": "species",
       "displayName": "Pinguicula heterophylla",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1x5O5cuj2h_75Kv7spHeUxP9xEXQc_COO",
         "drive:1Q2W6Ucp4yNVVyJUoQpihqazyHNwJuFHE",
@@ -11001,7 +10761,7 @@
       "entryType": "species",
       "displayName": "Pinguicula immaculata",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1nTaM2YkgUCFKFv6yin_MetmHM7sLDBzZ",
         "drive:1M57Gm0Isyylz9mPDRUx-ZyVlh5RPWP-T",
@@ -11035,7 +10795,7 @@
       "entryType": "species",
       "displayName": "Pinguicula jaumavensis",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1F_FF8PHIbEeh8WrbLh3kpjHxWucpmEXA",
         "drive:1pM8xNjQhzMoOkBLN0VHrSPDg13eCYyM8",
@@ -11075,7 +10835,7 @@
       "entryType": "species",
       "displayName": "Pinguicula kondoi",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1UiuULo8-sqju6f3l0EQziiMc-T3hqg-0",
         "drive:1eiBnaPYck1vRBD73BORLEMb_5ba0SFU7"
@@ -11104,7 +10864,7 @@
       "entryType": "species",
       "displayName": "Pinguicula macrophylla",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:13R-QEYnWHCT7JwDRICRqJFKF7VRcjwaU",
         "drive:1gjUlp3Ra4178hON24n1ObKulaG19lvbh",
@@ -11138,7 +10898,7 @@
       "entryType": "species",
       "displayName": "Pinguicula medusina",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1yfJmqs7P-YUd1kfZCfnxKLlmNMKWMYQd",
         "drive:1ex6LLx6f-LIg03unCiyPRL3lEVL2zn7C",
@@ -11168,7 +10928,7 @@
       "entryType": "species",
       "displayName": "Pinguicula moranensis (Landscape Arboretum Ex. MagneticLite)",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1utvxQypa95yXJQ-0tZ1adeHBlfqQLa02",
         "drive:18Xoa8tGcSGuydfnyEyIjcsdgIcl72acP"
@@ -11197,7 +10957,7 @@
       "entryType": "cultivar_reg",
       "displayName": "Pinguicula moranensis Pinguicula moranensis 'A'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1_zm8plbd23ZHtHXE3ldYsoUTnhQkHbRw",
         "drive:1n_lKJcJo0a8gDPmMu6MpVsZWyx4--vzy",
@@ -11230,7 +10990,7 @@
       "entryType": "location",
       "displayName": "Pinguicula moranensis Pinguicula moranensis (Huahuapan)",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1J7KeXfPj7xh8NTleTZdcKkMqhNVzBdi-",
         "drive:1UCKm_W4SrxM_l4_FLxgvfUtBw9wj1_ue",
@@ -11263,7 +11023,7 @@
       "entryType": "species",
       "displayName": "Pinguicula moranensis Pinguicula moranensis f. orchidioides",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1O4Qe4mzk1j9tSOD1ufLVFNfw8YH0mmsJ",
         "drive:1yOqCVIy0tTJFG4A4MNWxzUHVs3CaI-A8",
@@ -11322,7 +11082,7 @@
       "entryType": "species",
       "displayName": "Pinguicula sp. Tonala ANPA A",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1hP-zIRTu3jtuLlmcxeVG4i-3YY99hZko",
         "drive:1SIFGm4i2ElDlmXWkAEsEgJN2RN3sogjm"
@@ -11351,7 +11111,7 @@
       "entryType": "species",
       "displayName": "Pinguicula sp. Tonala ANPA D",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1ucvcieb-7r38AchyDC9S2cTIYbo1a5jK",
         "drive:1q2YXvlT2iJWkg4YtVLmxhyMlDw5c4VS9",
@@ -11383,7 +11143,7 @@
       "entryType": "cultivar_reg",
       "displayName": "Pinguicula x 'Hanka'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1M9_itQUJVIJGUS8ZccnJtQ1rqA8gsMY-"
       ],
@@ -11411,7 +11171,7 @@
       "entryType": "cultivar_reg",
       "displayName": "Pinguicula x 'Johanna'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1nc2aYTSC67xY2ZBhRhEzAKRSCf5yt4v0",
         "drive:1GEfZxMy7mEXL90BmuR-bzlaxlgYE9Kpp"
@@ -11440,7 +11200,7 @@
       "entryType": "cultivar_reg",
       "displayName": "Pinguicula x 'Razzberry Blonde'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1ziNlH0BoaXq3Z6i2FVYkF329ftUPK-Jl",
         "drive:1Gs0MGI1o0WvswFZGmBIcC5s9E8f1McrL",
@@ -11480,7 +11240,7 @@
       "entryType": "cultivar_reg",
       "displayName": "Pinguicula zecheri 'Faulisi'",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [
         "drive:1LTsoPbS6hR8ylEkd4MaqzHQs9dD84NdQ",
         "drive:1aOco1YQljJiKQMMdlC7hWGfYXwShPgUm",
@@ -11527,7 +11287,7 @@
       "entryType": "species",
       "displayName": "Pinguicula caerulea",
       "commonName": "",
-      "group": "Warm Temperate",
+      "group": "Tropical",
       "photos": [
         "drive:1-8pnzVC6XKc-A9P7-3YIIA8mSmsnzxvz",
         "drive:1ykCVXtKLQPMzGtpYOYqwymWj1eQcK0IM",
@@ -12122,7 +11882,7 @@
       "entryType": "species",
       "displayName": "Pinguicula moranensis",
       "commonName": "",
-      "group": "Highland Tropical",
+      "group": "Tropical",
       "photos": [],
       "care": {
         "override": false
@@ -12242,8 +12002,7 @@
     ],
     "Pinguicula": [
       "Tropical",
-      "Warm Temperate",
-      "Highland Tropical"
+      "Warm Temperate"
     ],
     "Utricularia": [
       "Terrestrial",
