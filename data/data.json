@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0",
-    "savedAt": "2026-03-31T08:36:48.270Z",
+    "savedAt": "2026-03-31T08:42:09.453Z",
     "publishedAt": "",
     "taxaCount": 318,
     "githubRepo": "bogmanplantenstein/bogmangallery"
@@ -159,7 +159,12 @@
           "url": "drosera-lasiantha-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-lasiantha/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -272,7 +277,12 @@
           "url": "drosera-verrucata"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-verrucata/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -318,7 +328,12 @@
           "url": "drosera-pygmaea-mount-lofty-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-pygmaea-photo/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -377,7 +392,12 @@
           "url": "drosera-scorpioides"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-scorpioides/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -476,7 +496,12 @@
           "url": "drosera-leucoblasta-giant-flower"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-leucoblasta/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -908,7 +933,12 @@
           "url": "drosera-aliciae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-aliciae-species-profile/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1282,7 +1312,12 @@
           "url": "drosera-sewelliae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-sewelliae/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1610,7 +1645,12 @@
           "url": "drosera-australis-seeds"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-australis-species-profile/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1662,7 +1702,12 @@
           "url": "drosera-pulchella-52a"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-pulchella/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1806,7 +1851,12 @@
           "url": "drosera-gibsonii"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-gibsonii/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1851,7 +1901,12 @@
           "url": "drosera-platystigma-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-platystigma/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1940,7 +1995,12 @@
           "url": "drosera-pulchella-44a-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-pulchella/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1983,7 +2043,12 @@
           "url": "drosera-pulchella-35b-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-pulchella/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -2248,7 +2313,12 @@
           "url": "drosera-adelae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-adelae-species-profile/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -2586,7 +2656,12 @@
           "url": "drosera-tubaestylis-calcarn-tuber"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-tubaestylis/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -2796,7 +2871,12 @@
           "url": "drosera-regia"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-regia-in-the-wild/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -2852,7 +2932,12 @@
           "url": "drosera-citrina-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-citrina/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -2910,7 +2995,12 @@
           "url": "drosera-barbigera-giant-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-barbigera/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -3045,7 +3135,12 @@
           "url": "drosera-pulchella-pink-flower-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-pulchella/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -3171,7 +3266,12 @@
           "url": "drosera-binata-multifida-extrema"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-binata-extrema/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -3274,7 +3374,12 @@
           "url": "drosera-pycnoblasta-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-pycnoblasta/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -3320,7 +3425,12 @@
           "url": "drosera-serpens-green"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/red-form-of-drosera-serpens/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -3436,7 +3546,12 @@
           "url": "drosera-finlaysoniana"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-finlaysoniana/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -3824,7 +3939,12 @@
           "url": "drosera-binata-seeds"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-binata-extrema/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4203,7 +4323,12 @@
           "url": "drosera-bindoon-smaller-japanese-clone-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-bindoon/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4249,7 +4374,12 @@
           "url": "drosera-silvicola"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-silvicola/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4390,7 +4520,12 @@
           "url": "drosera-grievei"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-grievei-species-profile/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4644,7 +4779,12 @@
           "url": "drosera-scorpioides-frenchman-peak-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-scorpioides/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4681,7 +4821,12 @@
           "url": "drosera-scorpioides-gidgegannup-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-scorpioides/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4718,7 +4863,12 @@
           "url": "drosera-scorpioides-albany-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-scorpioides/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -5198,7 +5348,12 @@
           "url": "drosera-bindoon-larger-european-clone-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-bindoon/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -5248,7 +5403,12 @@
           "url": "drosera-sargentii-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-sargentii/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -5290,7 +5450,12 @@
           "url": "drosera-silvicola-north-bannister"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-silvicola/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -6540,7 +6705,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-burmannii/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -6821,7 +6991,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-coomallo/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -6957,7 +7132,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-hyperostigma-species-profile/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -7300,7 +7480,12 @@
           "url": "drosera-trichocaulis-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-trichocaulis/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -7362,7 +7547,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-prolifera-cuttings/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -7532,7 +7722,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-cuneifolia-species-profile/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -7595,7 +7790,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-hamiltonii/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -7852,7 +8052,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-aberrans/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -7885,7 +8090,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-auriculata/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -7911,7 +8121,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-cistiflora/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8107,7 +8322,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-gigantea/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8133,7 +8353,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-gunniana/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8192,7 +8417,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-hilaris/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8218,7 +8448,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-hookeri/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8312,7 +8547,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-lowriei/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8409,7 +8649,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-macrantha-in-the-perth-hills/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8500,7 +8745,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-magna/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8570,7 +8820,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-menziesii/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8635,7 +8890,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-porrecta/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8679,7 +8939,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-ramellosa/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8707,7 +8972,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-squamosa/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8834,7 +9104,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-stolonifera/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8897,7 +9172,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-trinervia/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9034,7 +9314,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-yilgarnensis/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9091,7 +9376,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-zigzagia-2/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9151,7 +9441,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-zonaria/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9315,7 +9610,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-dilatatopetiolaris/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9378,7 +9678,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-falconeri-grows-in-acidic-substrates/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9444,7 +9749,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-fulva/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9470,7 +9780,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "Fierce Flora",
+          "url": "https://www.fierceflora.com/drosera-lanata/"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -12032,8 +12347,952 @@
     "group": {}
   },
   "extSiteIndex": {
-    "cppf": {},
-    "fierceflora": {},
-    "icps": {}
+    "cppf": {
+      "Drosera": [],
+      "Pinguicula": [],
+      "Utricularia": []
+    },
+    "fierceflora": {
+      "Drosera": [
+        {
+          "title": "Drosera grievei Species Profile",
+          "url": "https://www.fierceflora.com/drosera-grievei-species-profile/"
+        },
+        {
+          "title": "Drosera enneaba species Profile",
+          "url": "https://www.fierceflora.com/drosera-enneaba-species-profile/"
+        },
+        {
+          "title": "Drosera australis Species Profile",
+          "url": "https://www.fierceflora.com/drosera-australis-species-profile/"
+        },
+        {
+          "title": "Red form of Drosera serpens",
+          "url": "https://www.fierceflora.com/red-form-of-drosera-serpens/"
+        },
+        {
+          "title": "Drosera stenopetala Species Profile",
+          "url": "https://www.fierceflora.com/drosera-stenopetala-species-profile/"
+        },
+        {
+          "title": "Yellow Flowered Drosera Binata in New Zealand",
+          "url": "https://www.fierceflora.com/yellow-drosera-binata/"
+        },
+        {
+          "title": "Drosera spatulata of South Island, New Zealand",
+          "url": "https://www.fierceflora.com/drosera-spatulata-of-south-island-new-zealand/"
+        },
+        {
+          "title": "Finding every described sundew in the Western Cape, South Africa",
+          "url": "https://www.fierceflora.com/finding-every-described-sundew-in-the-western-cape-south-africa/"
+        },
+        {
+          "title": "Drosera cuneifolia Species Profile",
+          "url": "https://www.fierceflora.com/drosera-cuneifolia-species-profile/"
+        },
+        {
+          "title": "Drosera liniflora Species Profile",
+          "url": "https://www.fierceflora.com/drosera-liniflora/"
+        },
+        {
+          "title": "Drosera regia in the wild",
+          "url": "https://www.fierceflora.com/drosera-regia-in-the-wild/"
+        },
+        {
+          "title": "Drosera aliciae Species Profile",
+          "url": "https://www.fierceflora.com/drosera-aliciae-species-profile/"
+        },
+        {
+          "title": "Drosera admirabilis Species Profile",
+          "url": "https://www.fierceflora.com/drosera-admirabilis/"
+        },
+        {
+          "title": "Drosera trinervia Species Profile",
+          "url": "https://www.fierceflora.com/drosera-trinervia/"
+        },
+        {
+          "title": "Drosera pauciflora Species Profile",
+          "url": "https://www.fierceflora.com/drosera-pauciflora-species-profile/"
+        },
+        {
+          "title": "Drosera alba Species Profile",
+          "url": "https://www.fierceflora.com/drosera-alba/"
+        },
+        {
+          "title": "Drosera glabripes Species Profile",
+          "url": "https://www.fierceflora.com/drosera-glabripes/"
+        },
+        {
+          "title": "Drosera esterhuyseniae Species Profile",
+          "url": "https://www.fierceflora.com/drosera-esterhuyseniae/"
+        },
+        {
+          "title": "Drosera xerophila Species Profile",
+          "url": "https://www.fierceflora.com/drosera-xerophila/"
+        },
+        {
+          "title": "Drosera ericgreenii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-ericgreenii/"
+        },
+        {
+          "title": "The red-flowered form of Drosera cistiflora",
+          "url": "https://www.fierceflora.com/the-red-flowered-form-of-drosera-cistiflora/"
+        },
+        {
+          "title": "Drosera variegata species profile",
+          "url": "https://www.fierceflora.com/drosera-variegata/"
+        },
+        {
+          "title": "Drosera aff. gunniana &#8216;East Coast Form&#8217;",
+          "url": "https://www.fierceflora.com/drosera-aff-gunniana-east-coast-form/"
+        },
+        {
+          "title": "Taxonomy and Observations of the Drosera peltata complex",
+          "url": "https://www.fierceflora.com/taxonomy-and-observations-of-the-drosera-peltata-complex/"
+        },
+        {
+          "title": "Drosera slackii species profile",
+          "url": "https://www.fierceflora.com/drosera-slackii/"
+        },
+        {
+          "title": "Drosera rubrifolia species profile",
+          "url": "https://www.fierceflora.com/drosera-rubrifolia/"
+        },
+        {
+          "title": "Drosera capensis in the wild",
+          "url": "https://www.fierceflora.com/drosera-capensis-2/"
+        },
+        {
+          "title": "Drosera ramentacea species profile",
+          "url": "https://www.fierceflora.com/drosera-ramentacea/"
+        },
+        {
+          "title": "Drosera hilaris species profile",
+          "url": "https://www.fierceflora.com/drosera-hilaris/"
+        },
+        {
+          "title": "The different colours of Drosera cistiflora",
+          "url": "https://www.fierceflora.com/the-different-colours-of-drosera-cistiflora/"
+        },
+        {
+          "title": "Drosera cistiflora species profile",
+          "url": "https://www.fierceflora.com/drosera-cistiflora/"
+        },
+        {
+          "title": "Carnivorous Plants of the Cape York Tropical Savannah",
+          "url": "https://www.fierceflora.com/carnivorous-plants-of-the-cape-york-tropical-savannah/"
+        },
+        {
+          "title": "Terracotta Seepage Planter &#8211; June 2023",
+          "url": "https://www.fierceflora.com/terracotta-seepage-planter-june-2023/"
+        },
+        {
+          "title": "Drosera binata extrema in Queensland",
+          "url": "https://www.fierceflora.com/drosera-binata-extrema-in-queensland/"
+        },
+        {
+          "title": "Unexpected Carnivorous Plant Discoveries on an Adventure to Cape York",
+          "url": "https://www.fierceflora.com/unexpected-carnivorous-plant-discoveries-on-an-adventure-to-cape-york/"
+        },
+        {
+          "title": "Habitat of Drosera schizandra",
+          "url": "https://www.fierceflora.com/habitat-of-drosera-schizandra/"
+        },
+        {
+          "title": "Drosera reflexa Species Profile",
+          "url": "https://www.fierceflora.com/drosera-reflexa/"
+        },
+        {
+          "title": "Carnivorous plants of the Cape York Floodplains",
+          "url": "https://www.fierceflora.com/carnivorous-plants-of-the-cape-york-floodplains/"
+        },
+        {
+          "title": "Reflections on 2022 &#8211; a massive year of exploration",
+          "url": "https://www.fierceflora.com/reflections-on-2022/"
+        },
+        {
+          "title": "Drosera tubaestylis Species Profile",
+          "url": "https://www.fierceflora.com/drosera-tubaestylis/"
+        },
+        {
+          "title": "Drosera silvicola Species Profile",
+          "url": "https://www.fierceflora.com/drosera-silvicola/"
+        },
+        {
+          "title": "A nice population of Drosera purpurascens and a rose-gold mutant",
+          "url": "https://www.fierceflora.com/drosera-purpurascens-rose-gold/"
+        },
+        {
+          "title": "Drosera whittakeri Species Profile",
+          "url": "https://www.fierceflora.com/drosera-whittakeri/"
+        },
+        {
+          "title": "Fasciation in Drosera gigantea",
+          "url": "https://www.fierceflora.com/fasciation-in-drosera-gigantea/"
+        },
+        {
+          "title": "Drosera marchantii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-marchantii/"
+        },
+        {
+          "title": "Drosera indumenta Species Profile",
+          "url": "https://www.fierceflora.com/drosera-indumenta/"
+        },
+        {
+          "title": "Drosera citrina Species Profile",
+          "url": "https://www.fierceflora.com/drosera-citrina/"
+        },
+        {
+          "title": "Drosera bulbigena Species Profile",
+          "url": "https://www.fierceflora.com/drosera-bulbigena/"
+        },
+        {
+          "title": "Drosera basifolia Species Profile",
+          "url": "https://www.fierceflora.com/drosera-basifolia/"
+        },
+        {
+          "title": "Drosera aff. menziesii &#8216;orange flowers&#8217;",
+          "url": "https://www.fierceflora.com/drosera-aff-menziesii-orange/"
+        },
+        {
+          "title": "Drosera neesii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-neesii/"
+        },
+        {
+          "title": "Drosera sulphurea Species Profile",
+          "url": "https://www.fierceflora.com/drosera-sulphurea-species-profile/"
+        },
+        {
+          "title": "Drosera myriantha Species Profile",
+          "url": "https://www.fierceflora.com/drosera-myriantha/"
+        },
+        {
+          "title": "Drosera geniculata Species Profile",
+          "url": "https://www.fierceflora.com/drosera-geniculata/"
+        },
+        {
+          "title": "Drosera miniata Species Profile",
+          "url": "https://www.fierceflora.com/drosera-miniata/"
+        },
+        {
+          "title": "Drosera bindoon Species Profile",
+          "url": "https://www.fierceflora.com/drosera-bindoon/"
+        },
+        {
+          "title": "Drosera platystigma Species Profile",
+          "url": "https://www.fierceflora.com/drosera-platystigma/"
+        },
+        {
+          "title": "Drosera hyperostigma Species Profile",
+          "url": "https://www.fierceflora.com/drosera-hyperostigma-species-profile/"
+        },
+        {
+          "title": "Drosera leucoblasta Species Profile",
+          "url": "https://www.fierceflora.com/drosera-leucoblasta/"
+        },
+        {
+          "title": "Drosera callistos Species Profile",
+          "url": "https://www.fierceflora.com/drosera-callistos/"
+        },
+        {
+          "title": "Drosera sewelliae Species Profile",
+          "url": "https://www.fierceflora.com/drosera-sewelliae/"
+        },
+        {
+          "title": "Drosera dichrosepala Species Profile",
+          "url": "https://www.fierceflora.com/drosera-dichrosepala/"
+        },
+        {
+          "title": "Drosera moorei Species Profile",
+          "url": "https://www.fierceflora.com/drosera-moorei/"
+        },
+        {
+          "title": "Terracotta Seepage Planter &#8211; November 2022",
+          "url": "https://www.fierceflora.com/terracotta-seepage-planter-november-2022/"
+        },
+        {
+          "title": "Drosera bicolor Species Profile",
+          "url": "https://www.fierceflora.com/drosera-bicolor-species-profile/"
+        },
+        {
+          "title": "Drosera fimbriata Species Profile",
+          "url": "https://www.fierceflora.com/drosera-fimbriata/"
+        },
+        {
+          "title": "Drosera esperensis Species Profile",
+          "url": "https://www.fierceflora.com/drosera-esperensis/"
+        },
+        {
+          "title": "Drosera salina at sunset",
+          "url": "https://www.fierceflora.com/drosera-salina-at-sunset/"
+        },
+        {
+          "title": "Drosera adelae Species Profile",
+          "url": "https://www.fierceflora.com/drosera-adelae-species-profile/"
+        },
+        {
+          "title": "Drosera finlaysoniana Species Profile",
+          "url": "https://www.fierceflora.com/drosera-finlaysoniana/"
+        },
+        {
+          "title": "Drosera lanata Species Profile",
+          "url": "https://www.fierceflora.com/drosera-lanata/"
+        },
+        {
+          "title": "Drosera petiolaris Species Profile",
+          "url": "https://www.fierceflora.com/drosera-petiolaris/"
+        },
+        {
+          "title": "Species profile: Drosera prolifera",
+          "url": "https://www.fierceflora.com/drosera-prolifera/"
+        },
+        {
+          "title": "Species profile: Drosera stipularis",
+          "url": "https://www.fierceflora.com/drosera-stipularis/"
+        },
+        {
+          "title": "Carnivorous Plants of the Torrington State Conservation Area",
+          "url": "https://www.fierceflora.com/carnivorous-plants-of-the-torrington-state-conservation-area/"
+        },
+        {
+          "title": "Drosera spatulata in Gibraltar Range National Park",
+          "url": "https://www.fierceflora.com/drosera-spatulata-in-gibraltar-range-national-park/"
+        },
+        {
+          "title": "Giant Drosera binata in the Southern Highlands, NSW",
+          "url": "https://www.fierceflora.com/drosera-binata-southern-highlands/"
+        },
+        {
+          "title": "Drosera arcturi Species Profile",
+          "url": "https://www.fierceflora.com/drosera-arcturi/"
+        },
+        {
+          "title": "Drosera arcturi on Mt Kosciuszko",
+          "url": "https://www.fierceflora.com/drosera-arcturi-kosciuszko/"
+        },
+        {
+          "title": "Wasp",
+          "url": "https://www.fierceflora.com/wasp/"
+        },
+        {
+          "title": "Drosera filiformis leaf cutting time-lapse",
+          "url": "https://www.fierceflora.com/drosera-filiformis-leaf-cutting-time-lapse/"
+        },
+        {
+          "title": "An occurrence of Drosera peltata in Victoria",
+          "url": "https://www.fierceflora.com/an-occurrence-of-drosera-peltata-in-victoria/"
+        },
+        {
+          "title": "The Drosera binata wall",
+          "url": "https://www.fierceflora.com/the-drosera-binata-wall/"
+        },
+        {
+          "title": "Post-fire blooming of Drosera binata in Budderoo National Park",
+          "url": "https://www.fierceflora.com/post-fire-blooming-of-drosera-binata-in-budderoo-national-park/"
+        },
+        {
+          "title": "Multi-stemmed red Drosera auriculata from the peaks of the Grampians",
+          "url": "https://www.fierceflora.com/multi-stemmed-red-drosera-auriculata-from-the-peaks-of-the-grampians/"
+        },
+        {
+          "title": "Utricularia barkeri in SE Melbourne",
+          "url": "https://www.fierceflora.com/utricularia-barkeri-in-se-melbourne/"
+        },
+        {
+          "title": "Terracotta seepage planter spring update",
+          "url": "https://www.fierceflora.com/terracotta-seepage-planter-spring-update/"
+        },
+        {
+          "title": "(Another) Hybrid Between Drosera auriculata and D. gunniana",
+          "url": "https://www.fierceflora.com/another-hybrid-between-drosera-auriculata-and-d-gunniana/"
+        },
+        {
+          "title": "Drosera falconeri grows in acidic substrates",
+          "url": "https://www.fierceflora.com/drosera-falconeri-grows-in-acidic-substrates/"
+        },
+        {
+          "title": "Drosera macrantha in the Perth Hills",
+          "url": "https://www.fierceflora.com/drosera-macrantha-in-the-perth-hills/"
+        },
+        {
+          "title": "Drosera zigzagia",
+          "url": "https://www.fierceflora.com/drosera-zigzagia-2/"
+        },
+        {
+          "title": "Carnivorous Plants of Australia&#8217;s Top End",
+          "url": "https://www.fierceflora.com/carnivorous-plants-of-australias-top-end/"
+        },
+        {
+          "title": "An almost epiphytic Drosera burmannii",
+          "url": "https://www.fierceflora.com/an-almost-epiphytic-drosera-burmannii/"
+        },
+        {
+          "title": "Drosera aff. indumenta",
+          "url": "https://www.fierceflora.com/drosera-aff-indumenta/"
+        },
+        {
+          "title": "Sundews of the Dandenong Foothills",
+          "url": "https://www.fierceflora.com/sundews-of-the-dandenong-foothills/"
+        },
+        {
+          "title": "Drosera auriculata in SE Melbourne",
+          "url": "https://www.fierceflora.com/drosera-auriculata-in-se-melbourne/"
+        },
+        {
+          "title": "Drosera graniticola Time Lapse",
+          "url": "https://www.fierceflora.com/drosera-graniticola-time-lapse/"
+        },
+        {
+          "title": "Drosera planchonii in SE Melbourne",
+          "url": "https://www.fierceflora.com/drosera-planchonii-in-se-melbourne/"
+        },
+        {
+          "title": "Carnivorous Plants of the Howard River Flood Plain",
+          "url": "https://www.fierceflora.com/carnivorous-plants-of-the-howard-river-flood-plain/"
+        },
+        {
+          "title": "Drosera binata after fire",
+          "url": "https://www.fierceflora.com/drosera-binata-after-fire/"
+        },
+        {
+          "title": "Dyeing with Sundews",
+          "url": "https://www.fierceflora.com/dyeing-with-sundews/"
+        },
+        {
+          "title": "Lens Review: Testing the Sigma 70mm f2.8 at Anglesea",
+          "url": "https://www.fierceflora.com/sigma-70mm-f2-8-review/"
+        },
+        {
+          "title": "Drosera x sidjamesii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-x-sidjamesii/"
+        },
+        {
+          "title": "The Drosera petiolaris species complex in the Northern Territory",
+          "url": "https://www.fierceflora.com/drosera-aff-petiolaris/"
+        },
+        {
+          "title": "Drosera fragrans Species Profile",
+          "url": "https://www.fierceflora.com/drosera-fragrans/"
+        },
+        {
+          "title": "Drosera brevicornis Species Profile",
+          "url": "https://www.fierceflora.com/drosera-brevicornis/"
+        },
+        {
+          "title": "Drosera banksii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-banksii/"
+        },
+        {
+          "title": "Drosera fulva Species Profile",
+          "url": "https://www.fierceflora.com/drosera-fulva/"
+        },
+        {
+          "title": "Terracotta Seepage Planter",
+          "url": "https://www.fierceflora.com/terracotta-seepage-planter/"
+        },
+        {
+          "title": "Drosera serpens Species Profile",
+          "url": "https://www.fierceflora.com/drosera-serpens/"
+        },
+        {
+          "title": "Details of Drosera aff. gracilis",
+          "url": "https://www.fierceflora.com/details-of-drosera-aff-gracilis/"
+        },
+        {
+          "title": "The Grampians in June &#8211; Drosera aberrans and D. planchonii",
+          "url": "https://www.fierceflora.com/the-grampians-in-june-drosera-aberrans-and-d-planchonii/"
+        },
+        {
+          "title": "Drosera dilatatopetiolaris Species Profile",
+          "url": "https://www.fierceflora.com/drosera-dilatatopetiolaris/"
+        },
+        {
+          "title": "Victoria 2020: Part 3. Mt Langi Ghiran",
+          "url": "https://www.fierceflora.com/victoria-2020-part-3/"
+        },
+        {
+          "title": "Drosera aquatica Species Profile",
+          "url": "https://www.fierceflora.com/drosera-aquatica/"
+        },
+        {
+          "title": "Drosera nana Species Profile",
+          "url": "https://www.fierceflora.com/drosera-nana/"
+        },
+        {
+          "title": "Drosera falconeri Species Profile",
+          "url": "https://www.fierceflora.com/drosera-falconeri/"
+        },
+        {
+          "title": "Carnivorous Plant Time-lapse",
+          "url": "https://www.fierceflora.com/carnivorous-plant-time-lapse/"
+        },
+        {
+          "title": "Setocoris bug on Drosera lunata",
+          "url": "https://www.fierceflora.com/setocoris-bug-on-drosera-lunata/"
+        },
+        {
+          "title": "Drosera spatulata in Sydney",
+          "url": "https://www.fierceflora.com/drosera-spatulata-in-sydney/"
+        },
+        {
+          "title": "Natural hybrid between Drosera gunniana and D. auriculata",
+          "url": "https://www.fierceflora.com/hybrid-gunniana-x-auriculata/"
+        },
+        {
+          "title": "A pictorial key of the Drosera peltata complex",
+          "url": "https://www.fierceflora.com/peltata-complex-pictorial-key/"
+        },
+        {
+          "title": "Victoria 2020: Part 2. The Grampians",
+          "url": "https://www.fierceflora.com/victoria-2020-part-2/"
+        },
+        {
+          "title": "Seed comparision of Drosera gunniana, hookeri, peltata and gracilis",
+          "url": "https://www.fierceflora.com/drosera-peltata-complex-seed/"
+        },
+        {
+          "title": "Drosera gracilis &#8211; alpine form Species Profile",
+          "url": "https://www.fierceflora.com/drosera-gracilis/"
+        },
+        {
+          "title": "Victoria 2020: Part 1. The Wimmera",
+          "url": "https://www.fierceflora.com/victoria-2020-part-1/"
+        },
+        {
+          "title": "Sandstone seepages of the Grampians National Park",
+          "url": "https://www.fierceflora.com/sandstone-seepages-of-the-grampians-national-park/"
+        },
+        {
+          "title": "Red Drosera gunniana in the Grampians",
+          "url": "https://www.fierceflora.com/red-drosera-gunniana-in-the-grampians/"
+        },
+        {
+          "title": "Drosera gunniana Species Profile",
+          "url": "https://www.fierceflora.com/drosera-gunniana/"
+        },
+        {
+          "title": "Drosera hookeri Species Profile",
+          "url": "https://www.fierceflora.com/drosera-hookeri/"
+        },
+        {
+          "title": "Drosera gracilis &#8211; lowland form Species Profile",
+          "url": "https://www.fierceflora.com/drosera-gracilis-lowland/"
+        },
+        {
+          "title": "Comparing Drosera hookeri and Drosera gunniana of the Melbourne region",
+          "url": "https://www.fierceflora.com/comparing-drosera-hookeri-and-drosera-gunniana-of-the-melbourne-region/"
+        },
+        {
+          "title": "Drosera pycnoblasta Species Profile",
+          "url": "https://www.fierceflora.com/drosera-pycnoblasta/"
+        },
+        {
+          "title": "Drosera sargentii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-sargentii/"
+        },
+        {
+          "title": "Drosera trichocaulis Species Profile",
+          "url": "https://www.fierceflora.com/drosera-trichocaulis/"
+        },
+        {
+          "title": "Fiordland",
+          "url": "https://www.fierceflora.com/fiordland/"
+        },
+        {
+          "title": "Drosera spatulata var. gympiensis",
+          "url": "https://www.fierceflora.com/drosera-spatulata-var-gympiensis/"
+        },
+        {
+          "title": "Drosera spatulata Species Profile",
+          "url": "https://www.fierceflora.com/drosera-spatulata/"
+        },
+        {
+          "title": "Drosera verrucata Species Profile",
+          "url": "https://www.fierceflora.com/drosera-verrucata/"
+        },
+        {
+          "title": "Drosera thysanosepala Species Profile",
+          "url": "https://www.fierceflora.com/drosera-thysanosepala/"
+        },
+        {
+          "title": "Drosera subhirtella Species Profile",
+          "url": "https://www.fierceflora.com/drosera-subhirtella/"
+        },
+        {
+          "title": "Drosera stricticaulis Species Profile",
+          "url": "https://www.fierceflora.com/drosera-stricticaulis/"
+        },
+        {
+          "title": "Drosera stolonifera Species Profile",
+          "url": "https://www.fierceflora.com/drosera-stolonifera/"
+        },
+        {
+          "title": "Drosera scorpioides Species Profile",
+          "url": "https://www.fierceflora.com/drosera-scorpioides/"
+        },
+        {
+          "title": "Drosera rosulata Species Profile",
+          "url": "https://www.fierceflora.com/drosera-rosulata/"
+        },
+        {
+          "title": "Drosera ramellosa Species Profile",
+          "url": "https://www.fierceflora.com/drosera-ramellosa/"
+        },
+        {
+          "title": "Drosera arcturi on Mt Baw Baw",
+          "url": "https://www.fierceflora.com/drosera-arcturi-2/"
+        },
+        {
+          "title": "Drosera pygmaea Species Profile",
+          "url": "https://www.fierceflora.com/drosera-pygmaea/"
+        },
+        {
+          "title": "Drosera purpurascens Species Profile",
+          "url": "https://www.fierceflora.com/drosera-purpurascens/"
+        },
+        {
+          "title": "Drosera prophylla Species Profile",
+          "url": "https://www.fierceflora.com/drosera-prophylla/"
+        },
+        {
+          "title": "Drosera porrecta Species Profile",
+          "url": "https://www.fierceflora.com/drosera-porrecta/"
+        },
+        {
+          "title": "Drosera platypoda Species Profile",
+          "url": "https://www.fierceflora.com/drosera-platypoda/"
+        },
+        {
+          "title": "Drosera planchonii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-planchonii/"
+        },
+        {
+          "title": "Drosera peltata Species Profile",
+          "url": "https://www.fierceflora.com/drosera-peltata/"
+        },
+        {
+          "title": "Drosera intricata Species Profile",
+          "url": "https://www.fierceflora.com/drosera-intricata/"
+        },
+        {
+          "title": "Drosera modesta Species Profile",
+          "url": "https://www.fierceflora.com/drosera-modesta/"
+        },
+        {
+          "title": "Drosera menziesii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-menziesii/"
+        },
+        {
+          "title": "Drosera magna Species Profile",
+          "url": "https://www.fierceflora.com/drosera-magna/"
+        },
+        {
+          "title": "Drosera macrantha Species Profile",
+          "url": "https://www.fierceflora.com/drosera-macrantha/"
+        },
+        {
+          "title": "Drosera lowriei Species Profile",
+          "url": "https://www.fierceflora.com/drosera-lowriei/"
+        },
+        {
+          "title": "Drosera lasiantha Species Profile",
+          "url": "https://www.fierceflora.com/drosera-lasiantha/"
+        },
+        {
+          "title": "Drosera humilis Species Profile",
+          "url": "https://www.fierceflora.com/drosera-humilis/"
+        },
+        {
+          "title": "Drosera hirsuta Species Profile",
+          "url": "https://www.fierceflora.com/drosera-hirsuta/"
+        },
+        {
+          "title": "Drosera heterophylla Species Profile",
+          "url": "https://www.fierceflora.com/drosera-heterophylla/"
+        },
+        {
+          "title": "Drosera erythrorhiza Species Profile",
+          "url": "https://www.fierceflora.com/drosera-erythrorhiza/"
+        },
+        {
+          "title": "Drosera erythrogyne Species Profile",
+          "url": "https://www.fierceflora.com/drosera-erythrogyne/"
+        },
+        {
+          "title": "Drosera drummondii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-drummondii/"
+        },
+        {
+          "title": "Drosera coomallo Species Profile",
+          "url": "https://www.fierceflora.com/drosera-coomallo/"
+        },
+        {
+          "title": "Drosera collina Species Profile",
+          "url": "https://www.fierceflora.com/drosera-collina/"
+        },
+        {
+          "title": "Drosera androsacea Species Profile",
+          "url": "https://www.fierceflora.com/drosera-androsacea/"
+        },
+        {
+          "title": "Drosera spatulata of alpine New Zealand",
+          "url": "https://www.fierceflora.com/drosera-spatulata-of-alpine-new-zealand/"
+        },
+        {
+          "title": "Drosera spatulata complex in Hong Kong and Macau",
+          "url": "https://www.fierceflora.com/drosera-spatulata-complex-in-hong-kong-and-macau/"
+        },
+        {
+          "title": "Propagation experiment: Drosera gigantea",
+          "url": "https://www.fierceflora.com/propagation-experiment-drosera-gigantea/"
+        },
+        {
+          "title": "Drosera eremaea",
+          "url": "https://www.fierceflora.com/drosera-eremaea/"
+        },
+        {
+          "title": "Wilsons Promontory &#8211; June",
+          "url": "https://www.fierceflora.com/wilsons-promontory-june/"
+        },
+        {
+          "title": "South East Melbourne &#8211; July",
+          "url": "https://www.fierceflora.com/south-east-melbourne-july/"
+        },
+        {
+          "title": "Drosera sp. Macau",
+          "url": "https://www.fierceflora.com/drosera-sp-macau/"
+        },
+        {
+          "title": "WA 2019: Part 8. The Perth Hills",
+          "url": "https://www.fierceflora.com/wa-2019-part-8/"
+        },
+        {
+          "title": "WA 2019: Part 7. Northern Sandplains and Laterite Slopes",
+          "url": "https://www.fierceflora.com/wa-2019-part-7/"
+        },
+        {
+          "title": "Drosera pulchella Species Profile",
+          "url": "https://www.fierceflora.com/drosera-pulchella/"
+        },
+        {
+          "title": "Anglesea Heath in May",
+          "url": "https://www.fierceflora.com/anglesea-heath-in-may/"
+        },
+        {
+          "title": "Drosera murfetii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-murfetii/"
+        },
+        {
+          "title": "WA 2019: Part 6. Granite Outcrops and Salt Lakes",
+          "url": "https://www.fierceflora.com/wa-2019-part-6-salt-and-stone/"
+        },
+        {
+          "title": "WA 2019: Part 5. South Coast Heath and Mallee",
+          "url": "https://www.fierceflora.com/wa-2019-part-5/"
+        },
+        {
+          "title": "Drosera andersoniana Species Profile",
+          "url": "https://www.fierceflora.com/drosera-andersoniana/"
+        },
+        {
+          "title": "Wild Australian Drosera Species A-Z",
+          "url": "https://www.fierceflora.com/australian-drosera/"
+        },
+        {
+          "title": "Drosera stolonifera complex",
+          "url": "https://www.fierceflora.com/drosera-stolonifera-complex/"
+        },
+        {
+          "title": "Drosera erythrorhiza complex",
+          "url": "https://www.fierceflora.com/drosera-erythrorhiza-complex/"
+        },
+        {
+          "title": "WA 2019: Part 4. Mountain Ranges",
+          "url": "https://www.fierceflora.com/wa-2019-part-4/"
+        },
+        {
+          "title": "Drosera graniticola Species Profile",
+          "url": "https://www.fierceflora.com/drosera-graniticola/"
+        },
+        {
+          "title": "Drosera yilgarnensis Species Profile",
+          "url": "https://www.fierceflora.com/drosera-yilgarnensis/"
+        },
+        {
+          "title": "Drosera microphylla Species Profile",
+          "url": "https://www.fierceflora.com/drosera-microphylla/"
+        },
+        {
+          "title": "Drosera binata varieties in the wild",
+          "url": "https://www.fierceflora.com/drosera-binata/"
+        },
+        {
+          "title": "Carnivorous plants of the Western Australian granite outcrops",
+          "url": "https://www.fierceflora.com/carnivorous-plants-of-the-western-australian-granite-outcrops/"
+        },
+        {
+          "title": "Drosera huegelii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-huegelii/"
+        },
+        {
+          "title": "Drosera arcturi on Mt Baw Baw",
+          "url": "https://www.fierceflora.com/drosera-arcturi-baw-baw/"
+        },
+        {
+          "title": "Drosera rupicola Species Profile",
+          "url": "https://www.fierceflora.com/drosera-rupicola/"
+        },
+        {
+          "title": "Drosera glanduligera Species Profile",
+          "url": "https://www.fierceflora.com/drosera-glanduligera/"
+        },
+        {
+          "title": "Plants in the wild: Royal National Park",
+          "url": "https://www.fierceflora.com/royal-national-park/"
+        },
+        {
+          "title": "WA 2019: Part 3. Southern Swamps",
+          "url": "https://www.fierceflora.com/wa-2019-part-3/"
+        },
+        {
+          "title": "WA 2019: Part 2. South West Forests",
+          "url": "https://www.fierceflora.com/wa-2019-part-2/"
+        },
+        {
+          "title": "Drosera gigantea Species Profile",
+          "url": "https://www.fierceflora.com/drosera-gigantea/"
+        },
+        {
+          "title": "Drosera squamosa Species Profile",
+          "url": "https://www.fierceflora.com/drosera-squamosa/"
+        },
+        {
+          "title": "Plants in the wild: Drosera monticola",
+          "url": "https://www.fierceflora.com/drosera-monticola/"
+        },
+        {
+          "title": "Drosera monantha Species Profile",
+          "url": "https://www.fierceflora.com/drosera-monantha/"
+        },
+        {
+          "title": "Drosera bulbosa Species Profile",
+          "url": "https://www.fierceflora.com/drosera-bulbosa/"
+        },
+        {
+          "title": "Drosera hamiltonii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-hamiltonii/"
+        },
+        {
+          "title": "Drosera gibsonii Species Profile",
+          "url": "https://www.fierceflora.com/drosera-gibsonii/"
+        },
+        {
+          "title": "Drosera barbigera Species Profile",
+          "url": "https://www.fierceflora.com/drosera-barbigera/"
+        },
+        {
+          "title": "Drosera zonaria Species Profile",
+          "url": "https://www.fierceflora.com/drosera-zonaria/"
+        },
+        {
+          "title": "Drosera zigzagia Species Profile",
+          "url": "https://www.fierceflora.com/drosera-zigzagia/"
+        },
+        {
+          "title": "Drosera salina Species Profile",
+          "url": "https://www.fierceflora.com/drosera-salina/"
+        },
+        {
+          "title": "WA 2019: Part 1. Coastal Plains.",
+          "url": "https://www.fierceflora.com/wa-2019-part-1/"
+        },
+        {
+          "title": "Spring is coming",
+          "url": "https://www.fierceflora.com/spring-is-coming/"
+        },
+        {
+          "title": "Drosera peltata in Sydney",
+          "url": "https://www.fierceflora.com/drosera-gracilis-in-sydney/"
+        },
+        {
+          "title": "Drosera burmannii",
+          "url": "https://www.fierceflora.com/drosera-burmannii/"
+        },
+        {
+          "title": "Drosera burmanni in Sydney",
+          "url": "https://www.fierceflora.com/drosera-burmanni-in-sydney/"
+        },
+        {
+          "title": "Carnivorous plants of the Blue Mountains",
+          "url": "https://www.fierceflora.com/carnivorous-plants-of-the-blue-mountains/"
+        },
+        {
+          "title": "Plants in the Wild: Drosera oblanceolata and its Hybrids",
+          "url": "https://www.fierceflora.com/plants-in-the-wild-drosera-oblanceolata-and-its-hybrids/"
+        },
+        {
+          "title": "Drosera gracilis time-lapse",
+          "url": "https://www.fierceflora.com/drosera-gracilis-time-lapse/"
+        },
+        {
+          "title": "Drosera aberrans Species profile",
+          "url": "https://www.fierceflora.com/drosera-aberrans/"
+        },
+        {
+          "title": "Drosera pygmaea",
+          "url": "https://www.fierceflora.com/drosera-pygmaea-photo/"
+        },
+        {
+          "title": "Alpine Drosera of the Tongariro Region, New Zealand",
+          "url": "https://www.fierceflora.com/alpine-drosera-of-the-tongariro-region-new-zealand/"
+        },
+        {
+          "title": "Drosera binata",
+          "url": "https://www.fierceflora.com/drosera-binata-extrema/"
+        },
+        {
+          "title": "Drosera auriculata",
+          "url": "https://www.fierceflora.com/drosera-auriculata/"
+        },
+        {
+          "title": "Drosera auriculata with Prey",
+          "url": "https://www.fierceflora.com/drosera-auriculata-with-prey/"
+        },
+        {
+          "title": "Drosera capensis time-lapse",
+          "url": "https://www.fierceflora.com/drosera-capensis-time-lapse/"
+        },
+        {
+          "title": "Drosera binata extrema in the wild &#8211; 77 points!",
+          "url": "https://www.fierceflora.com/drosera-binata-extrema-in-the-wild-77-points/"
+        },
+        {
+          "title": "Plants in the wild: Drosera neocaledonica",
+          "url": "https://www.fierceflora.com/plants-in-the-wild-drosera-neocaledonica/"
+        },
+        {
+          "title": "Plants in the Wild: Drosera adelae",
+          "url": "https://www.fierceflora.com/drosera-adelae/"
+        },
+        {
+          "title": "Drosera schizandra Species Profile",
+          "url": "https://www.fierceflora.com/drosera-schizandra/"
+        },
+        {
+          "title": "Drosera prolifera cuttings",
+          "url": "https://www.fierceflora.com/drosera-prolifera-cuttings/"
+        },
+        {
+          "title": "Drosera binata in the Blue Mountains",
+          "url": "https://www.fierceflora.com/drosera-binata-in-the-blue-mountains/"
+        }
+      ]
+    },
+    "icps": {
+      "Tuberous": {
+        "groupSlug": "https://www.carnivorousplants.org/cp/taxonomy/tuberousDrosera",
+        "entries": []
+      }
+    }
   }
 }
