@@ -440,9 +440,39 @@
       border-color: var(--border);
     }
 
+    .taxa-list-item.mass-selectable {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .taxa-list-item.mass-selectable:hover {
+      background: rgba(200, 169, 110, 0.05);
+      border-color: rgba(200, 169, 110, 0.2);
+    }
+
     .taxa-list-item.mass-checked {
       background: var(--accent-bg);
-      border-color: rgba(200, 169, 110, 0.25);
+      border-color: rgba(200, 169, 110, 0.45);
+      box-shadow: inset 3px 0 0 var(--accent);
+    }
+
+    .mass-sel-indicator {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--dimmer);
+      flex-shrink: 0;
+      transition: border-color 0.1s, background 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    .mass-checked .mass-sel-indicator {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--bg);
     }
 
     .taxa-thumb {
@@ -837,7 +867,11 @@ let LINK_MATCH_GENUS  = 'Drosera';
 let LINK_MATCH_GROUP  = '';
 let LINK_MATCH_RESULTS = [];
 let AI_RUNNING    = false;
-let COPY_CARE_DRAFT = null; // taxon whose care is being previewed for copy
+let COPY_CARE_DRAFT = null;
+let CSV_SELECTED   = new Set(); // displayNames of CSV preview items to import
+let DRIVE_PREVIEW  = [];        // parsed taxa from Drive scan
+let DRIVE_SELECTED = new Set(); // ids of DRIVE_PREVIEW items to import
+let DRIVE_ROOT_ID  = '';        // last scanned Drive folder ID
 
 // SECTION 3: Server API helpers
 async function extractError(r) {
@@ -1064,6 +1098,7 @@ function render() {
   attachNavEvents();
   attachPageEvents();
   updatePublishBadge();
+  if (CURRENT_PAGE === 'taxa') refreshTaxaList();
 }
 
 function navigate(page, extra) {
@@ -1080,8 +1115,8 @@ function renderSidebar() {
   const nav = [
     {id:'taxa',       icon:'🌿', label:'Taxa'},
     {id:'add',        icon:'+',  label:'Add Taxon'},
-    {id:'csvimport',  icon:'📊', label:'Import CSV'},
-    {id:'folder',     icon:'📁', label:'Import Folders'},
+    {id:'csvimport',   icon:'📊', label:'Import CSV'},
+    {id:'driveimport', icon:'📁', label:'Drive Import'},
     {id:'push',       icon:'↑',  label:'Publish',     badge:true},
     {id:'genera',     icon:'🖼', label:'Genus Photos'},
     {id:'groups',     icon:'⊞',  label:'Groups'},
@@ -1118,7 +1153,7 @@ function renderPage() {
   if (CURRENT_PAGE === 'add')         return renderAddEdit(null);
   if (CURRENT_PAGE === 'edit')        return renderAddEdit(EDIT_TAXON_ID);
   if (CURRENT_PAGE === 'csvimport')   return renderCSVImport();
-  if (CURRENT_PAGE === 'folder')      return renderFolderImport();
+  if (CURRENT_PAGE === 'driveimport') return renderDriveImport();
   if (CURRENT_PAGE === 'push')        return renderPublish();
   if (CURRENT_PAGE === 'genera')      return renderGenusPhotos();
   if (CURRENT_PAGE === 'groups')      return renderGroups();
@@ -1187,19 +1222,30 @@ function renderMassToolbar() {
   const n = MASS_SELECTED.size;
   const selGenera = [...new Set([...MASS_SELECTED].map(id => APP_DATA.taxa.find(t=>t.id===id)?.genus).filter(Boolean))];
   const availGroups = [...new Set(selGenera.flatMap(g => getGroupsForGenus(g)))].sort();
+  // Taxa with care data, for the copy-care dropdown
+  const careOpts = sortTaxaAlpha(APP_DATA.taxa.filter(t => getEffectiveCare(t).light || getEffectiveCare(t).water || getEffectiveCare(t).soil))
+    .map(t => '<option value="'+escHtml(t.id)+'">'+escHtml(t.displayName)+'</option>').join('');
   return '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;background:var(--accent-bg);border:1px solid rgba(200,169,110,0.25);border-radius:var(--r);margin-bottom:12px;">' +
     '<span style="font-size:11px;color:var(--accent);" id="mass-count">' + n + ' selected</span>' +
-    '<button class="btn btn-secondary btn-sm" id="mass-all-btn">Select Visible</button>' +
+    '<button class="btn btn-secondary btn-sm" id="mass-all-btn">Select All</button>' +
     '<button class="btn btn-secondary btn-sm" id="mass-none-btn">Deselect All</button>' +
-    '<div style="width:1px;height:18px;background:var(--border);"></div>' +
+    '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>' +
+    // Group
     '<select id="mass-group-sel" style="font-size:10px;padding:5px 8px;width:auto;"' + (n===0?' disabled':'') + '>' +
     '<option value="">— Set Group —</option>' +
     availGroups.map(g => '<option value="' + escHtml(g) + '">' + escHtml(g) + '</option>').join('') +
     '<option value="__clear__">Clear Group</option>' +
     '</select>' +
     '<button class="btn btn-accent btn-sm" id="mass-group-btn"' + (n===0?' disabled':'') + '>Set Group</button>' +
-    '<div style="width:1px;height:18px;background:var(--border);"></div>' +
-    '<button class="btn btn-accent btn-sm" id="mass-ai-btn"' + (n===0?' disabled':'') + '>🤖 AI Research (' + n + ')</button>' +
+    '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>' +
+    // Copy care
+    '<select id="mass-care-src" style="font-size:10px;padding:5px 8px;max-width:180px;"' + (n===0?' disabled':'') + '>' +
+    '<option value="">— Copy Care From… —</option>' +
+    careOpts +
+    '</select>' +
+    '<button class="btn btn-accent btn-sm" id="mass-copy-care-btn"' + (n===0?' disabled':'') + '>Apply Care</button>' +
+    '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>' +
+    '<button class="btn btn-accent btn-sm" id="mass-ai-btn"' + (n===0?' disabled':'') + '>🤖 AI (' + n + ')</button>' +
     '<button class="btn btn-danger btn-sm" id="mass-delete-btn"' + (n===0?' disabled':'') + '>🗑 Delete (' + n + ')</button>' +
     '</div>';
 }
@@ -1237,9 +1283,9 @@ function renderTaxaItems(taxa) {
     const indent = t.parentId ? 'margin-left:24px;' : '';
 
     return '<div class="taxa-list-item ' + (MASS_MODE?'mass-selectable':'') + ' ' + (checked?'mass-checked':'') +
-      '" data-taxon-id="' + escHtml(t.id) + '" style="' + indent + '">' +
+      '" data-taxon-id="' + escHtml(t.id) + '" data-mass-id="' + escHtml(t.id) + '" style="' + indent + '">' +
       (MASS_MODE
-        ? '<input type="checkbox" class="mass-cb" data-id="' + escHtml(t.id) + '" ' + (checked?'checked':'') + ' style="flex-shrink:0;cursor:pointer;">'
+        ? '<div class="mass-sel-indicator">' + (checked ? '✓' : '') + '</div>'
         : (ph
           ? '<img class="taxa-thumb" src="' + escHtml(ph) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
           : '<div class="taxa-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--dimmer);font-size:18px;">🌿</div>')
@@ -1833,68 +1879,235 @@ function renderCSVImport() {
     '<input type="file" id="csv-file-input" accept=".csv" style="color:var(--white);"></div>' +
     '<button class="btn btn-accent" id="parse-csv-btn" style="margin-top:4px;">Parse CSV</button>' +
     '</div>' +
-    (hasPreview ? renderCSVPreview() : '');
+    '<div id="csv-preview-root">' + (hasPreview ? renderCSVPreview() : '') + '</div>';
 }
 
 function renderCSVPreview() {
-  const newTaxa  = CSV_PREVIEW.filter(t => !APP_DATA.taxa.find(x => x.displayName === t.displayName));
-  const dupes    = CSV_PREVIEW.filter(t =>  APP_DATA.taxa.find(x => x.displayName === t.displayName));
+  const c = new Intl.Collator('en', {sensitivity:'base'});
+  const sorted   = [...CSV_PREVIEW].sort((a,b) => c.compare(a.displayName, b.displayName));
+  const newTaxa  = sorted.filter(t => !APP_DATA.taxa.find(x => x.displayName === t.displayName));
+  const dupes    = sorted.filter(t =>  APP_DATA.taxa.find(x => x.displayName === t.displayName));
+  const selCount = sorted.filter(t => CSV_SELECTED.has(t.displayName)).length;
   return '<div class="card">' +
     '<div class="card-header"><span class="card-title">Preview</span>' +
-    '<span style="font-size:11px;color:var(--dimmer);">' +
-    newTaxa.length+' new · '+dupes.length+' existing</span></div>' +
-    '<div style="max-height:360px;overflow-y:auto;">' +
-    CSV_PREVIEW.map(t => {
+    '<span style="font-size:11px;color:var(--dimmer);">' + newTaxa.length + ' new · ' + dupes.length + ' existing</span></div>' +
+    // Selection controls
+    '<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">' +
+    '<span style="font-size:11px;color:var(--accent);" id="csv-sel-count">' + selCount + ' selected</span>' +
+    '<button class="btn btn-secondary btn-sm" id="csv-sel-all-btn">Select All</button>' +
+    '<button class="btn btn-secondary btn-sm" id="csv-sel-new-btn">Select New Only</button>' +
+    '<button class="btn btn-secondary btn-sm" id="csv-sel-none-btn">Deselect All</button>' +
+    '</div>' +
+    '<div style="max-height:400px;overflow-y:auto;">' +
+    sorted.map(t => {
       const isNew = !APP_DATA.taxa.find(x => x.displayName === t.displayName);
-      return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);">' +
-        '<span class="pill '+(isNew?'green':'')+'">'+( isNew?'New':'Exists')+'</span>' +
-        '<span style="font-style:italic;font-family:var(--font-d);font-size:13px;">'+escHtml(t.displayName)+'</span>' +
-        '<span style="font-size:10px;color:var(--dimmer);">'+escHtml(t.genus)+'</span>' +
-        (t.shopLinks&&t.shopLinks.length ? '<span style="font-size:10px;color:var(--green);">'+t.shopLinks.map(l=>l.label).join(', ')+'</span>' : '') +
+      const checked = CSV_SELECTED.has(t.displayName);
+      const hasCare = t.care && t.care.override && (t.care.light || t.care.water || t.care.soil);
+      return '<div class="csv-import-row' + (checked ? ' csv-row-checked' : '') + '" data-csv-name="' + escHtml(t.displayName) + '" style="display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:3px;border-radius:var(--r);border:1px solid ' + (checked ? 'rgba(200,169,110,0.4)' : 'var(--border)') + ';background:' + (checked ? 'var(--accent-bg)' : 'transparent') + ';cursor:pointer;user-select:none;transition:background 0.1s,border-color 0.1s;">' +
+        '<div class="mass-sel-indicator" style="' + (checked ? 'border-color:var(--accent);background:var(--accent);color:var(--bg);' : '') + '">' + (checked ? '✓' : '') + '</div>' +
+        '<span class="pill ' + (isNew ? 'green' : '') + '" style="flex-shrink:0;">' + (isNew ? 'New' : 'Exists') + '</span>' +
+        '<span style="font-style:italic;font-family:var(--font-d);font-size:13px;flex:1;">' + escHtml(t.displayName) + '</span>' +
+        '<span style="font-size:10px;color:var(--dimmer);">' + escHtml(t.genus) + '</span>' +
+        (t.group ? '<span class="pill" style="flex-shrink:0;">' + escHtml(t.group) + '</span>' : '') +
+        (hasCare ? '<span style="font-size:10px;color:var(--green);flex-shrink:0;">✓ Care</span>' : '') +
+        (t.photos && t.photos.length ? '<span style="font-size:10px;color:var(--accent);flex-shrink:0;">' + t.photos.length + ' 📷</span>' : '') +
         '</div>';
     }).join('') + '</div>' +
-    '<div style="display:flex;gap:10px;margin-top:14px;">' +
-    '<button class="btn btn-primary" id="import-csv-btn">Import '+newTaxa.length+' New Taxa</button>' +
+    '<div style="display:flex;gap:10px;margin-top:14px;align-items:center;">' +
+    '<button class="btn btn-primary" id="import-csv-btn">Import ' + selCount + ' Selected</button>' +
     '<button class="btn btn-secondary btn-sm" id="clear-csv-btn">Clear</button>' +
     '</div></div>';
 }
 
-// ═══ FOLDER IMPORT ═══════════════════════════════════════════
-
-function renderFolderImport() {
-  const hasPreview = FOLDER_PREVIEW.length > 0;
-  return '<h1 class="page-title">Import Folders</h1>' +
-    '<div class="page-sub">Upload a folder to create taxa from the folder structure</div>' +
-    '<div class="card">' +
-    '<div style="font-size:11px;color:var(--dim);line-height:1.8;margin-bottom:14px;">' +
-    '<strong style="color:var(--white);">Folder structure:</strong><br>' +
-    'Root: <code>Genus (Group)</code> e.g. <code>Drosera (Pygmy)</code><br>' +
-    'Depth 2: species name → creates taxon<br>' +
-    'Depth 3: <code>\'quotes\'</code> = cultivar_reg, <code>"double"</code> = cultivar_unreg, <code>(parens)</code> = location form</div>' +
-    '<input type="file" id="folder-input" webkitdirectory multiple style="color:var(--white);">' +
-    '<button class="btn btn-accent" id="parse-folder-btn" style="margin-top:8px;">Parse Folder</button>' +
-    '</div>' +
-    (hasPreview ? renderFolderPreview() : '');
+function refreshCSVPreview() {
+  const root = document.getElementById('csv-preview-root');
+  if (root) root.innerHTML = CSV_PREVIEW.length ? renderCSVPreview() : '';
 }
 
-function renderFolderPreview() {
-  const newItems = FOLDER_PREVIEW.filter(t => !APP_DATA.taxa.find(x => x.displayName === t.displayName));
-  return '<div class="card"><div class="card-header"><span class="card-title">Preview</span>' +
-    '<span style="font-size:11px;color:var(--dimmer);">'+newItems.length+' new of '+FOLDER_PREVIEW.length+'</span></div>' +
-    '<div style="max-height:360px;overflow-y:auto;">' +
-    FOLDER_PREVIEW.map(t => {
-      const isNew = !APP_DATA.taxa.find(x => x.displayName === t.displayName);
-      return '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);">' +
-        (t.parentId ? '<span style="width:16px;"></span>' : '') +
-        '<span class="pill '+(isNew?'green':'')+'">'+( isNew?'New':'Exists')+'</span>' +
-        '<span style="font-style:italic;font-family:var(--font-d);font-size:13px;">'+escHtml(t.displayName)+'</span>' +
-        '<span class="pill">'+escHtml(t.entryType||'species')+'</span>' +
+// ═══ DRIVE IMPORT ════════════════════════════════════════════
+
+function renderDriveImport() {
+  const connected = SERVER_CONFIG.driveReady;
+  const selCount  = DRIVE_PREVIEW.filter(t => DRIVE_SELECTED.has(t.id)).length;
+  return '<h1 class="page-title">Drive Import</h1>' +
+    '<div class="page-sub">Scan your Google Drive photo folder to create taxa from the folder structure</div>' +
+    (!connected ? '<div class="validation-warn" style="margin-bottom:16px;">⚠ Google Drive not connected. <a href="/auth/google" target="_blank" style="color:var(--accent);">Connect Drive →</a></div>' : '') +
+    '<div class="card">' +
+    '<div class="card-header"><span class="card-title">Scan Folder</span></div>' +
+    '<div style="font-size:11px;color:var(--dimmer);line-height:1.8;margin-bottom:14px;">' +
+    'Expected structure:<br>' +
+    '<code style="color:var(--accent);">Master folder</code> → <code>Genus (Group)</code> → <code>Species name</code> → photos / cultivar sub-folders<br>' +
+    'Genus folder name: e.g. <code>Drosera</code> or <code>Drosera (Pygmy)</code> — the part in parentheses becomes the group.<br>' +
+    'Cultivar/location sub-folders inside species folders become child taxa.' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;align-items:center;">' +
+    '<input type="text" id="drive-root-id" placeholder="Drive folder ID (from URL)" value="' + escHtml(DRIVE_ROOT_ID) + '" style="flex:1;">' +
+    '<button class="btn btn-accent" id="drive-scan-btn"' + (!connected?' disabled':'') + '>📁 Scan</button>' +
+    '</div>' +
+    '<div style="font-size:10px;color:var(--dimmer);margin-top:6px;">Find the ID in your Drive URL: drive.google.com/drive/folders/<strong>THIS_PART</strong></div>' +
+    '</div>' +
+    '<div id="drive-preview-root">' + (DRIVE_PREVIEW.length ? renderDrivePreview(selCount) : '') + '</div>';
+}
+
+function renderDrivePreview(selCount) {
+  const matchColors = { exact: 'var(--dimmer)', similar: 'var(--accent)', new: 'var(--green)' };
+  const matchLabels = { exact: 'Exists', similar: '⚠ Similar', new: 'New' };
+  return '<div class="card">' +
+    '<div class="card-header"><span class="card-title">Preview</span>' +
+    '<span style="font-size:11px;color:var(--dimmer);">' + DRIVE_PREVIEW.length + ' folders scanned</span></div>' +
+    '<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">' +
+    '<span style="font-size:11px;color:var(--accent);" id="drive-sel-count">' + selCount + ' selected</span>' +
+    '<button class="btn btn-secondary btn-sm" id="drive-sel-all-btn">Select All</button>' +
+    '<button class="btn btn-secondary btn-sm" id="drive-sel-new-btn">Select New Only</button>' +
+    '<button class="btn btn-secondary btn-sm" id="drive-sel-none-btn">Deselect All</button>' +
+    '</div>' +
+    '<div style="max-height:480px;overflow-y:auto;">' +
+    DRIVE_PREVIEW.map(t => {
+      const checked  = DRIVE_SELECTED.has(t.id);
+      const matchClr = matchColors[t.driveMatch] || 'var(--green)';
+      const matchLbl = matchLabels[t.driveMatch] || 'New';
+      const indent   = t.parentId ? 'margin-left:22px;' : '';
+      return '<div class="drive-import-row' + (checked ? ' drive-row-checked' : '') + '" data-drive-id="' + escHtml(t.id) + '" style="display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:3px;border-radius:var(--r);border:1px solid ' + (checked ? 'rgba(200,169,110,0.4)' : 'var(--border)') + ';background:' + (checked ? 'var(--accent-bg)' : 'transparent') + ';cursor:pointer;user-select:none;transition:background 0.1s,border-color 0.1s;' + indent + '">' +
+        '<div class="mass-sel-indicator" style="' + (checked ? 'border-color:var(--accent);background:var(--accent);color:var(--bg);' : '') + '">' + (checked ? '✓' : '') + '</div>' +
+        '<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(0,0,0,0.3);color:' + matchClr + ';flex-shrink:0;">' + matchLbl + '</span>' +
+        '<span style="font-style:italic;font-family:var(--font-d);font-size:13px;flex:1;">' + escHtml(t.displayName) + '</span>' +
+        (t.group ? '<span class="pill" style="flex-shrink:0;">' + escHtml(t.group) + '</span>' : '') +
+        (t.photos.length ? '<span style="font-size:10px;color:var(--accent);flex-shrink:0;">' + t.photos.length + ' 📷</span>' : '') +
+        (t.driveMatchName ? '<span style="font-size:10px;color:var(--dimmer);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Similar: ' + escHtml(t.driveMatchName) + '">≈ ' + escHtml(t.driveMatchName) + '</span>' : '') +
         '</div>';
     }).join('') + '</div>' +
-    '<div style="display:flex;gap:10px;margin-top:14px;">' +
-    '<button class="btn btn-primary" id="import-folder-btn">Import '+newItems.length+' New Taxa</button>' +
-    '<button class="btn btn-secondary btn-sm" id="clear-folder-btn">Clear</button>' +
+    '<div style="display:flex;gap:10px;margin-top:14px;align-items:center;">' +
+    '<button class="btn btn-primary" id="import-drive-btn">Import ' + selCount + ' Selected</button>' +
+    '<button class="btn btn-secondary btn-sm" id="clear-drive-btn">Clear</button>' +
     '</div></div>';
+}
+
+function refreshDrivePreview() {
+  const root = document.getElementById('drive-preview-root');
+  if (root) root.innerHTML = DRIVE_PREVIEW.length ? renderDrivePreview(DRIVE_SELECTED.size) : '';
+}
+
+function parseDriveTree(tree) {
+  const items = [];
+  (tree || []).forEach(genusNode => {
+    if (genusNode.type !== 'folder') return;
+    const m     = genusNode.name.match(/^(.+?)\s*\((.+)\)$/);
+    const gName = (m ? m[1] : genusNode.name).trim();
+    const genus = GENERA.find(g => g.toLowerCase() === gName.toLowerCase()) || gName;
+    const group = m ? m[2].trim() : '';
+
+    (genusNode.children || []).forEach(spNode => {
+      if (spNode.type !== 'folder') return;
+      const nodeKids  = spNode.children || [];
+      const photos    = nodeKids.filter(c => c.type === 'file').map(c => 'drive:' + c.id);
+      const subFolders = nodeKids.filter(c => c.type === 'folder');
+      const [sp, sub, entryType] = parseSpeciesFromTitle(spNode.name, genus);
+      const displayName = buildAutoDisplayName(genus, sp, sub, entryType) || (genus + ' ' + spNode.name).trim();
+      const match = detectDriveMatch(displayName);
+      const parentItem = {
+        id: generateId(), genus, species: sp, subspecies: sub,
+        entryType: entryType || 'species', displayName, commonName: '', group, photos,
+        driveFolderId: spNode.id, driveMatch: match.type, driveMatchName: match.name,
+        care: { override: false }, shopLinks: [], externalLinks: [], notes: '',
+        parentId: '', isHybrid: spNode.name.includes(' x ') || spNode.name.includes(' × '),
+        isGrex: false, flagged: match.type === 'similar',
+        country: '', habitatId: '', climate: '', nativeRange: '', nativeHabitat: ''
+      };
+      items.push(parentItem);
+
+      subFolders.forEach(subNode => {
+        const subPhotos  = (subNode.children || []).filter(c => c.type === 'file').map(c => 'drive:' + c.id);
+        const subDisplay = displayName + ' ' + subNode.name;
+        const subMatch   = detectDriveMatch(subDisplay);
+        const [sp3,,type3] = parseSpeciesFromTitle(subNode.name, '');
+        items.push({
+          id: generateId(), genus, species: sp, subspecies: sp3 || subNode.name,
+          entryType: type3 || 'cultivar_unreg', displayName: subDisplay, commonName: '', group,
+          photos: subPhotos, driveFolderId: subNode.id,
+          driveMatch: subMatch.type, driveMatchName: subMatch.name,
+          care: { override: false }, shopLinks: [], externalLinks: [], notes: '',
+          parentId: parentItem.id, isHybrid: false, isGrex: false, flagged: subMatch.type === 'similar',
+          country: '', habitatId: '', climate: '', nativeRange: '', nativeHabitat: ''
+        });
+      });
+    });
+  });
+  return items;
+}
+
+function detectDriveMatch(displayName) {
+  const exact = APP_DATA.taxa.find(t => t.displayName === displayName);
+  if (exact) return { type: 'exact', name: exact.displayName };
+  const norm = normalizeForMatch(displayName);
+  const similar = APP_DATA.taxa.find(t => matchScore(normalizeForMatch(t.displayName), norm) > 0.75);
+  if (similar) return { type: 'similar', name: similar.displayName };
+  return { type: 'new', name: '' };
+}
+
+// ═══ DRIVE IMPORT ACTIONS ════════════════════════════════════
+
+async function doDriveScan() {
+  const folderId = document.getElementById('drive-root-id')?.value?.trim();
+  if (!folderId) { showToast('Enter a Drive folder ID first', 'error'); return; }
+  DRIVE_ROOT_ID = folderId;
+  const btn = document.getElementById('drive-scan-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Scanning…'; }
+  try {
+    const data = await apiPost('/api/drive/scan', { folderId });
+    DRIVE_PREVIEW  = parseDriveTree(data.tree || []);
+    // Auto-select new and similar (flag similar for review)
+    DRIVE_SELECTED = new Set(DRIVE_PREVIEW.filter(t => t.driveMatch !== 'exact').map(t => t.id));
+    render();
+    const newCount  = DRIVE_PREVIEW.filter(t => t.driveMatch === 'new').length;
+    const simCount  = DRIVE_PREVIEW.filter(t => t.driveMatch === 'similar').length;
+    showToast('Found ' + DRIVE_PREVIEW.length + ' folders — ' + newCount + ' new, ' + simCount + ' similar (flagged)', 'success');
+  } catch(e) {
+    showToast('Scan failed: ' + e.message, 'error');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '📁 Scan'; }
+  }
+}
+
+function doImportDrive() {
+  const toImport = DRIVE_PREVIEW.filter(t => DRIVE_SELECTED.has(t.id));
+  if (!toImport.length) { showToast('No items selected', 'error'); return; }
+  toImport.forEach(t => {
+    const existing = APP_DATA.taxa.findIndex(x => x.displayName === t.displayName);
+    const clean = { ...t };
+    delete clean.driveMatch; delete clean.driveMatchName; delete clean.driveFolderId;
+    if (existing >= 0) {
+      // Merge: add Drive photos to existing taxon without overwriting care/shop data
+      const ex = APP_DATA.taxa[existing];
+      const newPhotos = (clean.photos || []).filter(p => !(ex.photos||[]).includes(p));
+      APP_DATA.taxa[existing] = { ...ex, photos: [...(ex.photos||[]), ...newPhotos] };
+      if (!ex.group && clean.group) APP_DATA.taxa[existing].group = clean.group;
+    } else {
+      APP_DATA.taxa.push(clean);
+    }
+  });
+  syncGenusGroupsFromTaxa();
+  saveData().then(() => {
+    DRIVE_PREVIEW  = [];
+    DRIVE_SELECTED = new Set();
+    showToast('Imported ' + toImport.length + ' taxa from Drive', 'success');
+    navigate('taxa');
+  });
+}
+
+// ═══ MASS CARE COPY ══════════════════════════════════════════
+
+function doMassCopyCare() {
+  const srcId = document.getElementById('mass-care-src')?.value;
+  if (!srcId) { showToast('Select a source taxon from the dropdown', 'error'); return; }
+  const source = APP_DATA.taxa.find(t => t.id === srcId);
+  if (!source) return;
+  const care = { ...getEffectiveCare(source), override: true };
+  let count = 0;
+  MASS_SELECTED.forEach(id => {
+    const t = APP_DATA.taxa.find(x => x.id === id);
+    if (t) { t.care = care; count++; }
+  });
+  saveAndRender('Care applied to ' + count + ' taxa');
 }
 
 // ═══ FORM COLLECTION ═════════════════════════════════════════
@@ -1971,6 +2184,14 @@ function attachPageEvents() {
     // Tab switching
     const tab = e.target.closest('.tab-btn')?.dataset.tab;
     if (tab) { showTab(tab); return; }
+
+    // Mass-select row click — intercept before edit so whole row is clickable in select mode
+    const massRowId = e.target.closest('[data-mass-id]')?.dataset.massId;
+    if (massRowId && MASS_MODE) {
+      if (MASS_SELECTED.has(massRowId)) MASS_SELECTED.delete(massRowId);
+      else MASS_SELECTED.add(massRowId);
+      renderMassState(); return;
+    }
 
     // Edit taxon
     const editId = e.target.closest('[data-edit-id]')?.dataset.editId;
@@ -2073,15 +2294,61 @@ function attachPageEvents() {
     // CSV
     if (e.target.id === 'parse-csv-btn')    { doParseCSV(); return; }
     if (e.target.id === 'import-csv-btn')   { doImportCSV(); return; }
-    if (e.target.id === 'clear-csv-btn')    { CSV_PREVIEW=[]; render(); return; }
+    if (e.target.id === 'clear-csv-btn')    { CSV_PREVIEW=[]; CSV_SELECTED.clear(); render(); return; }
+    if (e.target.id === 'csv-sel-all-btn')  { CSV_PREVIEW.forEach(r => CSV_SELECTED.add(r.displayName)); refreshCSVPreview(); return; }
+    if (e.target.id === 'csv-sel-none-btn') { CSV_SELECTED.clear(); refreshCSVPreview(); return; }
+    if (e.target.id === 'csv-sel-new-btn')  {
+      CSV_SELECTED.clear();
+      CSV_PREVIEW.forEach(r => { if (!APP_DATA.taxa.find(t => t.displayName === r.displayName)) CSV_SELECTED.add(r.displayName); });
+      refreshCSVPreview(); return;
+    }
+    // CSV row click — toggle selection
+    const csvRow = e.target.closest('[data-csv-name]');
+    if (csvRow) {
+      const name = csvRow.dataset.csvName;
+      if (CSV_SELECTED.has(name)) CSV_SELECTED.delete(name);
+      else CSV_SELECTED.add(name);
+      // Update this row visually without re-rendering the whole list
+      const sel = CSV_SELECTED.has(name);
+      csvRow.style.background   = sel ? 'var(--accent-bg)' : 'transparent';
+      csvRow.style.borderColor  = sel ? 'rgba(200,169,110,0.4)' : 'var(--border)';
+      const ind = csvRow.querySelector('.mass-sel-indicator');
+      if (ind) { ind.style.borderColor = sel ? 'var(--accent)' : 'var(--dimmer)'; ind.style.background = sel ? 'var(--accent)' : 'transparent'; ind.style.color = sel ? 'var(--bg)' : ''; ind.textContent = sel ? '✓' : ''; }
+      const lbl = document.getElementById('csv-sel-count');
+      if (lbl) lbl.textContent = CSV_SELECTED.size + ' selected';
+      const importBtn = document.getElementById('import-csv-btn');
+      if (importBtn) importBtn.textContent = 'Import ' + CSV_SELECTED.size + ' Selected';
+      return;
+    }
 
-    // Folder
-    if (e.target.id === 'parse-folder-btn')  { doParseFolder(); return; }
-    if (e.target.id === 'import-folder-btn') { doImportFolder(); return; }
-    if (e.target.id === 'clear-folder-btn')  { FOLDER_PREVIEW=[]; render(); return; }
-
-    // Drive list files
-    if (e.target.id === 'drive-list-btn') { doDriveList(); return; }
+    // Drive import
+    if (e.target.id === 'drive-scan-btn')    { doDriveScan(); return; }
+    if (e.target.id === 'import-drive-btn')  { doImportDrive(); return; }
+    if (e.target.id === 'clear-drive-btn')   { DRIVE_PREVIEW=[]; DRIVE_SELECTED.clear(); render(); return; }
+    if (e.target.id === 'drive-sel-all-btn') { DRIVE_PREVIEW.forEach(r => DRIVE_SELECTED.add(r.id)); refreshDrivePreview(); return; }
+    if (e.target.id === 'drive-sel-none-btn'){ DRIVE_SELECTED.clear(); refreshDrivePreview(); return; }
+    if (e.target.id === 'drive-sel-new-btn') {
+      DRIVE_SELECTED.clear();
+      DRIVE_PREVIEW.forEach(r => { if (r.matchType !== 'exact') DRIVE_SELECTED.add(r.id); });
+      refreshDrivePreview(); return;
+    }
+    // Drive row click — toggle selection
+    const driveRow = e.target.closest('[data-drive-id]');
+    if (driveRow) {
+      const id = driveRow.dataset.driveId;
+      if (DRIVE_SELECTED.has(id)) DRIVE_SELECTED.delete(id);
+      else DRIVE_SELECTED.add(id);
+      const sel = DRIVE_SELECTED.has(id);
+      driveRow.style.background  = sel ? 'var(--accent-bg)' : 'transparent';
+      driveRow.style.borderColor = sel ? 'rgba(200,169,110,0.4)' : 'var(--border)';
+      const ind = driveRow.querySelector('.mass-sel-indicator');
+      if (ind) { ind.style.borderColor = sel ? 'var(--accent)' : 'var(--dimmer)'; ind.style.background = sel ? 'var(--accent)' : 'transparent'; ind.style.color = sel ? 'var(--bg)' : ''; ind.textContent = sel ? '✓' : ''; }
+      const lbl = document.getElementById('drive-sel-count');
+      if (lbl) lbl.textContent = DRIVE_SELECTED.size + ' selected';
+      const importBtn = document.getElementById('import-drive-btn');
+      if (importBtn) importBtn.textContent = 'Import ' + DRIVE_SELECTED.size + ' Selected';
+      return;
+    }
 
     // Groups page actions
     const addGrp = e.target.closest('[data-add-group]')?.dataset.addGroup;
@@ -2098,16 +2365,10 @@ function attachPageEvents() {
     if (e.target.id === 'mass-all-btn')  { getFilteredTaxa().forEach(t => MASS_SELECTED.add(t.id)); renderMassState(); return; }
     if (e.target.id === 'mass-none-btn') { MASS_SELECTED.clear(); renderMassState(); return; }
     if (e.target.id === 'mass-group-btn'){ doMassSetGroup(); return; }
-    if (e.target.id === 'mass-delete-btn'){ doMassDelete(); return; }
-    if (e.target.id === 'mass-ai-btn')   { doMassAI(); return; }
+    if (e.target.id === 'mass-delete-btn')    { doMassDelete(); return; }
+    if (e.target.id === 'mass-ai-btn')        { doMassAI(); return; }
+    if (e.target.id === 'mass-copy-care-btn') { doMassCopyCare(); return; }
 
-    // Mass checkbox
-    const cb = e.target.closest('.mass-cb');
-    if (cb) {
-      if (cb.checked) MASS_SELECTED.add(cb.dataset.id);
-      else MASS_SELECTED.delete(cb.dataset.id);
-      renderMassState(); return;
-    }
 
     // Link templates
     const addTplG = e.target.closest('[data-add-tpl-genus]')?.dataset.addTplGenus;
@@ -2167,17 +2428,24 @@ function refreshTaxaList() {
 }
 
 function renderMassState() {
+  // Ensure the taxa list is populated before trying to update checkboxes
+  const container = document.getElementById('taxa-list-container');
+  if (container && !container.children.length) refreshTaxaList();
+
   const n = MASS_SELECTED.size;
   const lbl = document.getElementById('mass-count');
   if (lbl) lbl.textContent = n + ' selected';
-  ['mass-group-btn','mass-delete-btn','mass-ai-btn'].forEach(id => {
+  ['mass-group-btn','mass-delete-btn','mass-ai-btn','mass-copy-care-btn'].forEach(id => {
     const btn = document.getElementById(id);
     if (btn) btn.disabled = n === 0;
   });
-  // Refresh checkboxes
-  document.querySelectorAll('.mass-cb').forEach(cb => {
-    cb.checked = MASS_SELECTED.has(cb.dataset.id);
-    cb.closest('.taxa-list-item')?.classList.toggle('mass-checked', cb.checked);
+  // Refresh visual selection indicators
+  document.querySelectorAll('[data-mass-id]').forEach(row => {
+    const id = row.dataset.massId;
+    const sel = MASS_SELECTED.has(id);
+    row.classList.toggle('mass-checked', sel);
+    const ind = row.querySelector('.mass-sel-indicator');
+    if (ind) ind.textContent = sel ? '✓' : '';
   });
 }
 
@@ -2684,9 +2952,14 @@ function doParseCSV() {
   reader.onload = e => {
     try {
       CSV_PREVIEW = parseSquarespaceCSV(e.target.result);
+      // Auto-select only new taxa (not already in the database)
+      CSV_SELECTED = new Set(
+        CSV_PREVIEW.filter(t => !APP_DATA.taxa.find(x => x.displayName === t.displayName))
+                   .map(t => t.displayName)
+      );
       render();
-      showToast('Parsed '+CSV_PREVIEW.length+' taxa from CSV','success');
-    } catch(err) { showToast('CSV parse error: '+err.message,'error'); }
+      showToast('Parsed ' + CSV_PREVIEW.length + ' taxa — ' + CSV_SELECTED.size + ' new selected', 'success');
+    } catch(err) { showToast('CSV parse error: ' + err.message, 'error'); }
   };
   reader.readAsText(file, 'utf-8');
 }
@@ -2723,9 +2996,26 @@ function parseSquarespaceCSV(text) {
     const genus  = inferGenus(title, sample['Category']||'');
     const group  = inferGroup(sample['Category']||'', sample['Tags']||'');
     const photos = [];
+    const addPhoto = u => { u = u.trim(); if (u && !photos.includes('sq:'+u)) photos.push('sq:'+u); };
     rows.forEach(r => {
-      const imgs = (r['Image URL']||'').split(',').map(s=>s.trim()).filter(Boolean);
-      imgs.forEach(u => { if (!photos.includes('sq:'+u)) photos.push('sq:'+u); });
+      // Try every known Squarespace image column name variation
+      const mainImg = r['Image URL'] || r['Image Url'] || r['image_url'] ||
+                      r['Product Image URL'] || r['Main Image URL'] || r['Thumbnail URL'] || '';
+      mainImg.split(',').forEach(addPhoto);
+      // Additional image columns (Squarespace exports up to ~5 extra image columns)
+      ['Additional Image URL 1','Additional Image URL 2','Additional Image URL 3',
+       'Additional Image URL 4','Additional Image URL 5',
+       'Image URL 2','Image URL 3','Image URL 4'].forEach(col => {
+        if (r[col]) r[col].split(',').forEach(addPhoto);
+      });
+      // Fallback: scan all columns for anything that looks like an image URL
+      if (!photos.length) {
+        Object.values(r).forEach(v => {
+          if (typeof v === 'string' && /https?:\/\/[^\s,]+\.(jpg|jpeg|png|webp|gif)/i.test(v)) {
+            v.match(/https?:\/\/[^\s,]+\.(jpg|jpeg|png|webp|gif)/gi)?.forEach(addPhoto);
+          }
+        });
+      }
     });
     const shopLinks = rows.map(r => ({
       label: guessShopType(r['Title']||''),
@@ -2826,12 +3116,19 @@ function parseCareFromHtml(html) {
 }
 
 function doImportCSV() {
-  const newTaxa = CSV_PREVIEW.filter(t => !APP_DATA.taxa.find(x => x.displayName === t.displayName));
-  newTaxa.forEach(t => { delete t._parentHint; APP_DATA.taxa.push(t); });
+  if (!CSV_SELECTED.size) { showToast('No taxa selected — check at least one item', 'error'); return; }
+  const toImport = CSV_PREVIEW.filter(t => CSV_SELECTED.has(t.displayName));
+  toImport.forEach(t => {
+    delete t._parentHint;
+    const existing = APP_DATA.taxa.findIndex(x => x.displayName === t.displayName);
+    if (existing >= 0) APP_DATA.taxa[existing] = { ...APP_DATA.taxa[existing], ...t }; // update existing
+    else APP_DATA.taxa.push(t);
+  });
   syncGenusGroupsFromTaxa();
-  saveData().then(()=>{
+  saveData().then(() => {
     CSV_PREVIEW = [];
-    showToast('Imported '+newTaxa.length+' taxa', 'success');
+    CSV_SELECTED = new Set();
+    showToast('Imported ' + toImport.length + ' taxa', 'success');
     render();
   });
 }

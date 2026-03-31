@@ -268,7 +268,7 @@ app.post('/api/drive/scan', async (req, res) => {
       const result = [];
       for (const f of files) {
         const node = { id: f.id, name: f.name, type: f.mimeType === 'application/vnd.google-apps.folder' ? 'folder' : 'file' };
-        if (node.type === 'folder' && depth < 3) node.children = await listFolder(f.id, depth + 1);
+        if (node.type === 'folder' && depth < 4) node.children = await listFolder(f.id, depth + 1);
         result.push(node);
       }
       return result;
