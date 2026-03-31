@@ -1204,10 +1204,11 @@ function renderTaxaList() {
     '</select>' +
     '<select id="taxa-comp-filter" style="width:160px;">' +
     '<option value="all"'       + (TAXA_FILTER==='all'      ?' selected':'') + '>All</option>' +
-    '<option value="nophotos"'  + (TAXA_FILTER==='nophotos' ?' selected':'') + '>⚠ Missing Photos</option>' +
-    '<option value="nocare"'    + (TAXA_FILTER==='nocare'   ?' selected':'') + '>⚠ Missing Care</option>' +
-    '<option value="nogroup"'   + (TAXA_FILTER==='nogroup'  ?' selected':'') + '>⚠ No Group</option>' +
-    '<option value="flagged"'   + (TAXA_FILTER==='flagged'  ?' selected':'') + '>🚩 Flagged</option>' +
+    '<option value="nophotos"'     + (TAXA_FILTER==='nophotos'     ?' selected':'') + '>⚠ Missing Photos</option>' +
+    '<option value="nocare"'       + (TAXA_FILTER==='nocare'       ?' selected':'') + '>⚠ Missing Care</option>' +
+    '<option value="nogroup"'      + (TAXA_FILTER==='nogroup'      ?' selected':'') + '>⚠ No Group</option>' +
+    '<option value="noprovenance"' + (TAXA_FILTER==='noprovenance' ?' selected':'') + '>⚠ No Provenance</option>' +
+    '<option value="flagged"'      + (TAXA_FILTER==='flagged'      ?' selected':'') + '>🚩 Flagged</option>' +
     '</select>' +
     '<span id="taxa-count-label" style="font-size:11px;color:var(--dimmer);margin-left:4px;"></span>' +
     '<button class="btn ' + (MASS_MODE?'btn-accent':'btn-secondary') + ' btn-sm" id="mass-mode-btn" style="margin-left:auto;">' +
@@ -1253,7 +1254,8 @@ function renderMassToolbar() {
       : '<span style="font-size:10px;color:var(--dimmer);">No care data yet — add care to a taxon first</span>' +
         '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>'
     ) +
-    '<button class="btn btn-accent btn-sm" id="mass-ai-btn"' + dis + '>🤖 AI (' + n + ')</button>' +
+    '<button class="btn btn-accent btn-sm" id="mass-prov-btn"' + dis + '>🤖 Provenance (' + n + ')</button>' +
+    '<button class="btn btn-accent btn-sm" id="mass-ai-btn"' + dis + '>🤖 All Fields (' + n + ')</button>' +
     '<button class="btn btn-danger btn-sm" id="mass-delete-btn"' + dis + '>🗑 Delete (' + n + ')</button>' +
     '</div>';
 }
@@ -1270,10 +1272,11 @@ function getFilteredTaxa() {
   if (TAXA_GENUS) taxa = taxa.filter(t => t.genus === TAXA_GENUS);
   if (TAXA_GROUP === '__ungrouped__') taxa = taxa.filter(t => !t.group && !t.parentId);
   else if (TAXA_GROUP) taxa = taxa.filter(t => t.group === TAXA_GROUP);
-  if (TAXA_FILTER === 'nophotos') taxa = taxa.filter(t => !t.photos || !t.photos.length);
-  if (TAXA_FILTER === 'nocare')   taxa = taxa.filter(t => { const c = taxonCompleteness(t); return !c.hasCare; });
-  if (TAXA_FILTER === 'nogroup')  taxa = taxa.filter(t => !t.group && !t.parentId);
-  if (TAXA_FILTER === 'flagged')  taxa = taxa.filter(t => t.flagged);
+  if (TAXA_FILTER === 'nophotos')     taxa = taxa.filter(t => !t.photos || !t.photos.length);
+  if (TAXA_FILTER === 'nocare')       taxa = taxa.filter(t => { const c = taxonCompleteness(t); return !c.hasCare; });
+  if (TAXA_FILTER === 'nogroup')      taxa = taxa.filter(t => !t.group && !t.parentId);
+  if (TAXA_FILTER === 'noprovenance') taxa = taxa.filter(t => !t.nativeRange && !t.nativeHabitat && !t.country);
+  if (TAXA_FILTER === 'flagged')      taxa = taxa.filter(t => t.flagged);
   return taxa;
 }
 
@@ -1437,7 +1440,19 @@ function renderTabPhotos(t) {
 }
 
 function renderTabProvenance(t) {
+  const hasAny = t.nativeRange || t.nativeHabitat || t.country;
+  const climateList = (APP_DATA.climates||[]).map(c => c.id+'='+c.name).join(', ');
+  const habitatList = (APP_DATA.habitats||[]).map(h => h.id+'='+h.name).join(', ');
   return '<div class="tab-content" id="tab-provenance"'+(ACTIVE_TAB==='provenance'?'':' style="display:none"')+'>' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">' +
+    '<span style="font-size:11px;color:var(--dimmer);">' + (hasAny ? 'Edit provenance data below' : 'No provenance data yet') + '</span>' +
+    '<button type="button" class="btn btn-accent btn-sm" id="ai-prov-btn"' +
+      ' data-taxon-id="' + escHtml(t.id) + '"' +
+      ' data-climate-list="' + escHtml(climateList) + '"' +
+      ' data-habitat-list="' + escHtml(habitatList) + '">' +
+      '🤖 ' + (hasAny ? 'Re-fill with AI' : 'Fill with AI') +
+    '</button>' +
+    '</div>' +
     '<div class="form-row cols-2">' +
     '<div class="form-group"><label class="label">Country / Region</label>' +
     '<input type="text" id="f-country" value="'+escHtml(t.country||'')+'" placeholder="South Africa"></div>' +
@@ -2412,10 +2427,12 @@ function attachPageEvents() {
     if (e.target.id === 'mass-mode-btn') { MASS_MODE = !MASS_MODE; MASS_SELECTED.clear(); render(); return; }
     if (e.target.id === 'mass-all-btn')  { getFilteredTaxa().forEach(t => MASS_SELECTED.add(t.id)); renderMassState(); return; }
     if (e.target.id === 'mass-none-btn') { MASS_SELECTED.clear(); renderMassState(); return; }
-    if (e.target.id === 'mass-group-btn'){ doMassSetGroup(); return; }
+    if (e.target.id === 'mass-group-btn')     { doMassSetGroup(); return; }
     if (e.target.id === 'mass-delete-btn')    { doMassDelete(); return; }
+    if (e.target.id === 'mass-prov-btn')      { doMassProvenance(); return; }
     if (e.target.id === 'mass-ai-btn')        { doMassAI(); return; }
     if (e.target.id === 'mass-copy-care-btn') { doMassCopyCare(); return; }
+    if (e.target.id === 'ai-prov-btn')        { doFillProvenance(); return; }
 
 
     // Link templates
@@ -2483,7 +2500,7 @@ function renderMassState() {
   const n = MASS_SELECTED.size;
   const lbl = document.getElementById('mass-count');
   if (lbl) lbl.textContent = n + ' selected';
-  ['mass-group-btn','mass-group-sel','mass-delete-btn','mass-ai-btn','mass-copy-care-btn','mass-care-src'].forEach(id => {
+  ['mass-group-btn','mass-group-sel','mass-delete-btn','mass-prov-btn','mass-ai-btn','mass-copy-care-btn','mass-care-src'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.disabled = n === 0;
   });
@@ -2965,6 +2982,89 @@ async function doDriveList() {
 }
 
 // ═══ AI RESEARCH ═════════════════════════════════════════════
+
+// Focused provenance fetch — returns plain data object or null
+async function fetchProvenanceAI(taxon) {
+  if (!SERVER_CONFIG.hasAnthropicKey) { showToast('Anthropic API key not configured', 'error'); return null; }
+  const climates = (APP_DATA.climates || []).map(c => '"' + c.id + '" (' + c.name + ')').join(', ');
+  const habitats = (APP_DATA.habitats || []).map(h => '"' + h.id + '" (' + h.name + ')').join(', ');
+  const prompt =
+    'You are an expert botanist specialising in carnivorous plants. Research this taxon and return ONLY a JSON object — no explanation, no markdown.\n\n' +
+    'Taxon: ' + taxon.displayName + (taxon.genus ? ' (genus: ' + taxon.genus + ')' : '') + '\n\n' +
+    'Required JSON fields (omit any you are not confident about):\n' +
+    '  "country"     : primary country or countries of origin, comma-separated\n' +
+    '  "nativeRange" : 1–2 sentences of scientific geographic range (state/province level where known)\n' +
+    '  "nativeHabitat": 2–3 sentences describing soil, hydrology, associated vegetation, elevation\n' +
+    '  "climate"     : exactly one of these IDs that best fits: ' + climates + '\n' +
+    '  "habitatId"   : exactly one of these IDs that best fits: ' + habitats + '\n\n' +
+    'Return only the JSON object, nothing else.';
+  try {
+    const resp = await apiPost('/api/ai/research', {
+      model: 'claude-sonnet-4-5',
+      max_tokens: 700,
+      messages: [{ role: 'user', content: prompt }]
+    });
+    const text = (resp.content && resp.content[0]?.text) || '';
+    const m = text.match(/\{[\s\S]+\}/);
+    if (m) return JSON.parse(m[0]);
+  } catch(e) { console.warn('Provenance AI failed for ' + taxon.displayName + ':', e.message); }
+  return null;
+}
+
+// Single-taxon: fill form fields in-place (user reviews before saving)
+async function doFillProvenance() {
+  const btn = document.getElementById('ai-prov-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '🤖 Researching…'; }
+  try {
+    const taxonId = btn?.dataset.taxonId || EDIT_TAXON_ID;
+    const taxon = APP_DATA.taxa.find(t => t.id === taxonId) || {};
+    const data = await fetchProvenanceAI(taxon);
+    if (!data) { showToast('AI returned no data', 'error'); return; }
+
+    // Fill visible form fields — user can adjust before clicking Save
+    const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+    set('f-country',       data.country);
+    set('f-climate',       data.climate);
+    set('f-habitat',       data.habitatId);
+    set('f-native-range',  data.nativeRange);
+    set('f-native-habitat',data.nativeHabitat);
+
+    const filled = Object.keys(data).filter(k => data[k]).length;
+    showToast('AI filled ' + filled + ' field' + (filled !== 1 ? 's' : '') + ' — review then Save', 'success', 5000);
+  } catch(e) { showToast('AI error: ' + e.message, 'error'); }
+  finally {
+    if (btn) { btn.disabled = false; btn.textContent = '🤖 Re-fill with AI'; }
+  }
+}
+
+// Batch: update taxon objects directly and save
+async function doMassProvenance() {
+  const ids = [...MASS_SELECTED];
+  if (!ids.length) return;
+  // Progress toast
+  let done = 0;
+  const updateProgress = () => showToast('AI Provenance: ' + done + ' / ' + ids.length + ' done…', 'info', 60000);
+  updateProgress();
+  for (const id of ids) {
+    const t = APP_DATA.taxa.find(x => x.id === id);
+    if (!t) continue;
+    const data = await fetchProvenanceAI(t);
+    if (data) {
+      if (data.country)      t.country      = data.country;
+      if (data.nativeRange)  t.nativeRange  = data.nativeRange;
+      if (data.nativeHabitat)t.nativeHabitat= data.nativeHabitat;
+      if (data.climate)      t.climate      = data.climate;
+      if (data.habitatId)    t.habitatId    = data.habitatId;
+    }
+    done++;
+    updateProgress();
+    // Small pause to be kind to the API
+    await new Promise(r => setTimeout(r, 400));
+  }
+  await saveData();
+  showToast('Provenance filled for ' + done + ' taxa', 'success');
+  render();
+}
 
 async function runAIResearch(taxon, fields) {
   if (!SERVER_CONFIG.hasAnthropicKey) { showToast('Anthropic API key not configured','error'); return; }
