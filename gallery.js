@@ -1163,11 +1163,11 @@
       .replace(/"/g, '&quot;');
   }
 
-  // Resolve photo URL — strips sq: prefix, converts drive: to lh3 URL
+  // Resolve photo URL — strips sq: prefix, converts drive: to public thumbnail URL
   function resolvePhoto(src, size) {
     if (!src) return '';
     if (src.startsWith('sq:'))    return src.slice(3);
-    if (src.startsWith('drive:')) return 'https://lh3.googleusercontent.com/d/' + src.slice(6) + '=' + (size || 'w800');
+    if (src.startsWith('drive:')) return 'https://drive.google.com/thumbnail?id=' + src.slice(6) + '&sz=' + (size || 'w800');
     return src;
   }
 
