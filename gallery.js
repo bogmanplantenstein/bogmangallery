@@ -1163,6 +1163,14 @@
       .replace(/"/g, '&quot;');
   }
 
+  // Resolve photo URL — strips sq: prefix, converts drive: to lh3 URL
+  function resolvePhoto(src, size) {
+    if (!src) return '';
+    if (src.startsWith('sq:'))    return src.slice(3);
+    if (src.startsWith('drive:')) return 'https://lh3.googleusercontent.com/d/' + src.slice(6) + '=' + (size || 'w800');
+    return src;
+  }
+
   function capitalizeHabitat(str) {
     if (!str) return '';
     const s = String(str).replace(/_/g, ' ');
@@ -1459,11 +1467,11 @@
       const manualCovers = DATA.genusCoverPhotos && DATA.genusCoverPhotos[g];
       if (manualCovers && manualCovers.length) {
         const picked = manualCovers.slice(0, 4);
-        picked.forEach(function (p) { coverPhotos.push(p); });
+        picked.forEach(function (p) { coverPhotos.push(resolvePhoto(p)); });
       } else {
         genusTaxa.filter(function (t) { return !t.parentId && t.photos.length > 0; })
           .slice(0, 4)
-          .forEach(function (t) { coverPhotos.push(t.photos[0]); });
+          .forEach(function (t) { coverPhotos.push(resolvePhoto(t.photos[0])); });
       }
 
       let photoSlides = '';
@@ -1547,7 +1555,7 @@
     let speciesCards = '';
     visibleTaxa.forEach(function (t) {
       const kids  = DATA.taxa.filter(function (c) { return c.parentId === t.id; });
-      const photo = t.photos[0] || '';
+      const photo = resolvePhoto(t.photos[0], 'w400');
       const tag   = kids.length ? kids.length + ' form' + (kids.length > 1 ? 's' : '') : '';
       const navAttr = kids.length
         ? 'data-nav-forms="' + esc(t.id) + '"'
@@ -1597,7 +1605,7 @@
 
     let cardsHtml = '';
     allCards.forEach(function (t) {
-      const photo    = t.photos[0] || '';
+      const photo    = resolvePhoto(t.photos[0], 'w400');
       const isParent = t.id === parent.id;
       let label = '';
       if (isParent) {
@@ -1644,7 +1652,7 @@
 
     // ── Photo section ──
     const photos    = t.photos;
-    const mainPhoto = photos[0] || '';
+    const mainPhoto = resolvePhoto(photos[0], 'w800');
     let photoSection = '';
 
     if (mainPhoto) {
@@ -1653,7 +1661,7 @@
         let thumbItems = '';
         photos.forEach(function (ph, i) {
           thumbItems += '<img class="bmg-thumb' + (i === 0 ? ' active' : '') + '" ' +
-            'src="' + esc(ph) + '" alt="" loading="lazy" ' +
+            'src="' + esc(resolvePhoto(ph, 'w200')) + '" alt="" loading="lazy" ' +
             'data-thumb="' + esc(t.id) + '" data-idx="' + i + '">';
         });
         thumbsHtml = '<div class="bmg-photo-thumbs">' + thumbItems + '</div>';
@@ -1721,7 +1729,7 @@
     if (children.length) {
       let childCards = '';
       children.forEach(function (c) {
-        const cp = c.photos[0] || '';
+        const cp = resolvePhoto(c.photos[0], 'w400');
         childCards += '<div class="bmg-species-card" data-nav-detail="' + esc(c.id) + '">' +
           '<div class="bmg-species-photo-wrap">' +
           (cp
@@ -1804,7 +1812,7 @@
 
     let cards = '';
     hybrids.forEach(function (h) {
-      const p = h.photos[0] || '';
+      const p = resolvePhoto(h.photos[0], 'w400');
       cards += '<div class="bmg-hybrid-card">' +
         '<div class="bmg-hybrid-photo">' +
         (p
@@ -1867,7 +1875,7 @@
     const trigger = document.querySelector('[data-lightbox="' + taxonId + '"]');
     if (trigger) {
       const img = trigger.querySelector('img');
-      if (img) img.src = t.photos[idx];
+      if (img) img.src = resolvePhoto(t.photos[idx], 'w800');
       trigger.dataset.currentIdx = idx;
     }
 
@@ -1894,7 +1902,7 @@
     const idx    = STATE.modalIndex;
     const img    = document.getElementById('bmg-modal-img');
     const cap    = document.getElementById('bmg-modal-caption');
-    if (img) img.src = photos[idx] || '';
+    if (img) img.src = resolvePhoto(photos[idx], 'w1600') || '';
     if (cap) cap.textContent = photos.length > 1 ? (idx + 1) + ' / ' + photos.length : '';
 
     document.querySelectorAll('.bmg-thumb').forEach(function (th, i) {

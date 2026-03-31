@@ -1236,13 +1236,15 @@ function renderMassToolbar() {
     '<button class="btn btn-secondary btn-sm" id="mass-all-btn">All</button>' +
     '<button class="btn btn-secondary btn-sm" id="mass-none-btn">None</button>' +
     '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>' +
-    // Group — datalist so user can pick existing OR type a new one
-    '<input list="mass-group-list" id="mass-group-sel" placeholder="Group name…"' + dis +
-      ' style="font-size:10px;padding:5px 8px;width:140px;background:var(--bg3);color:var(--white);border:1px solid var(--border2);border-radius:var(--r);">' +
-    '<datalist id="mass-group-list">' +
-    allGroups.map(g => '<option value="' + escHtml(g) + '">').join('') +
+    // Group — select for existing groups + text input for new group names
+    '<select id="mass-group-sel"' + dis +
+      ' style="font-size:10px;padding:5px 8px;max-width:160px;background:var(--bg3);color:var(--white);border:1px solid var(--border2);border-radius:var(--r);">' +
+    '<option value="">— Pick Group… —</option>' +
+    allGroups.map(g => '<option value="' + escHtml(g) + '">' + escHtml(g) + '</option>').join('') +
     '<option value="__clear__">— Clear Group —</option>' +
-    '</datalist>' +
+    '</select>' +
+    '<input type="text" id="mass-group-new" placeholder="…or type new" ' + (n === 0 ? 'disabled' : '') +
+      ' style="font-size:10px;padding:5px 8px;width:110px;background:var(--bg3);color:var(--white);border:1px solid var(--border2);border-radius:var(--r);">' +
     '<button class="btn btn-accent btn-sm" id="mass-group-btn"' + dis + '>Set Group</button>' +
     '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>' +
     // Copy care
@@ -2420,6 +2422,12 @@ function attachPageEvents() {
     if (rmGrp) { const [g,i]=rmGrp.split(':');
       APP_DATA.genusGroups[g]?.splice(parseInt(i),1);
       saveAndRender(); return; }
+    const moveUp = e.target.closest('[data-move-group-up]')?.dataset.moveGroupUp;
+    if (moveUp) { const [g,i]=moveUp.split(':'); const idx=parseInt(i);
+      const arr=APP_DATA.genusGroups[g]; if (arr && idx>0) { [arr[idx-1],arr[idx]]=[arr[idx],arr[idx-1]]; saveAndRender(); } return; }
+    const moveDn = e.target.closest('[data-move-group-down]')?.dataset.moveGroupDown;
+    if (moveDn) { const [g,i]=moveDn.split(':'); const idx=parseInt(i);
+      const arr=APP_DATA.genusGroups[g]; if (arr && idx<arr.length-1) { [arr[idx],arr[idx+1]]=[arr[idx+1],arr[idx]]; saveAndRender(); } return; }
     const syncGrp = e.target.closest('[data-sync-genus]')?.dataset.syncGenus;
     if (syncGrp) { syncGenusGroupsFromTaxa(); saveAndRender(); return; }
 
@@ -2474,6 +2482,26 @@ function attachPageEvents() {
     // Group name rename (on blur below)
   });
 
+  // Group name rename on blur
+  main.addEventListener('focusout', e => {
+    if (!e.target.classList.contains('group-name-input')) return;
+    const genus = e.target.dataset.genus;
+    const idx   = parseInt(e.target.dataset.idx);
+    const val   = e.target.value.trim();
+    const arr   = APP_DATA.genusGroups[genus];
+    if (!arr || arr[idx] === val) return;
+    if (!val) { e.target.value = arr[idx]; return; } // revert empty
+    const oldName = arr[idx];
+    arr[idx] = val;
+    // Cascade rename to taxa and care defaults
+    APP_DATA.taxa.forEach(t => { if (t.group === oldName) t.group = val; });
+    if (APP_DATA.groupCareDefaults && APP_DATA.groupCareDefaults[oldName]) {
+      APP_DATA.groupCareDefaults[val] = APP_DATA.groupCareDefaults[oldName];
+      delete APP_DATA.groupCareDefaults[oldName];
+    }
+    saveAndRender('Group renamed to "' + val + '"');
+  });
+
   // File inputs
   const importFile = document.getElementById('import-file');
   if (importFile) importFile.addEventListener('change', e => doImportJSON(e.target.files[0]));
@@ -2500,7 +2528,7 @@ function renderMassState() {
   const n = MASS_SELECTED.size;
   const lbl = document.getElementById('mass-count');
   if (lbl) lbl.textContent = n + ' selected';
-  ['mass-group-btn','mass-group-sel','mass-delete-btn','mass-prov-btn','mass-ai-btn','mass-copy-care-btn','mass-care-src'].forEach(id => {
+  ['mass-group-btn','mass-group-sel','mass-group-new','mass-delete-btn','mass-prov-btn','mass-ai-btn','mass-copy-care-btn','mass-care-src'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.disabled = n === 0;
   });
@@ -2685,16 +2713,21 @@ function addExtRow() {
 // ═══ MASS OPERATIONS ═════════════════════════════════════════
 
 function doMassSetGroup() {
-  const raw = (document.getElementById('mass-group-sel')?.value || '').trim();
-  if (!raw) { showToast('Type or pick a group name first', 'error'); return; }
+  // Text input (new group) takes priority over select (existing group)
+  const newVal = (document.getElementById('mass-group-new')?.value || '').trim();
+  const selVal = (document.getElementById('mass-group-sel')?.value || '').trim();
+  const raw = newVal || selVal;
+  if (!raw) { showToast('Pick a group from the dropdown or type a new group name', 'error'); return; }
   const group = raw === '__clear__' ? '' : raw;
   MASS_SELECTED.forEach(id => {
     const t = APP_DATA.taxa.find(x => x.id === id);
     if (t) t.group = group;
   });
   syncGenusGroupsFromTaxa();
-  // Clear the input after applying
-  const inp = document.getElementById('mass-group-sel');
+  // Clear the inputs after applying
+  const sel = document.getElementById('mass-group-sel');
+  const inp = document.getElementById('mass-group-new');
+  if (sel) sel.value = '';
   if (inp) inp.value = '';
   saveAndRender(group ? 'Group set to "' + group + '"' : 'Group cleared');
 }
