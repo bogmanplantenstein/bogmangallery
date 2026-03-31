@@ -1192,6 +1192,58 @@
     return '<em>' + name + '</em>';
   }
 
+  // ─── HASH ROUTING ─────────────────────────────────────────────
+
+  function stateToHash(s) {
+    var v = s.view || 'genera';
+    if (v === 'species') return '#/genus/' + encodeURIComponent(s.genus || '');
+    if (v === 'hybrids') return '#/genus/' + encodeURIComponent(s.genus || '') + '/hybrids';
+    if (v === 'detail')  return '#/taxon/' + encodeURIComponent(s.taxonId || '');
+    if (v === 'forms')   return '#/forms/' + encodeURIComponent(s.parentId || '');
+    return '#/';
+  }
+
+  function hashToState(hash) {
+    var h = (hash || '').replace(/^#\/?/, '');
+    var parts = h.split('/').map(function (p) { return decodeURIComponent(p); });
+    if (!h) return { view: 'genera' };
+    if (parts[0] === 'genus' && parts[1]) {
+      if (parts[2] === 'hybrids') return { view: 'hybrids', genus: parts[1] };
+      return { view: 'species', genus: parts[1] };
+    }
+    if (parts[0] === 'taxon' && parts[1]) {
+      var td = DATA && DATA.taxa.find(function (x) { return x.id === parts[1]; });
+      return { view: 'detail', taxonId: parts[1], genus: td ? td.genus : null, parentId: td ? (td.parentId || null) : null };
+    }
+    if (parts[0] === 'forms' && parts[1]) {
+      var tp = DATA && DATA.taxa.find(function (x) { return x.id === parts[1]; });
+      return { view: 'forms', parentId: parts[1], genus: tp ? tp.genus : null };
+    }
+    return { view: 'genera' };
+  }
+
+  function applyHashState(s) {
+    STATE.view     = s.view     || 'genera';
+    STATE.genus    = s.genus    || null;
+    STATE.taxonId  = s.taxonId  || null;
+    STATE.parentId = s.parentId || null;
+    if (STATE.view === 'genera') {
+      STATE.search = ''; STATE.filterGenus = 'all'; STATE.activeGroup = 'all';
+    }
+    if (STATE.view === 'species') STATE.activeGroup = 'all';
+    render();
+    if (STATE.view === 'genera') startGenusSlideshow();
+    var root = document.getElementById('bmg-root');
+    if (root) root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function attachPopstate() {
+    window.addEventListener('popstate', function (e) {
+      var s = (e.state && e.state.view) ? e.state : hashToState(window.location.hash);
+      applyHashState(s);
+    });
+  }
+
   // ─── NAVIGATION ───────────────────────────────────────────────
   function navigate(view, genus, taxonId, parentId) {
     STATE.view    = view    || 'genera';
@@ -1203,17 +1255,24 @@
       STATE.search      = '';
       STATE.filterGenus = 'all';
       STATE.activeGroup = 'all';
-      const inp = document.getElementById('bmg-search-input');
+      var inp = document.getElementById('bmg-search-input');
       if (inp) inp.value = '';
     }
     if (view === 'species') {
       STATE.activeGroup = 'all';
     }
 
+    // Push a history entry so back/forward work
+    var hash = stateToHash(STATE);
+    var histData = { view: view, genus: genus || null, taxonId: taxonId || null, parentId: parentId || null };
+    if (window.location.hash !== hash) {
+      history.pushState(histData, '', hash);
+    }
+
     render();
     if (view === 'genera') startGenusSlideshow();
 
-    const root = document.getElementById('bmg-root');
+    var root = document.getElementById('bmg-root');
     if (root) root.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -1981,20 +2040,43 @@
   async function init() {
     injectStyles();
     injectShell();
+    attachPopstate();
 
-    const root = document.getElementById('bmg-root');
+    var root = document.getElementById('bmg-root');
     if (!root) { console.error('[bmg] No #bmg-root element found.'); return; }
 
-    let hadCache = false;
+    var hadCache = false;
+
+    // Helper: after DATA is ready, apply any initial hash and stamp history
+    function applyInitialHash() {
+      var initHash = window.location.hash;
+      if (initHash && initHash !== '#' && initHash !== '#/') {
+        var s = hashToState(initHash);
+        if (s.view !== 'genera') {
+          // Resolve genus from data if not in hash (e.g. direct taxon link)
+          if (!s.genus && s.taxonId) {
+            var t = DATA.taxa.find(function (x) { return x.id === s.taxonId; });
+            if (t) { s.genus = t.genus; s.parentId = t.parentId || null; }
+          }
+          STATE.view = s.view; STATE.genus = s.genus; STATE.taxonId = s.taxonId; STATE.parentId = s.parentId;
+          render();
+          history.replaceState({ view: STATE.view, genus: STATE.genus, taxonId: STATE.taxonId, parentId: STATE.parentId }, '', stateToHash(STATE));
+          return;
+        }
+      }
+      // Default: stamp the genera home state
+      history.replaceState({ view: 'genera' }, '', stateToHash(STATE));
+      startGenusSlideshow();
+    }
 
     // Step 1: render from cache if available
     try {
-      const cached = JSON.parse(sessionStorage.getItem(CONFIG.CACHE_KEY) || 'null');
+      var cached = JSON.parse(sessionStorage.getItem(CONFIG.CACHE_KEY) || 'null');
       if (cached && cached.ts && cached.taxa) {
         DATA = processData(cached);
         root.innerHTML = renderShell(DATA.taxa);
         attachRootEvents();
-        startGenusSlideshow();
+        applyInitialHash();
         hadCache = true;
 
         if ((Date.now() - cached.ts) < CONFIG.CACHE_TTL) {
@@ -2010,22 +2092,20 @@
 
     // Step 2: fetch fresh data
     try {
-      const raw = await fetchData();
+      var raw = await fetchData();
       sessionStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify(Object.assign({}, raw, { ts: Date.now() })));
       DATA = processData(raw);
 
       if (!hadCache) {
         root.innerHTML = renderShell(DATA.taxa);
         attachRootEvents();
-        startGenusSlideshow();
-      } else {
-        // Already rendered from cache; DATA is now updated for next navigation
+        applyInitialHash();
       }
+      // If hadCache: DATA is now updated for next navigation; already rendered
     } catch (err) {
       if (!hadCache) {
         root.innerHTML = '<div class="bmg-error">' +
           '<h3>Could not load collection data</h3>' +
-          '<p>Make sure the admin server is running: <code>node server.js</code> in the v2 folder.</p>' +
           '<p style="margin-top:12px;font-size:11px;color:#444;">' + esc(err.message) + '</p>' +
           '</div>';
       }
