@@ -1,9 +1,9 @@
 {
   "meta": {
     "version": "2.0",
-    "savedAt": "2026-03-31T08:43:01.323Z",
+    "savedAt": "2026-03-31T08:43:48.312Z",
     "publishedAt": "",
-    "taxaCount": 313,
+    "taxaCount": 308,
     "githubRepo": "bogmanplantenstein/bogmangallery"
   },
   "taxa": [
@@ -10258,144 +10258,6 @@
       "externalLinks": [],
       "notes": "",
       "parentId": "txn_xa4dhfyad9",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_5a7x5ess4y3",
-      "genus": "Heliamphora",
-      "species": "chimantensis",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Heliamphora chimantensis",
-      "commonName": "",
-      "group": "",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_u6ehle24j4d",
-      "genus": "Heliamphora",
-      "species": "chimantensis",
-      "subspecies": "Chimanta",
-      "entryType": "location",
-      "displayName": "Heliamphora chimantensis Chimanta (SG)",
-      "commonName": "",
-      "group": "",
-      "photos": [
-        "drive:1DeV16HfasJPtN_EBwbEXtpY6L5UojqMa",
-        "drive:1YXg1BtIAy696TgW4HY1mM4uBD_r7UijN",
-        "drive:1cSBQoi8JZRHTYh4pENPld9oYnS4UGLFT"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "txn_5a7x5ess4y3",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_ki0icngv429",
-      "genus": "Heliamphora",
-      "species": "pulchella",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Heliamphora pulchella",
-      "commonName": "",
-      "group": "",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_dotub0bgsa4",
-      "genus": "Heliamphora",
-      "species": "pulchella",
-      "subspecies": "Venezuela",
-      "entryType": "location",
-      "displayName": "Heliamphora pulchella Venezuela (SG)",
-      "commonName": "",
-      "group": "",
-      "photos": [
-        "drive:1WHOJaehYGx8MKzDAjPu5LPpZqd_iPqKu"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "txn_ki0icngv429",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_93ljruhs568",
-      "genus": "Heliamphora",
-      "species": "uncinata",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Heliamphora uncinata",
-      "commonName": "",
-      "group": "",
-      "photos": [
-        "drive:1kwiIDh06kt55GIdnNVq7uIBg2VDXXxem"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
       "flagged": false,
