@@ -1220,33 +1220,41 @@ function renderTaxaList() {
 
 function renderMassToolbar() {
   const n = MASS_SELECTED.size;
-  const selGenera = [...new Set([...MASS_SELECTED].map(id => APP_DATA.taxa.find(t=>t.id===id)?.genus).filter(Boolean))];
-  const availGroups = [...new Set(selGenera.flatMap(g => getGroupsForGenus(g)))].sort();
-  // Taxa with care data, for the copy-care dropdown
-  const careOpts = sortTaxaAlpha(APP_DATA.taxa.filter(t => getEffectiveCare(t).light || getEffectiveCare(t).water || getEffectiveCare(t).soil))
+  const dis = n === 0 ? ' disabled' : '';
+  // All groups in the system (not filtered to selected genera)
+  const allGroups = getAllGroups();
+  // All taxa sorted — any taxon can be a care source (user picks)
+  const careTaxa = sortTaxaAlpha(APP_DATA.taxa.filter(t => {
+    const c = getEffectiveCare(t);
+    return c.light || c.water || c.soil || c.dormancy || c.temp;
+  }));
+  const careOpts = careTaxa
     .map(t => '<option value="'+escHtml(t.id)+'">'+escHtml(t.displayName)+'</option>').join('');
   return '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;background:var(--accent-bg);border:1px solid rgba(200,169,110,0.25);border-radius:var(--r);margin-bottom:12px;">' +
-    '<span style="font-size:11px;color:var(--accent);" id="mass-count">' + n + ' selected</span>' +
-    '<button class="btn btn-secondary btn-sm" id="mass-all-btn">Select All</button>' +
-    '<button class="btn btn-secondary btn-sm" id="mass-none-btn">Deselect All</button>' +
+    '<span style="font-size:11px;color:var(--accent);white-space:nowrap;" id="mass-count">' + n + ' selected</span>' +
+    '<button class="btn btn-secondary btn-sm" id="mass-all-btn">All</button>' +
+    '<button class="btn btn-secondary btn-sm" id="mass-none-btn">None</button>' +
     '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>' +
-    // Group
-    '<select id="mass-group-sel" style="font-size:10px;padding:5px 8px;width:auto;"' + (n===0?' disabled':'') + '>' +
-    '<option value="">— Set Group —</option>' +
-    availGroups.map(g => '<option value="' + escHtml(g) + '">' + escHtml(g) + '</option>').join('') +
-    '<option value="__clear__">Clear Group</option>' +
-    '</select>' +
-    '<button class="btn btn-accent btn-sm" id="mass-group-btn"' + (n===0?' disabled':'') + '>Set Group</button>' +
+    // Group — datalist so user can pick existing OR type a new one
+    '<input list="mass-group-list" id="mass-group-sel" placeholder="Group name…"' + dis +
+      ' style="font-size:10px;padding:5px 8px;width:140px;background:var(--bg3);color:var(--white);border:1px solid var(--border2);border-radius:var(--r);">' +
+    '<datalist id="mass-group-list">' +
+    allGroups.map(g => '<option value="' + escHtml(g) + '">').join('') +
+    '<option value="__clear__">— Clear Group —</option>' +
+    '</datalist>' +
+    '<button class="btn btn-accent btn-sm" id="mass-group-btn"' + dis + '>Set Group</button>' +
     '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>' +
     // Copy care
-    '<select id="mass-care-src" style="font-size:10px;padding:5px 8px;max-width:180px;"' + (n===0?' disabled':'') + '>' +
-    '<option value="">— Copy Care From… —</option>' +
-    careOpts +
-    '</select>' +
-    '<button class="btn btn-accent btn-sm" id="mass-copy-care-btn"' + (n===0?' disabled':'') + '>Apply Care</button>' +
-    '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>' +
-    '<button class="btn btn-accent btn-sm" id="mass-ai-btn"' + (n===0?' disabled':'') + '>🤖 AI (' + n + ')</button>' +
-    '<button class="btn btn-danger btn-sm" id="mass-delete-btn"' + (n===0?' disabled':'') + '>🗑 Delete (' + n + ')</button>' +
+    (careOpts
+      ? '<select id="mass-care-src" style="font-size:10px;padding:5px 8px;max-width:180px;"' + dis + '>' +
+        '<option value="">— Copy Care From… —</option>' + careOpts + '</select>' +
+        '<button class="btn btn-accent btn-sm" id="mass-copy-care-btn"' + dis + '>Apply Care</button>' +
+        '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>'
+      : '<span style="font-size:10px;color:var(--dimmer);">No care data yet — add care to a taxon first</span>' +
+        '<div style="width:1px;height:18px;background:var(--border);flex-shrink:0;"></div>'
+    ) +
+    '<button class="btn btn-accent btn-sm" id="mass-ai-btn"' + dis + '>🤖 AI (' + n + ')</button>' +
+    '<button class="btn btn-danger btn-sm" id="mass-delete-btn"' + dis + '>🗑 Delete (' + n + ')</button>' +
     '</div>';
 }
 
@@ -1903,14 +1911,21 @@ function renderCSVPreview() {
       const isNew = !APP_DATA.taxa.find(x => x.displayName === t.displayName);
       const checked = CSV_SELECTED.has(t.displayName);
       const hasCare = t.care && t.care.override && (t.care.light || t.care.water || t.care.soil);
-      return '<div class="csv-import-row' + (checked ? ' csv-row-checked' : '') + '" data-csv-name="' + escHtml(t.displayName) + '" style="display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:3px;border-radius:var(--r);border:1px solid ' + (checked ? 'rgba(200,169,110,0.4)' : 'var(--border)') + ';background:' + (checked ? 'var(--accent-bg)' : 'transparent') + ';cursor:pointer;user-select:none;transition:background 0.1s,border-color 0.1s;">' +
+      // Format badges: Plant is implicit (no badge), show others
+      const fmts = (t._formats || []);
+      const hasOnlyPlant = fmts.length === 0 || (fmts.length === 1 && fmts[0] === 'Plant');
+      const fmtBadges = fmts.filter(f => f !== 'Plant')
+        .map(f => '<span style="font-size:9px;padding:1px 5px;border-radius:8px;background:rgba(90,122,158,0.25);color:var(--blue);flex-shrink:0;">' + escHtml(f) + '</span>').join('');
+      return '<div class="csv-import-row' + (checked ? ' csv-row-checked' : '') + '" data-csv-name="' + escHtml(t.displayName) + '" style="display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:3px;border-radius:var(--r);border:1px solid ' + (checked ? 'rgba(200,169,110,0.4)' : 'var(--border)') + ';background:' + (checked ? 'var(--accent-bg)' : 'transparent') + ';cursor:pointer;user-select:none;transition:background 0.1s,border-color 0.1s;">' +
         '<div class="mass-sel-indicator" style="' + (checked ? 'border-color:var(--accent);background:var(--accent);color:var(--bg);' : '') + '">' + (checked ? '✓' : '') + '</div>' +
-        '<span class="pill ' + (isNew ? 'green' : '') + '" style="flex-shrink:0;">' + (isNew ? 'New' : 'Exists') + '</span>' +
-        '<span style="font-style:italic;font-family:var(--font-d);font-size:13px;flex:1;">' + escHtml(t.displayName) + '</span>' +
-        '<span style="font-size:10px;color:var(--dimmer);">' + escHtml(t.genus) + '</span>' +
+        '<span class="pill ' + (isNew ? 'green' : 'blue') + '" style="flex-shrink:0;">' + (isNew ? 'New' : 'Update') + '</span>' +
+        '<span style="font-style:italic;font-family:var(--font-d);font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escHtml(t.displayName) + '</span>' +
+        fmtBadges +
+        '<span style="font-size:10px;color:var(--dimmer);flex-shrink:0;">' + escHtml(t.genus) + '</span>' +
         (t.group ? '<span class="pill" style="flex-shrink:0;">' + escHtml(t.group) + '</span>' : '') +
         (hasCare ? '<span style="font-size:10px;color:var(--green);flex-shrink:0;">✓ Care</span>' : '') +
         (t.photos && t.photos.length ? '<span style="font-size:10px;color:var(--accent);flex-shrink:0;">' + t.photos.length + ' 📷</span>' : '') +
+        (t.shopLinks && t.shopLinks.length ? '<span style="font-size:10px;color:var(--dimmer);flex-shrink:0;">🛒 ' + t.shopLinks.length + '</span>' : '') +
         '</div>';
     }).join('') + '</div>' +
     '<div style="display:flex;gap:10px;margin-top:14px;align-items:center;">' +
@@ -2445,9 +2460,9 @@ function renderMassState() {
   const n = MASS_SELECTED.size;
   const lbl = document.getElementById('mass-count');
   if (lbl) lbl.textContent = n + ' selected';
-  ['mass-group-btn','mass-delete-btn','mass-ai-btn','mass-copy-care-btn'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) btn.disabled = n === 0;
+  ['mass-group-btn','mass-group-sel','mass-delete-btn','mass-ai-btn','mass-copy-care-btn','mass-care-src'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.disabled = n === 0;
   });
   // Refresh visual selection indicators
   document.querySelectorAll('[data-mass-id]').forEach(row => {
@@ -2630,14 +2645,18 @@ function addExtRow() {
 // ═══ MASS OPERATIONS ═════════════════════════════════════════
 
 function doMassSetGroup() {
-  const g = document.getElementById('mass-group-sel')?.value;
-  if (!g) return;
+  const raw = (document.getElementById('mass-group-sel')?.value || '').trim();
+  if (!raw) { showToast('Type or pick a group name first', 'error'); return; }
+  const group = raw === '__clear__' ? '' : raw;
   MASS_SELECTED.forEach(id => {
     const t = APP_DATA.taxa.find(x => x.id === id);
-    if (t) t.group = g === '__clear__' ? '' : g;
+    if (t) t.group = group;
   });
   syncGenusGroupsFromTaxa();
-  saveAndRender('Group updated');
+  // Clear the input after applying
+  const inp = document.getElementById('mass-group-sel');
+  if (inp) inp.value = '';
+  saveAndRender(group ? 'Group set to "' + group + '"' : 'Group cleared');
 }
 
 function doMassDelete() {
@@ -2974,6 +2993,22 @@ function doParseCSV() {
   reader.readAsText(file, 'utf-8');
 }
 
+// Helper: get a field value trying multiple possible column names (case-insensitive key fallback)
+function csvField(row, ...names) {
+  for (const n of names) {
+    if (row[n] !== undefined && row[n] !== '') return row[n];
+  }
+  // Try case-insensitive
+  const lower = names.map(n => n.toLowerCase());
+  for (const k of Object.keys(row)) {
+    if (lower.includes(k.toLowerCase()) && row[k] !== '') return row[k];
+  }
+  return '';
+}
+
+const FORMAT_SUFFIXES = ['Plant','Seeds','Gemmae','Tuber','Cutting','Rhizome','Division'];
+const FORMAT_RE = new RegExp('\\s+(' + FORMAT_SUFFIXES.join('|') + ')\\s*$', 'i');
+
 function parseSquarespaceCSV(text) {
   const lines = text.split(/\r?\n/);
   const headers = parseCSVLine(lines[0]);
@@ -2984,58 +3019,71 @@ function parseSquarespaceCSV(text) {
     return obj;
   });
 
-  // Filter plant rows
+  // Filter plant rows — try multiple category/tag column name variants
   const plantRows = rows.filter(r => {
-    const cat = (r['Category']||r['Tags']||'').toLowerCase();
+    const cat = (csvField(r,'Category','Categories','Product Category','Category Name','Tags','Tag') || '').toLowerCase();
     const title = (r['Title']||'').toLowerCase();
-    return cat.includes('plant') || cat.includes('sundew') || cat.includes('drosera') ||
-           cat.includes('pinguicula') || cat.includes('utricularia') || cat.includes('byblis') ||
-           title.match(/^(drosera|pinguicula|utricularia|byblis|drosophyllum|dionaea)/i);
+    const isCarnivorous = cat.includes('plant') || cat.includes('sundew') || cat.includes('drosera') ||
+      cat.includes('pinguicula') || cat.includes('utricularia') || cat.includes('byblis') ||
+      cat.includes('dionaea') || cat.includes('drosophyllum') || cat.includes('carnivorous');
+    const genusInTitle = /^(drosera|pinguicula|utricularia|byblis|drosophyllum|dionaea)\b/i.test(title);
+    return isCarnivorous || genusInTitle;
   });
 
-  // Group by base species name (merge PLANT/SEEDS/GEMMAE variants)
-  const grouped = {};
+  // Strip format suffix to get base name; track which formats exist per base name
+  const grouped = {}; // baseName → [{row, format}]
   plantRows.forEach(r => {
-    const title = (r['Title']||'').replace(/\s*(Plant|Seeds|Gemmae|Tuber|Cutting)\s*$/i,'').trim();
-    if (!grouped[title]) grouped[title] = [];
-    grouped[title].push(r);
+    const raw   = (r['Title']||'').trim();
+    const match = raw.match(FORMAT_RE);
+    const fmt   = match ? match[1] : 'Plant';        // e.g. 'Seeds', or 'Plant' if no suffix
+    const base  = match ? raw.slice(0, match.index).trim() : raw;
+    if (!grouped[base]) grouped[base] = [];
+    grouped[base].push({ row: r, format: fmt });
   });
 
-  return Object.entries(grouped).map(([title, rows]) => {
-    const sample = rows[0];
-    const genus  = inferGenus(title, sample['Category']||'');
-    const group  = inferGroup(sample['Category']||'', sample['Tags']||'');
+  return Object.entries(grouped).map(([title, entries]) => {
+    // Prefer the row that has a 'Plant' format for sample (description, care, etc.)
+    const plantEntry = entries.find(e => e.format === 'Plant') || entries[0];
+    const sample = plantEntry.row;
+    const cat   = csvField(sample,'Category','Categories','Product Category','Category Name') || '';
+    const tags  = csvField(sample,'Tags','Tag') || '';
+    const genus = inferGenus(title, cat);
+    const group = inferGroup(cat, tags);
+
+    // Collect all photos from all format rows
     const photos = [];
     const addPhoto = u => { u = u.trim(); if (u && !photos.includes('sq:'+u)) photos.push('sq:'+u); };
-    rows.forEach(r => {
-      // Try every known Squarespace image column name variation
+    entries.forEach(({row: r}) => {
       const mainImg = r['Image URL'] || r['Image Url'] || r['image_url'] ||
                       r['Product Image URL'] || r['Main Image URL'] || r['Thumbnail URL'] || '';
       mainImg.split(',').forEach(addPhoto);
-      // Additional image columns (Squarespace exports up to ~5 extra image columns)
       ['Additional Image URL 1','Additional Image URL 2','Additional Image URL 3',
        'Additional Image URL 4','Additional Image URL 5',
        'Image URL 2','Image URL 3','Image URL 4'].forEach(col => {
         if (r[col]) r[col].split(',').forEach(addPhoto);
       });
-      // Fallback: scan all columns for anything that looks like an image URL
-      if (!photos.length) {
-        Object.values(r).forEach(v => {
-          if (typeof v === 'string' && /https?:\/\/[^\s,]+\.(jpg|jpeg|png|webp|gif)/i.test(v)) {
-            v.match(/https?:\/\/[^\s,]+\.(jpg|jpeg|png|webp|gif)/gi)?.forEach(addPhoto);
-          }
-        });
-      }
     });
-    const shopLinks = rows.map(r => ({
-      label: guessShopType(r['Title']||''),
-      url:   r['URL']||r['Product URL']||''
-    })).filter(l=>l.url);
+    // Fallback: scan every cell for image-like URLs
+    if (!photos.length) {
+      entries.forEach(({row: r}) => Object.values(r).forEach(v => {
+        if (typeof v === 'string' && /https?:\/\/[^\s,]+\.(jpg|jpeg|png|webp|gif)/i.test(v))
+          v.match(/https?:\/\/[^\s,]+\.(jpg|jpeg|png|webp|gif)/gi)?.forEach(addPhoto);
+      }));
+    }
 
-    const desc = sample['Description']||'';
+    // Build shop links — one per listing, label = format type
+    const shopLinks = [];
+    entries.forEach(({row: r, format}) => {
+      const url = r['URL'] || r['Product URL'] || r['Url'] || '';
+      if (url) shopLinks.push({ label: format, url });
+    });
+
+    const desc = sample['Description'] || '';
     const care = parseCareFromHtml(desc) || {};
-
     const [sp, sub, entryType, parentHint] = parseSpeciesFromTitle(title, genus);
+
+    // Collect format list for preview display
+    const formats = [...new Set(entries.map(e => e.format))].sort();
 
     return {
       id: generateId(), genus, species: sp, subspecies: sub, entryType,
@@ -3044,6 +3092,7 @@ function parseSquarespaceCSV(text) {
       care: Object.keys(care).length ? {...care, override:true} : {override:false},
       shopLinks, externalLinks: [], notes:'',
       parentId:'', _parentHint: parentHint,
+      _formats: formats,   // ephemeral — used in preview, deleted before import
       isHybrid: title.includes(' x ') || title.includes(' × '), isGrex:false, flagged:false
     };
   });
@@ -3128,17 +3177,45 @@ function parseCareFromHtml(html) {
 function doImportCSV() {
   if (!CSV_SELECTED.size) { showToast('No taxa selected — check at least one item', 'error'); return; }
   const toImport = CSV_PREVIEW.filter(t => CSV_SELECTED.has(t.displayName));
-  toImport.forEach(t => {
+  let added = 0, updated = 0;
+  toImport.forEach(incoming => {
+    // Strip ephemeral preview fields
+    const t = { ...incoming };
     delete t._parentHint;
-    const existing = APP_DATA.taxa.findIndex(x => x.displayName === t.displayName);
-    if (existing >= 0) APP_DATA.taxa[existing] = { ...APP_DATA.taxa[existing], ...t }; // update existing
-    else APP_DATA.taxa.push(t);
+    delete t._formats;
+
+    const idx = APP_DATA.taxa.findIndex(x => x.displayName === t.displayName);
+    if (idx >= 0) {
+      const ex = APP_DATA.taxa[idx];
+      // Merge shop links — add any new ones not already present by URL
+      const existingUrls = new Set((ex.shopLinks || []).map(l => l.url));
+      const newLinks = (t.shopLinks || []).filter(l => l.url && !existingUrls.has(l.url));
+      // Merge photos — add new drive/sq photos not already present
+      const existingPhotos = new Set(ex.photos || []);
+      const newPhotos = (t.photos || []).filter(p => !existingPhotos.has(p));
+      // Preserve existing care/notes unless incoming has override care
+      APP_DATA.taxa[idx] = {
+        ...ex,
+        // Update non-destructive fields
+        group:      t.group || ex.group,
+        isHybrid:   t.isHybrid || ex.isHybrid,
+        shopLinks:  [...(ex.shopLinks || []), ...newLinks],
+        photos:     [...(ex.photos || []), ...newPhotos],
+        // Only overwrite care if the CSV had parseable care data
+        care:       (t.care && t.care.override && (t.care.light || t.care.water || t.care.soil))
+                      ? t.care : ex.care,
+      };
+      updated++;
+    } else {
+      APP_DATA.taxa.push(t);
+      added++;
+    }
   });
   syncGenusGroupsFromTaxa();
   saveData().then(() => {
     CSV_PREVIEW = [];
     CSV_SELECTED = new Set();
-    showToast('Imported ' + toImport.length + ' taxa', 'success');
+    showToast('Imported: ' + added + ' new, ' + updated + ' updated', 'success');
     render();
   });
 }
