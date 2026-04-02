@@ -523,11 +523,14 @@
   object-fit: cover;
   display: block;
   filter: brightness(0.9);
-  transition: filter 0.3s ease;
+  transition: filter 0.3s ease, opacity 0.18s ease;
   pointer-events: none;
   -webkit-user-drag: none;
   user-select: none;
   -webkit-user-select: none;
+}
+.bmg-lightbox-trigger img.bmg-photo-swapping {
+  opacity: 0;
 }
 .bmg-lightbox-trigger:hover img { filter: brightness(1); }
 .bmg-photo-count {
@@ -1884,21 +1887,41 @@
 
   // ─── LIGHTBOX ─────────────────────────────────────────────────
   function swapDetailPhoto(taxonId, idx) {
-    const t = DATA.taxa.find(function (x) { return x.id === taxonId; });
+    var t = DATA.taxa.find(function (x) { return x.id === taxonId; });
     if (!t || !t.photos.length || idx < 0 || idx >= t.photos.length) return;
 
-    const trigger = document.querySelector('[data-lightbox="' + taxonId + '"]');
+    var newSrc = resolvePhoto(t.photos[idx], 'w800');
+
+    var trigger = document.querySelector('[data-lightbox="' + taxonId + '"]');
     if (trigger) {
-      const img = trigger.querySelector('img');
-      if (img) img.src = resolvePhoto(t.photos[idx], 'w800');
-      trigger.dataset.currentIdx = idx;
+      var img = trigger.querySelector('img');
+      if (img) {
+        // Always fade out → set new src → fade back in.
+        // This guarantees a visible update even when the browser would
+        // otherwise skip a re-render because the src string is unchanged
+        // (e.g. clicking the first thumbnail when the page just loaded).
+        img.classList.add('bmg-photo-swapping');
+        img.src = '';                // force a fresh load on next assignment
+        img.src = newSrc;
+        // Use requestAnimationFrame so the opacity:0 frame is actually
+        // painted before we remove the class and trigger the fade-in.
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            img.classList.remove('bmg-photo-swapping');
+          });
+        });
+      }
+      trigger.dataset.currentIdx = String(idx);
     }
 
-    const countEl = document.querySelector('.bmg-photo-count');
+    // Update the "N / total" counter
+    var countEl = trigger && trigger.querySelector('.bmg-photo-count');
     if (countEl) countEl.textContent = (idx + 1) + ' / ' + t.photos.length;
 
-    document.querySelectorAll('.bmg-thumb[data-thumb="' + taxonId + '"]').forEach(function (th, i) {
-      th.classList.toggle('active', i === idx);
+    // Update thumbnail active states — use data-idx attribute, not forEach
+    // position, so the correct thumb is highlighted regardless of DOM order.
+    document.querySelectorAll('.bmg-thumb[data-thumb="' + taxonId + '"]').forEach(function (th) {
+      th.classList.toggle('active', parseInt(th.dataset.idx, 10) === idx);
     });
   }
 
