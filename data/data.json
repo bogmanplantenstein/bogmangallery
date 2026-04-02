@@ -1,9 +1,9 @@
 {
   "meta": {
     "version": "2.0",
-    "savedAt": "2026-03-31T08:43:48.312Z",
+    "savedAt": "2026-04-02T07:41:51.212Z",
     "publishedAt": "",
-    "taxaCount": 308,
+    "taxaCount": 296,
     "githubRepo": "bogmanplantenstein/bogmangallery"
   },
   "taxa": [
@@ -3191,10 +3191,10 @@
     {
       "id": "txn_w1rooajke8",
       "genus": "Drosera",
-      "species": "TUBERS - Drosera gunniana",
+      "species": "gunniana",
       "subspecies": "Conara, Tasmania, Australia",
       "entryType": "location",
-      "displayName": "TUBERS - Drosera gunniana (Conara, Tasmania, Australia)",
+      "displayName": "Drosera gunniana (Conara, Tasmania, Australia)",
       "commonName": "",
       "group": "Winter Growing",
       "photos": [
@@ -3202,18 +3202,19 @@
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/3019c0e6-9a33-4bf5-b298-098463b54b6c/IMG_1007.JPEG"
       ],
       "country": "",
-      "habitatId": "",
       "climate": "",
+      "habitatId": "",
       "nativeRange": "",
       "nativeHabitat": "",
       "care": {
+        "override": true,
+        "temp": "Mediterranean (SW Australia). 40-85F, low to moderate humidity. High temperatures can cause the plants to prematurely go dormant. Light: Full to Part Sun or 15W per sq ft LED light. Tuberous sundews love bright light but do not require as much as other sundews. Water: Distilled or Reverse Osmosis water. Sitting in 0.5” of water using tray method. Soil: 40% Peat: 60% Perlite/Sand is a good mix. Tuberous Sundews like well draining soils and less moisture than bog plants. Rinse media with distilled or reverse osmosis water to remove excess salts. Feeding: Feed leaves with Insect Powder every couple weeks or so. Tuberous Sundews need to feed regularly during the short winter growing season to gain size and to produce a healthy tuber at the end of the season.",
         "light": "Full to Part Sun or 15W per sq ft LED light. Tuberous sundews love bright light but do not require as much as other sundews. Water: Distilled or Reverse Osmosis water. Sitting in 0.5” of water using tray method. Soil: 40% Peat: 60% Perlite/Sand is a good mix. Tuberous Sundews like well draining soils and less moisture than bog plants. Rinse media with distilled or reverse osmosis water to remove excess salts. Feeding: Feed leaves with Insect Powder every couple weeks or so. Tuberous Sundews need to feed regularly during the short winter growing season to gain size and to produce a healthy tuber at the end of the season.",
         "water": "Distilled or Reverse Osmosis water. Sitting in 0.5” of water using tray method. Soil: 40% Peat: 60% Perlite/Sand is a good mix. Tuberous Sundews like well draining soils and less moisture than bog plants. Rinse media with distilled or reverse osmosis water to remove excess salts. Feeding: Feed leaves with Insect Powder every couple weeks or so. Tuberous Sundews need to feed regularly during the short winter growing season to gain size and to produce a healthy tuber at the end of the season.",
         "soil": "40% Peat: 60% Perlite/Sand is a good mix. Tuberous Sundews like well draining soils and less moisture than bog plants. Rinse media with distilled or reverse osmosis water to remove excess salts. Feeding: Feed leaves with Insect Powder every couple weeks or so. Tuberous Sundews need to feed regularly during the short winter growing season to gain size and to produce a healthy tuber at the end of the season.",
+        "feeding": "",
         "dormancy": "",
-        "temp": "Mediterranean (SW Australia). 40-85F, low to moderate humidity. High temperatures can cause the plants to prematurely go dormant. Light: Full to Part Sun or 15W per sq ft LED light. Tuberous sundews love bright light but do not require as much as other sundews. Water: Distilled or Reverse Osmosis water. Sitting in 0.5” of water using tray method. Soil: 40% Peat: 60% Perlite/Sand is a good mix. Tuberous Sundews like well draining soils and less moisture than bog plants. Rinse media with distilled or reverse osmosis water to remove excess salts. Feeding: Feed leaves with Insect Powder every couple weeks or so. Tuberous Sundews need to feed regularly during the short winter growing season to gain size and to produce a healthy tuber at the end of the season.",
-        "notes": "",
-        "override": true
+        "notes": ""
       },
       "shopLinks": [
         {
@@ -6663,37 +6664,6 @@
       "flagged": false
     },
     {
-      "id": "txn_zlj3d131q7",
-      "genus": "Drosera",
-      "species": "burmannii",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera burmannii",
-      "commonName": "",
-      "group": "Lowland",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [
-        {
-          "site": "Fierce Flora",
-          "url": "https://www.fierceflora.com/drosera-burmannii/"
-        }
-      ],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "Australia, China, India, Indonesia, Japan, Malaysia, Myanmar, Papua New Guinea, Philippines, Sri Lanka, Thailand, Vietnam",
-      "habitatId": "tropical_savanna",
-      "climate": "lowland_tropical",
-      "nativeRange": "Widely distributed across tropical and subtropical Asia, from India and Sri Lanka through Southeast Asia to southern China and Japan, extending south through Malaysia and Indonesia to northern Australia and Papua New Guinea. In Australia, occurs in the Northern Territory, Queensland, and Western Australia.",
-      "nativeHabitat": "Grows in seasonally wet sandy or lateritic soils in open, sunny locations. Typically found in seepage areas, edges of seasonal pools, wet depressions in grasslands and savannas, and disturbed habitats where competition is reduced. Occurs from sea level to approximately 1200 meters elevation in association with grasses and sedges in nutrient-poor substrates that experience distinct wet and dry seasons."
-    },
-    {
       "id": "txn_mix6k6e0tc",
       "genus": "Drosera",
       "species": "burmannii",
@@ -6715,21 +6685,21 @@
         "drive:1LjK75hmyo4OKjJRzyZ4p9ZGZKnOQdn3r",
         "drive:154a0wf0rPNuaRBgBnY5uzcrVEM2Nhbd6"
       ],
+      "country": "",
+      "climate": "",
+      "habitatId": "",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": false
       },
       "shopLinks": [],
       "externalLinks": [],
       "notes": "",
-      "parentId": "txn_zlj3d131q7",
+      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
+      "flagged": false
     },
     {
       "id": "txn_b9vnclldq7t",
@@ -6754,36 +6724,10 @@
       "shopLinks": [],
       "externalLinks": [],
       "notes": "",
-      "parentId": "txn_zlj3d131q7",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false
-    },
-    {
-      "id": "txn_nzpd0hlu6om",
-      "genus": "Drosera",
-      "species": "madagascariensis",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera madagascariensis",
-      "commonName": "",
-      "group": "Lowland",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
       "parentId": "",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
-      "country": "Madagascar",
-      "habitatId": "tropical_savanna",
-      "climate": "lowland_tropical",
-      "nativeRange": "Endemic to Madagascar, widely distributed across the island from the northern to southern regions.",
-      "nativeHabitat": "Found in seasonally wet grasslands, marshy areas, and along streams at low to moderate elevations, typically below 1,500 meters. Grows in sandy or lateritic soils that are nutrient-poor and waterlogged during the wet season. Often associated with grasses and sedges in open, sunny habitats."
+      "flagged": false
     },
     {
       "id": "txn_0bpzebc750br",
@@ -6980,42 +6924,12 @@
       "nativeHabitat": "Grows in winter-wet depressions and seepage areas on white or grey sand over laterite. Associated with low shrubland and heath vegetation typical of the northern sandplains. Occurs at low elevations in seasonally waterlogged sites that dry out in summer."
     },
     {
-      "id": "txn_5i3kivhpf6n",
-      "genus": "Drosera",
-      "species": "eneabba",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera eneabba",
-      "commonName": "",
-      "group": "Pygmy",
-      "photos": [
-        "drive:1TeWP5iN7NzD6gXz0-tYXcs5v-mITeUyb",
-        "drive:1qSrhdbhskkFEodhTv1QF4bOJZNPt3UG3",
-        "drive:17B8mHQxUNpleKd88VpJpFYVcKxOg2qFL"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "Australia",
-      "habitatId": "sandplain_heath",
-      "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Eneabba region north of Perth in the Southwest Botanical Province.",
-      "nativeHabitat": "Occurs in white to grey sand or sandy lateritic soils in low-lying areas and plains. Grows in winter-wet depressions and along drainage lines in kwongan heathland vegetation, typically in seasonally moist to wet sandy substrates. Found at low elevations in the sandplain heathlands characteristic of the northern Swan Coastal Plain region."
-    },
-    {
       "id": "txn_k5f6hzzf2yb",
       "genus": "Drosera",
       "species": "eneabba",
       "subspecies": "B",
-      "entryType": "species",
-      "displayName": "Drosera eneabba B",
+      "entryType": "cultivar_unreg",
+      "displayName": "Drosera eneabba \"B\"",
       "commonName": "",
       "group": "Pygmy",
       "photos": [
@@ -7029,21 +6943,21 @@
         "drive:1ibQCRQtzPuAcVPJQWUGMihvLhwltjm7Y",
         "drive:1427aF4-jpGbHw2zGD7nSXUT-wgwQYchy"
       ],
+      "country": "Australia",
+      "climate": "mediterranean",
+      "habitatId": "sandplain_heath",
+      "nativeRange": "Endemic to Western Australia, specifically known from the Eneabba area north of Perth in the northern sandplains region.",
+      "nativeHabitat": "Grows in white-grey sand in winter-wet depressions and shallow swales on sandplain. Occurs in low shrubland and heath vegetation communities that are seasonally inundated during winter months. The habitat experiences a Mediterranean climate with wet winters and dry summers.",
       "care": {
         "override": false
       },
       "shopLinks": [],
       "externalLinks": [],
       "notes": "",
-      "parentId": "txn_5i3kivhpf6n",
+      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
-      "country": "Australia",
-      "habitatId": "sandplain_heath",
-      "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Eneabba area north of Perth in the northern sandplains region.",
-      "nativeHabitat": "Grows in white-grey sand in winter-wet depressions and shallow swales on sandplain. Occurs in low shrubland and heath vegetation communities that are seasonally inundated during winter months. The habitat experiences a Mediterranean climate with wet winters and dry summers."
+      "flagged": false
     },
     {
       "id": "txn_v2u58dd03a",
@@ -7856,8 +7770,8 @@
       "genus": "Drosera",
       "species": "oblanceolata",
       "subspecies": "Sunset Peak",
-      "entryType": "species",
-      "displayName": "Drosera oblanceolata Sunset Peak",
+      "entryType": "location",
+      "displayName": "Drosera oblanceolata (Sunset Peak)",
       "commonName": "",
       "group": "Subtropical",
       "photos": [
@@ -7865,6 +7779,11 @@
         "drive:16Z54mEH44UCg-50THCxqEdK0fZlY99P_",
         "drive:1xJD-ZMfzNX_bgi-lqLFEPj3INdLn7N7P"
       ],
+      "country": "",
+      "climate": "",
+      "habitatId": "",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": false
       },
@@ -7874,12 +7793,7 @@
       "parentId": "txn_p9r22b09mif",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": true,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
+      "flagged": true
     },
     {
       "id": "txn_cwlg2rxg97e",
@@ -8079,37 +7993,6 @@
       "nativeHabitat": ""
     },
     {
-      "id": "txn_h276rtx8yrk",
-      "genus": "Drosera",
-      "species": "cistiflora",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera cistiflora",
-      "commonName": "",
-      "group": "Winter Growing",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [
-        {
-          "site": "Fierce Flora",
-          "url": "https://www.fierceflora.com/drosera-cistiflora/"
-        }
-      ],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
       "id": "txn_j51giu5asc9",
       "genus": "Drosera",
       "species": "cistiflora",
@@ -8138,36 +8021,10 @@
       "shopLinks": [],
       "externalLinks": [],
       "notes": "",
-      "parentId": "txn_h276rtx8yrk",
+      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
       "flagged": false
-    },
-    {
-      "id": "txn_hfkgukf8xvf",
-      "genus": "Drosera",
-      "species": "cistiflora",
-      "subspecies": "Drosera cistiflora - Orange Flower",
-      "entryType": "location",
-      "displayName": "Drosera cistiflora Drosera cistiflora - Orange Flower (Malmesbury)",
-      "commonName": "",
-      "group": "Winter Growing",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "txn_h276rtx8yrk",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
     },
     {
       "id": "txn_8yl2oga16bu",
@@ -8205,7 +8062,7 @@
       "shopLinks": [],
       "externalLinks": [],
       "notes": "",
-      "parentId": "txn_h276rtx8yrk",
+      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
       "flagged": false
@@ -8233,7 +8090,7 @@
       "shopLinks": [],
       "externalLinks": [],
       "notes": "",
-      "parentId": "txn_h276rtx8yrk",
+      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
       "flagged": false
@@ -8268,7 +8125,7 @@
       "shopLinks": [],
       "externalLinks": [],
       "notes": "",
-      "parentId": "txn_h276rtx8yrk",
+      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
       "flagged": false
@@ -8301,66 +8158,6 @@
       ],
       "notes": "",
       "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_xt5hw0x61hb",
-      "genus": "Drosera",
-      "species": "gunniana",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera gunniana",
-      "commonName": "",
-      "group": "Winter Growing",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [
-        {
-          "site": "Fierce Flora",
-          "url": "https://www.fierceflora.com/drosera-gunniana/"
-        }
-      ],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_rd61of5ik2",
-      "genus": "Drosera",
-      "species": "gunniana",
-      "subspecies": "Conara, Tasmania",
-      "entryType": "species",
-      "displayName": "Drosera gunniana Conara, Tasmania",
-      "commonName": "",
-      "group": "Winter Growing",
-      "photos": [
-        "drive:1uv9CbvjdO9idH8mblaENTdkFCQvWL40z",
-        "drive:1GGFov_gYxE6720lmr0xzJylb3bWJG4cO"
-      ],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "txn_xt5hw0x61hb",
       "isHybrid": false,
       "isGrex": false,
       "flagged": false,
@@ -8495,37 +8292,6 @@
       "externalLinks": [],
       "notes": "",
       "parentId": "txn_k055hnifser",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_zqxwzg9wtm",
-      "genus": "Drosera",
-      "species": "lowriei",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera lowriei",
-      "commonName": "",
-      "group": "Winter Growing",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [
-        {
-          "site": "Fierce Flora",
-          "url": "https://www.fierceflora.com/drosera-lowriei/"
-        }
-      ],
-      "notes": "",
-      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
       "flagged": false,
@@ -9238,8 +9004,8 @@
       "genus": "Drosera",
       "species": "tubaestylis",
       "subspecies": "Ex. Phil Mann",
-      "entryType": "species",
-      "displayName": "Drosera tubaestylis Ex. Phil Mann",
+      "entryType": "cultivar_unreg",
+      "displayName": "Drosera tubaestylis \"Ex. Phil Mann\"",
       "commonName": "",
       "group": "Winter Growing",
       "photos": [
@@ -9430,32 +9196,6 @@
       "nativeHabitat": ""
     },
     {
-      "id": "txn_fx77n3gqyb4",
-      "genus": "Drosera",
-      "species": "broomensis",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera broomensis",
-      "commonName": "",
-      "group": "Wooly",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
       "id": "txn_prrbnxw76z",
       "genus": "Drosera",
       "species": "broomensis",
@@ -9485,32 +9225,6 @@
       "nativeHabitat": ""
     },
     {
-      "id": "txn_noxwawnyzuj",
-      "genus": "Drosera",
-      "species": "caduca",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera caduca",
-      "commonName": "",
-      "group": "Wooly",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
       "id": "txn_eug6xcp6x5t",
       "genus": "Drosera",
       "species": "caduca",
@@ -9523,21 +9237,21 @@
         "drive:1aPN3e8XxcbsWXci9hOuzIZoCtmnQvIZN",
         "drive:1qnjCxR73f1wzq6CYU6Z6p5YZBD_VL2GT"
       ],
+      "country": "",
+      "climate": "",
+      "habitatId": "",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": false
       },
       "shopLinks": [],
       "externalLinks": [],
       "notes": "",
-      "parentId": "txn_noxwawnyzuj",
+      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
+      "flagged": false
     },
     {
       "id": "txn_mbkf7x8wor9",
@@ -9568,43 +9282,12 @@
       "nativeHabitat": ""
     },
     {
-      "id": "txn_gr64tea3pha",
-      "genus": "Drosera",
-      "species": "dilatatopetiolaris",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera dilatatopetiolaris",
-      "commonName": "",
-      "group": "Wooly",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [
-        {
-          "site": "Fierce Flora",
-          "url": "https://www.fierceflora.com/drosera-dilatatopetiolaris/"
-        }
-      ],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
       "id": "txn_3x0qe3xehvo",
       "genus": "Drosera",
-      "species": "dilatatopetiolaris",
-      "subspecies": "Drosera aff petiolaris-dilatatopetiolaris",
+      "species": "aff.",
+      "subspecies": "dilatatopetiolaris/petiolaris",
       "entryType": "species",
-      "displayName": "Drosera dilatatopetiolaris Drosera aff petiolaris-dilatatopetiolaris",
+      "displayName": "Drosera aff. dilatatopetiolaris/petiolaris",
       "commonName": "",
       "group": "Wooly",
       "photos": [
@@ -9619,6 +9302,11 @@
         "drive:10HqOt_-kuK-bnjnT53JwQy19pgU7vNhH",
         "drive:1EVK7q7NwxoVLopTPzD-62vHdbIjb88hH"
       ],
+      "country": "",
+      "climate": "",
+      "habitatId": "",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": false
       },
@@ -9628,12 +9316,7 @@
       "parentId": "txn_gr64tea3pha",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
+      "flagged": false
     },
     {
       "id": "txn_zywnc33udr",
@@ -9823,32 +9506,6 @@
       "externalLinks": [],
       "notes": "",
       "parentId": "txn_s7se6as0ggm",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
-    },
-    {
-      "id": "txn_iq29l303r1c",
-      "genus": "Drosera",
-      "species": "ordensis",
-      "subspecies": "",
-      "entryType": "species",
-      "displayName": "Drosera ordensis",
-      "commonName": "",
-      "group": "Wooly",
-      "photos": [],
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
       "isHybrid": false,
       "isGrex": false,
       "flagged": false,
@@ -10641,14 +10298,19 @@
       "id": "txn_7ntxnsg3jwc",
       "genus": "Pinguicula",
       "species": "gigantea",
-      "subspecies": "Pinguicula gigantea Red Flush",
-      "entryType": "species",
-      "displayName": "Pinguicula gigantea Pinguicula gigantea Red Flush",
+      "subspecies": "Red Flush",
+      "entryType": "cultivar_unreg",
+      "displayName": "Pinguicula gigantea \"Red Flush\"",
       "commonName": "",
       "group": "Tropical",
       "photos": [
         "drive:1JpNs1FXomJ6pycIJWEIs7Uhfn0LgaILn"
       ],
+      "country": "",
+      "climate": "",
+      "habitatId": "",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": false
       },
@@ -10658,19 +10320,14 @@
       "parentId": "txn_o1znsiwo8en",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": true,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
+      "flagged": true
     },
     {
       "id": "txn_lbtzz0x3ha9",
       "genus": "Pinguicula",
       "species": "gigantea",
       "subspecies": "Alfred Lau #13",
-      "entryType": "species",
+      "entryType": "cultivar_unreg",
       "displayName": "Pinguicula gigantea \"Alfred Lau #13\"",
       "commonName": "",
       "group": "Tropical",
@@ -11778,7 +11435,6 @@
       "commonName": "",
       "group": "Terrestrial",
       "photos": [
-        "drive:1KjFHM5EAGxnzkjgt-26HIsS3pTFOuhYD",
         "drive:1zPahDIIBhP2YaDPWGCGZ3-24ezwk5-wE",
         "drive:1e7ER1CuIA-9pcBVLecmRJjzffUTDXUaZ",
         "drive:1mtYdZm3Htn-SR9CoDMlx5k1nD_ktOx1Q",
@@ -11791,11 +11447,13 @@
         "drive:1YOdj_OBq56wu3AR7BqVZsAop0dk7SKDc",
         "drive:1NcBiibYYWA3n22yHru2gJ7fYE70pZxGv",
         "drive:1R14Js3ugqXbvuhkq5VNHs-tZbBKBQctJ",
-        "drive:1apB1G-CfLab_xpSwZV78puV-jAUXnJal",
-        "drive:1o8SJNfIt-gJc65dX-Ep2JtO1oQUkhy2Y",
-        "drive:1qO0xCMscmSmZzIni_vBsTzbjEtrh_uXG",
-        "drive:14NetGf01LSql4srBu8qrT2JEI2eWP1Sd"
+        "drive:1apB1G-CfLab_xpSwZV78puV-jAUXnJal"
       ],
+      "country": "",
+      "climate": "highland_tropical",
+      "habitatId": "cloud_forest",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": false
       },
@@ -11805,12 +11463,7 @@
       "parentId": "",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
+      "flagged": false
     },
     {
       "id": "txn_3wf4k7c5ldc",
@@ -11849,14 +11502,19 @@
       "genus": "Utricularia",
       "species": "subulata",
       "subspecies": "Venezuela",
-      "entryType": "species",
-      "displayName": "Utricularia subulata Venezuela",
+      "entryType": "location",
+      "displayName": "Utricularia subulata (Venezuela)",
       "commonName": "",
       "group": "Terrestrial",
       "photos": [
         "drive:1DXTpCqDSuLGkzBSgn9omSt5bZqYPdDdk",
         "drive:1_xcfQLgv-WKu9cHUVvUxnuVaZ6r_557l"
       ],
+      "country": "",
+      "climate": "",
+      "habitatId": "",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": false
       },
@@ -11866,12 +11524,7 @@
       "parentId": "txn_8vasdr0n49r",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": true,
-      "country": "",
-      "habitatId": "",
-      "climate": "",
-      "nativeRange": "",
-      "nativeHabitat": ""
+      "flagged": true
     },
     {
       "id": "txn_bi0t4vjh1sc",
