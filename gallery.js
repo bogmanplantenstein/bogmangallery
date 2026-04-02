@@ -959,7 +959,8 @@
     filterClimate: 'all',
     filterGroup:   'all',
     modalPhotos:   [],
-    modalIndex:    0
+    modalIndex:    0,
+    modalTaxonId:  null
   };
 
   let _slideshowTimers = [];
@@ -1884,7 +1885,7 @@
   // ─── LIGHTBOX ─────────────────────────────────────────────────
   function swapDetailPhoto(taxonId, idx) {
     const t = DATA.taxa.find(function (x) { return x.id === taxonId; });
-    if (!t || !t.photos[idx]) return;
+    if (!t || !t.photos.length || idx < 0 || idx >= t.photos.length) return;
 
     const trigger = document.querySelector('[data-lightbox="' + taxonId + '"]');
     if (trigger) {
@@ -1904,8 +1905,9 @@
   function openLightbox(taxonId, startIdx) {
     const t = DATA.taxa.find(function (x) { return x.id === taxonId; });
     if (!t || !t.photos.length) return;
-    STATE.modalPhotos = t.photos;
-    STATE.modalIndex  = startIdx || 0;
+    STATE.modalPhotos  = t.photos;
+    STATE.modalIndex   = (startIdx != null && !isNaN(startIdx)) ? startIdx : 0;
+    STATE.modalTaxonId = taxonId;
     updateModal();
     document.getElementById('bmg-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1919,11 +1921,12 @@
     if (img) img.src = resolvePhoto(photos[idx], 'w1600') || '';
     if (cap) cap.textContent = photos.length > 1 ? (idx + 1) + ' / ' + photos.length : '';
 
-    document.querySelectorAll('.bmg-thumb').forEach(function (th, i) {
-      th.classList.toggle('active', i === idx);
-    });
-    const countEl = document.querySelector('.bmg-photo-count');
-    if (countEl) countEl.textContent = (idx + 1) + ' / ' + photos.length;
+    // Sync the main detail view photo + thumb highlights so they stay in
+    // step with the lightbox — prevents the active-thumb / displayed-photo
+    // mismatch that made "clicking back to the first image" appear broken.
+    if (STATE.modalTaxonId) {
+      swapDetailPhoto(STATE.modalTaxonId, idx);
+    }
   }
 
   function closeLightbox() {
@@ -1974,14 +1977,15 @@
 
       const lb = e.target.closest('[data-lightbox]');
       if (lb) {
-        const currentIdx = parseInt(lb.dataset.currentIdx || lb.dataset.idx, 10) || 0;
-        openLightbox(lb.dataset.lightbox, currentIdx);
+        const rawIdx = parseInt(lb.dataset.currentIdx || lb.dataset.idx, 10);
+        openLightbox(lb.dataset.lightbox, isNaN(rawIdx) ? 0 : rawIdx);
         return;
       }
 
       const th = e.target.closest('[data-thumb]');
       if (th) {
-        swapDetailPhoto(th.dataset.thumb, parseInt(th.dataset.idx, 10) || 0);
+        const thumbIdx = parseInt(th.dataset.idx, 10);
+        swapDetailPhoto(th.dataset.thumb, isNaN(thumbIdx) ? 0 : thumbIdx);
         return;
       }
     });
