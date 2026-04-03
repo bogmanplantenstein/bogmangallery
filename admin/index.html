@@ -654,6 +654,11 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 20px;
     }
+    .tab-bar-save {
+      margin-left: auto;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
 
     .tab-btn {
       padding: 8px 16px;
@@ -1398,7 +1403,9 @@ function renderAddEdit(taxonId) {
     tabs.map(tab =>
       '<button class="tab-btn' + (ACTIVE_TAB===tab.id?' active':'') +
       '" data-tab="' + tab.id + '" type="button">' + tab.label + '</button>'
-    ).join('') + '</div>';
+    ).join('') +
+    '<button class="btn btn-primary btn-sm tab-bar-save save-taxon-btn" type="button">Save</button>' +
+    '</div>';
 
   return '<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">' +
     '<h1 class="page-title">' + (isNew ? 'Add Taxon' : 'Edit Taxon') + '</h1>' +
@@ -1611,7 +1618,7 @@ function renderTabReview(t) {
       '<div style="font-size:12px;color:var(--white);">'+escHtml(String(r[1]))+'</div></div>'
     ).join('') + '</div>' +
     '<div style="display:flex;gap:10px;">' +
-    '<button class="btn btn-primary" id="save-taxon-btn" type="button" style="padding:10px 28px;">Save Taxon</button>' +
+    '<button class="btn btn-primary save-taxon-btn" id="save-taxon-btn" type="button" style="padding:10px 28px;">Save Taxon</button>' +
     '<button class="btn btn-secondary" data-page="taxa" type="button">Cancel</button>' +
     '</div></div>';
 }
@@ -2671,8 +2678,8 @@ function attachPageEvents() {
     const rmExt = e.target.closest('[data-remove-ext]')?.dataset.removeExt;
     if (rmExt !== undefined) { e.target.closest('.ext-link-row').remove(); return; }
 
-    // Save taxon
-    if (e.target.id === 'save-taxon-btn') { doSaveTaxon(); return; }
+    // Save taxon (button exists in tab bar and on review tab)
+    if (e.target.closest('.save-taxon-btn')) { doSaveTaxon(); return; }
 
     // Care override toggle
     if (e.target.id === 'f-care-override') { toggleCareOverride(e.target.checked); return; }
@@ -2985,8 +2992,8 @@ function autoDisplayName() {
 }
 
 async function doSaveTaxon() {
-  const btn = document.getElementById('save-taxon-btn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+  const btns = document.querySelectorAll('.save-taxon-btn');
+  btns.forEach(b => { b.disabled = true; b.dataset.origLabel = b.textContent; b.textContent = 'Saving…'; });
   try {
     const taxon = collectFormTaxon();
     if (!taxon) { showToast('Could not read form', 'error'); return; }
@@ -3001,7 +3008,7 @@ async function doSaveTaxon() {
   } catch(e) {
     showToast('Save failed: ' + e.message, 'error');
   } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Save Taxon'; }
+    btns.forEach(b => { b.disabled = false; b.textContent = b.dataset.origLabel || 'Save'; });
   }
 }
 
