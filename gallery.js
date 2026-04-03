@@ -1573,7 +1573,11 @@
     let speciesCards = '';
     visibleTaxa.forEach(function (t) {
       const kids  = DATA.taxa.filter(function (c) { return c.parentId === t.id; });
-      const photo = resolvePhoto(t.photos[0], 'w400');
+      // Fall back to first child photo when parent has no photos of its own
+      const kidPhoto = !t.photos[0] && kids.length
+        ? ((kids.find(function (c) { return c.photos && c.photos.length; }) || {}).photos || [])[0]
+        : null;
+      const photo = resolvePhoto(t.photos[0] || kidPhoto, 'w400');
       const tag   = kids.length ? kids.length + ' form' + (kids.length > 1 ? 's' : '') : '';
       const navAttr = kids.length
         ? 'data-nav-forms="' + esc(t.id) + '"'
@@ -1623,8 +1627,12 @@
 
     let cardsHtml = '';
     allCards.forEach(function (t) {
-      const photo    = resolvePhoto(t.photos[0], 'w400');
       const isParent = t.id === parent.id;
+      // For the parent card: fall back to a child photo if the parent has none
+      const childPhoto = isParent && !t.photos[0] && children.length
+        ? ((children.find(function (c) { return c.photos && c.photos.length; }) || {}).photos || [])[0]
+        : null;
+      const photo    = resolvePhoto(t.photos[0] || childPhoto, 'w400');
       let label = '';
       if (isParent) {
         label = 'Species';
