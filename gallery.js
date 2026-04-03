@@ -1160,8 +1160,24 @@
       });
     }
 
+    // Build O(1) lookup map — replaces repeated DATA.taxa.find() calls
+    var taxaById = new Map();
+    sorted.forEach(function (t) { taxaById.set(t.id, t); });
+
+    // Precompute filter dropdown options once — renderControls() reads these
+    var topLevelTaxa = sorted.filter(function (t) { return !t.parentId; });
+    var filterOpts = {
+      genera:    uniqueSorted(topLevelTaxa.map(function (t) { return t.genus; }).filter(Boolean)),
+      habitats:  uniqueSorted(topLevelTaxa.filter(function (t) { return t.habitatId; }).map(function (t) { return t.habitatId; })),
+      countries: uniqueSorted(sorted.filter(function (t) { return t.country; }).map(function (t) { return t.country; })),
+      climates:  uniqueSorted(sorted.filter(function (t) { return t.climate; }).map(function (t) { return t.climate; })),
+      groups:    uniqueSorted(topLevelTaxa.filter(function (t) { return t.group; }).map(function (t) { return t.group; }))
+    };
+
     return {
       taxa:              sorted,
+      taxaById:          taxaById,
+      filterOpts:        filterOpts,
       habitats:          habitatMap,
       climates:          climateMap,
       genusCoverPhotos:  genusCoverPhotos,
@@ -1323,7 +1339,6 @@
     if (STATE.filterGroup   !== 'all') filtered = filtered.filter(function (t) { return (t.group || '') === STATE.filterGroup; });
 
     root.innerHTML = renderShell(filtered);
-    attachRootEvents();
   }
 
   function renderShell(filtered) {
@@ -1356,12 +1371,12 @@
 
   // ── Controls ──
   function renderControls(filtered) {
-    const allTaxa   = DATA.taxa;
-    const genera    = uniqueSorted(allTaxa.map(function (t) { return t.genus; }).filter(Boolean));
-    const habitats  = uniqueSorted(allTaxa.filter(function (t) { return t.habitatId; }).map(function (t) { return t.habitatId; }));
-    const countries = uniqueSorted(allTaxa.filter(function (t) { return t.country; }).map(function (t) { return t.country; }));
-    const climates  = uniqueSorted(allTaxa.filter(function (t) { return t.climate; }).map(function (t) { return t.climate; }));
-    const groups    = uniqueSorted(allTaxa.filter(function (t) { return t.group; }).map(function (t) { return t.group; }));
+    const opts      = DATA.filterOpts;
+    const genera    = opts.genera;
+    const habitats  = opts.habitats;
+    const countries = opts.countries;
+    const climates  = opts.climates;
+    const groups    = opts.groups;
     const count     = filtered.length;
 
     const showFilters = (STATE.view === 'genera' || STATE.view === 'species');
@@ -1492,11 +1507,12 @@
           .forEach(function (t) { coverPhotos.push(resolvePhoto(t.photos[0])); });
       }
 
-      let photoSlides = '';
+      const photoSlideArr = [];
       coverPhotos.forEach(function (ph, i) {
-        photoSlides += '<div class="bmg-genus-photo-slide' + (i === 0 ? ' active' : '') + '" ' +
-          'style="background-image:url(\'' + esc(ph) + '\')" data-slide></div>';
+        photoSlideArr.push('<div class="bmg-genus-photo-slide' + (i === 0 ? ' active' : '') + '" ' +
+          'style="background-image:url(\'' + esc(ph) + '\')" data-slide></div>');
       });
+      const photoSlides = photoSlideArr.join('');
 
       const photoParts = coverPhotos.length
         ? '<div class="bmg-genus-photo-wrap">' + photoSlides + '</div><div class="bmg-genus-overlay"></div>'
@@ -1570,7 +1586,7 @@
       tabsHtml = '<div class="bmg-group-tabs">' + tabItems + '</div>';
     }
 
-    let speciesCards = '';
+    const speciesCardArr = [];
     visibleTaxa.forEach(function (t) {
       const kids  = DATA.taxa.filter(function (c) { return c.parentId === t.id; });
       // Fall back to first child photo when parent has no photos of its own
@@ -1583,7 +1599,7 @@
         ? 'data-nav-forms="' + esc(t.id) + '"'
         : 'data-nav-detail="' + esc(t.id) + '"';
 
-      speciesCards += '<div class="bmg-species-card" ' + navAttr + '>' +
+      speciesCardArr.push('<div class="bmg-species-card" ' + navAttr + '>' +
         '<div class="bmg-species-photo-wrap">' +
         (photo
           ? '<img class="bmg-species-photo" src="' + esc(photo) + '" alt="' + esc(t.displayName) + '" loading="lazy">'
@@ -1592,8 +1608,9 @@
         '</div>' +
         '<div class="bmg-species-name">' + formatDisplayName(t) + '</div>' +
         (t.commonName ? '<div class="bmg-species-sub">' + esc(t.commonName) + '</div>' : '') +
-        '</div>';
+        '</div>');
     });
+    const speciesCards = speciesCardArr.join('');
 
     const emptyMsg = visibleTaxa.length === 0
       ? renderEmpty('No ' + (activeGroup !== 'all' ? esc(activeGroup) + ' ' : '') + 'species match your search')
@@ -1619,9 +1636,8 @@
     const parent = DATA.taxa.find(function (x) { return x.id === STATE.parentId; });
     if (!parent) return renderEmpty('Species not found');
 
-    const collator = new Intl.Collator('en', { sensitivity: 'base' });
     const children = DATA.taxa.filter(function (c) { return c.parentId === parent.id; })
-      .sort(function (a, b) { return collator.compare(a.displayName, b.displayName); });
+      .sort(function (a, b) { return _collator.compare(a.displayName, b.displayName); });
 
     const allCards = [parent].concat(children);
 
@@ -1671,7 +1687,7 @@
 
   // ── DETAIL VIEW ──
   function renderDetail() {
-    const t = DATA.taxa.find(function (x) { return x.id === STATE.taxonId; });
+    const t = DATA.taxaById.get(STATE.taxonId) || null;
     if (!t) return renderEmpty('Taxon not found');
 
     const children = DATA.taxa.filter(function (c) { return c.parentId === t.id; });
@@ -1693,7 +1709,7 @@
         thumbsHtml = '<div class="bmg-photo-thumbs">' + thumbItems + '</div>';
       }
       photoSection = '<div class="bmg-lightbox-trigger" data-lightbox="' + esc(t.id) + '" data-idx="0">' +
-        '<img src="' + esc(mainPhoto) + '" alt="' + esc(t.displayName) + '">' +
+        '<img src="' + esc(mainPhoto) + '" alt="' + esc(t.displayName) + '" loading="eager" fetchpriority="high">' +
         (photos.length > 1 ? '<div class="bmg-photo-count">1 / ' + photos.length + '</div>' : '') +
         '</div>' + thumbsHtml;
     } else {
@@ -1967,6 +1983,7 @@
   }
 
   // ─── EVENT DELEGATION ────────────────────────────────────────
+  // Called ONCE after first render — root element persists, innerHTML changes are fine
   function attachRootEvents() {
     const root = document.getElementById('bmg-root');
     if (!root) return;
@@ -1981,15 +1998,14 @@
       if (groupTab) {
         STATE.activeGroup = groupTab.dataset.groupTab;
         render();
-        const root2 = document.getElementById('bmg-root');
-        if (root2) root2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
         return;
       }
 
       const navDetail = e.target.closest('[data-nav-detail]');
       if (navDetail) {
         const id = navDetail.dataset.navDetail;
-        const t  = DATA.taxa.find(function (x) { return x.id === id; });
+        const t  = DATA.taxaById.get(id);
         const parentId = navDetail.dataset.parent || (t && t.parentId ? t.parentId : null) || STATE.parentId || null;
         navigate('detail', t ? t.genus : STATE.genus, id, parentId);
         return;
@@ -1998,7 +2014,7 @@
       const navForms = e.target.closest('[data-nav-forms]');
       if (navForms) {
         const id = navForms.dataset.navForms;
-        const t  = DATA.taxa.find(function (x) { return x.id === id; });
+        const t  = DATA.taxaById.get(id);
         navigate('forms', t ? t.genus : STATE.genus, null, id);
         return;
       }
@@ -2021,27 +2037,24 @@
       }
     });
 
-    // Search input
-    const searchInput = document.getElementById('bmg-search-input');
-    if (searchInput) {
-      searchInput.addEventListener('input', function (e) {
-        STATE.search = e.target.value;
-        render();
-        const newInput = document.getElementById('bmg-search-input');
-        if (newInput) { newInput.focus(); newInput.setSelectionRange(9999, 9999); }
-      });
-    }
+    // Search — delegated input event with 250ms debounce so typing doesn't trigger
+    // a full render on every keystroke. The search input is recreated on each render
+    // so we delegate to root rather than binding directly to the element.
+    root.addEventListener('input', function (e) {
+      if (e.target.id !== 'bmg-search-input') return;
+      STATE.search = e.target.value;
+      clearTimeout(_searchDebounce);
+      _searchDebounce = setTimeout(render, 250);
+    });
 
-    // Filter selects
-    ['genus', 'group', 'habitat', 'country', 'climate'].forEach(function (f) {
-      const el = document.getElementById('bmg-filter-' + f);
-      if (el) {
-        el.addEventListener('change', function (e) {
-          const key = 'filter' + f.charAt(0).toUpperCase() + f.slice(1);
-          STATE[key] = e.target.value;
-          render();
-        });
-      }
+    // Filter selects — delegated change event
+    root.addEventListener('change', function (e) {
+      const id = e.target.id || '';
+      if (!id.startsWith('bmg-filter-')) return;
+      const f   = id.slice('bmg-filter-'.length);   // genus | group | habitat | country | climate
+      const key = 'filter' + f.charAt(0).toUpperCase() + f.slice(1);
+      STATE[key] = e.target.value;
+      render();
     });
 
     // Image protection: block right-click + drag on gallery images
@@ -2092,6 +2105,10 @@
   function uniqueSorted(arr) {
     return Array.from(new Set(arr)).sort();
   }
+
+  // Shared collator — created once, reused across all sort operations
+  var _collator = new Intl.Collator('en', { sensitivity: 'base' });
+  var _searchDebounce = null;
 
   // ─── INIT ─────────────────────────────────────────────────────
   async function init() {
