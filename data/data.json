@@ -1,9 +1,9 @@
 {
   "meta": {
     "version": "2.0",
-    "savedAt": "2026-04-03T18:23:22.973Z",
+    "savedAt": "2026-04-03T18:42:36.289Z",
     "publishedAt": "",
-    "taxaCount": 271,
+    "taxaCount": 270,
     "githubRepo": "bogmanplantenstein/bogmangallery"
   },
   "taxa": [
@@ -5644,8 +5644,20 @@
         "drive:1xicHKtHqvOWRLzbsyafUYRQAz4CoHka2",
         "drive:1tpdncUYaM0IEtAjMy2vrVIG4bjL96yzf"
       ],
+      "country": "Australia",
+      "climate": "lowland_tropical",
+      "habitatId": "tropical_savanna",
+      "nativeRange": "Endemic to the northern parts of the Northern Territory, Australia, particularly in the Darwin and surrounding coastal regions.",
+      "nativeHabitat": "Occurs in seasonally wet sandy soils and seepage areas in open eucalypt woodland and tropical savanna. Found in areas with strong seasonal rainfall patterns, typically in shallow sandy substrates over laterite or sandstone. Associated vegetation includes Eucalyptus species, Melaleuca, and sedges in open to moderately wooded habitats.",
       "care": {
-        "override": false
+        "override": true,
+        "temp": "Temperatures from 60-100F. These prefer moderate humidity but can easily acclimate to low humidity",
+        "light": "Part to Full Sun or 20W per sq ft LED light. Plant in the sun will be more colorful, shorter, and more robust. Plants in less light will grow more like a vine",
+        "water": "Distilled or Reverse Osmosis water. Sitting in 0.5”-2” of water using tray method",
+        "soil": "40% Peat Moss: 40% Sand: 20% Perlite or other well draining peat + sand mixes. Rinse media with distilled or reverse osmosis water to remove excess salts",
+        "feeding": "",
+        "dormancy": "",
+        "notes": ""
       },
       "shopLinks": [],
       "externalLinks": [],
@@ -5653,12 +5665,7 @@
       "parentId": "",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
-      "country": "Australia",
-      "habitatId": "tropical_savanna",
-      "climate": "lowland_tropical",
-      "nativeRange": "Endemic to the northern parts of the Northern Territory, Australia, particularly in the Darwin and surrounding coastal regions.",
-      "nativeHabitat": "Occurs in seasonally wet sandy soils and seepage areas in open eucalypt woodland and tropical savanna. Found in areas with strong seasonal rainfall patterns, typically in shallow sandy substrates over laterite or sandstone. Associated vegetation includes Eucalyptus species, Melaleuca, and sedges in open to moderately wooded habitats."
+      "flagged": false
     },
     {
       "id": "txn_zuvftphec5c",
@@ -5676,13 +5683,20 @@
         "drive:1xZ4sDVzdtxL7ZmXhLzEkbdcL-bS3W_Sg",
         "drive:1_J_2TMbXybNfycVY8qSqYM3U9HQwyPBQ"
       ],
-      "country": "Papua New Guinea",
+      "country": "Australia",
       "climate": "lowland_tropical",
       "habitatId": "tropical_savanna",
-      "nativeRange": "Found in Papua New Guinea, specifically documented from the Pago region in the southern lowlands.",
+      "nativeRange": "Found in northern Australia.",
       "nativeHabitat": "Grows in seasonally wet areas of tropical savanna grasslands with sandy or lateritic soils. Occurs in areas with distinct wet and dry seasons, typically in full sun at low elevations.",
       "care": {
-        "override": false
+        "override": true,
+        "temp": "Temperatures from 60-100F. These prefer moderate humidity but can easily acclimate to low humidity",
+        "light": "Part to Full Sun or 20W per sq ft LED light. Plant in the sun will be more colorful, shorter, and more robust. Plants in less light will grow more like a vine",
+        "water": "Distilled or Reverse Osmosis water. Sitting in 0.5”-2” of water using tray method",
+        "soil": "40% Peat Moss: 40% Sand: 20% Perlite or other well draining peat + sand mixes. Rinse media with distilled or reverse osmosis water to remove excess salts",
+        "feeding": "",
+        "dormancy": "",
+        "notes": ""
       },
       "shopLinks": [],
       "externalLinks": [],
@@ -5697,8 +5711,8 @@
       "genus": "Byblis",
       "species": "filifolia",
       "subspecies": "Hidden Valley",
-      "entryType": "species",
-      "displayName": "Byblis filifolia Hidden Valley",
+      "entryType": "location",
+      "displayName": "Byblis filifolia (Hidden Valley)",
       "commonName": "",
       "group": "Annual",
       "photos": [
@@ -5706,8 +5720,20 @@
         "drive:1iVncIeI5nxOD0IrqB7DYhoMKaMQcB-Ek",
         "drive:1myMsw2uXdmiw-T9J9Gp8Yo8Vu5jgf9Kb"
       ],
+      "country": "Australia",
+      "climate": "lowland_tropical",
+      "habitatId": "tropical_savanna",
+      "nativeRange": "Native to northwestern Australia, specifically the Kimberley region of Western Australia and adjacent Northern Territory.",
+      "nativeHabitat": "Grows in seasonally wet sandy soils of tropical savanna habitats with monsoon rainfall patterns. An annual species found in full sun locations that are wet during summer monsoons and dry during winter months.",
       "care": {
-        "override": false
+        "override": true,
+        "temp": "Temperatures from 60-100F. These prefer moderate humidity but can easily acclimate to low humidity",
+        "light": "Part to Full Sun or 20W per sq ft LED light. Plant in the sun will be more colorful, shorter, and more robust. Plants in less light will grow more like a vine",
+        "water": "Distilled or Reverse Osmosis water. Sitting in 0.5”-2” of water using tray method",
+        "soil": "40% Peat Moss: 40% Sand: 20% Perlite or other well draining peat + sand mixes. Rinse media with distilled or reverse osmosis water to remove excess salts",
+        "feeding": "",
+        "dormancy": "",
+        "notes": ""
       },
       "shopLinks": [],
       "externalLinks": [],
@@ -5715,12 +5741,7 @@
       "parentId": "txn_ipke0lsd9km",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
-      "country": "Australia",
-      "habitatId": "tropical_savanna",
-      "climate": "lowland_tropical",
-      "nativeRange": "Native to northwestern Australia, specifically the Kimberley region of Western Australia and adjacent Northern Territory.",
-      "nativeHabitat": "Grows in seasonally wet sandy soils of tropical savanna habitats with monsoon rainfall patterns. An annual species found in full sun locations that are wet during summer monsoons and dry during winter months."
+      "flagged": false
     },
     {
       "id": "txn_ox1za8rxpbc",
@@ -7511,40 +7532,6 @@
       "climate": "mediterranean",
       "nativeRange": "Endemic to southwestern Western Australia, occurring in a relatively wide range across the southwest botanical region.",
       "nativeHabitat": "Grows in winter-wet sandy or gravelly soils in open kwongan heathland and woodland clearings. Emerges during cool, wet winter months and becomes dormant as underground tubers during hot, dry summers. Typically found on sandplain at low to mid elevations in Mediterranean climate zones."
-    },
-    {
-      "id": "txn_j51giu5asc9",
-      "genus": "Drosera",
-      "species": "cistiflora",
-      "subspecies": "\"cream flower\" (South of Malmesbury)",
-      "entryType": "location",
-      "displayName": "Drosera cistiflora \"cream flower\" (South of Malmesbury)",
-      "commonName": "",
-      "group": "Winter Growing",
-      "photos": [
-        "drive:10wOf5BNUS6qJpfumS1J0h7j8NfSbGUst",
-        "drive:1e4ZxiWZwzc9v53S4Dp-HsUQfQgpiFVyv",
-        "drive:1Nsx0Lj_Mpsok1Z59rRBCcM1NcH1lAxom",
-        "drive:1jCmX6ViLDRZ3CtGHd-I5c2wGZaqoZaUm",
-        "drive:16KS-sAxgVIrsM1IfXzHG9Ju15IhaJWxy",
-        "drive:1IK4Ct6UxCTz7l7sckNAFDxYYRLvtiSq5",
-        "drive:1p7jbh3-ubkpA2BmGEM-TOfW_u0jX7Hv1"
-      ],
-      "country": "South Africa",
-      "climate": "mediterranean",
-      "habitatId": "mediterranean",
-      "nativeRange": "Found in the Western Cape Province of South Africa, this location form occurs south of Malmesbury in the Swartland region.",
-      "nativeHabitat": "Grows in heavy clay soils in renosterveld and wheat-belt areas with winter rainfall. Active during winter rainy season, dormant in summer as underground stem. Found in flats and gentle slopes at low elevations, often in agricultural landscapes with remnant natural vegetation.",
-      "care": {
-        "override": false
-      },
-      "shopLinks": [],
-      "externalLinks": [],
-      "notes": "",
-      "parentId": "",
-      "isHybrid": false,
-      "isGrex": false,
-      "flagged": false
     },
     {
       "id": "txn_8yl2oga16bu",
