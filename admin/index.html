@@ -423,6 +423,41 @@
       background: rgba(90, 122, 158, 0.1);
     }
 
+    .pill.entry-type-pill {
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .pill.entry-type-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ─── Entry-type picker dropdown ────────────────────────────────────── */
+    .entry-type-picker {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: var(--r);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      min-width: 170px;
+      overflow: hidden;
+      font-family: var(--font-u);
+    }
+    .entry-type-picker-opt {
+      padding: 8px 14px;
+      font-size: 11px;
+      color: var(--dim);
+      cursor: pointer;
+      letter-spacing: 0.03em;
+    }
+    .entry-type-picker-opt:hover {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+    .entry-type-picker-opt.current {
+      color: var(--accent);
+      font-weight: 400;
+    }
+
     /* ─── Taxa List ─────────────────────────────────────────────────────── */
     .taxa-list-item {
       display: flex;
@@ -438,6 +473,7 @@
     .taxa-list-item:hover {
       background: rgba(255, 255, 255, 0.04);
       border-color: var(--border);
+      cursor: pointer;
     }
 
     .taxa-list-item.mass-selectable {
@@ -872,6 +908,14 @@ let CSV_SELECTED   = new Set(); // displayNames of CSV preview items to import
 let DRIVE_PREVIEW  = [];        // parsed taxa from Drive scan
 let DRIVE_SELECTED = new Set(); // ids of DRIVE_PREVIEW items to import
 let DRIVE_ROOT_ID  = '';        // last scanned Drive folder ID
+let DUPE_RESULTS   = [];        // [{keep, del, score, status, aiConfidence, aiReason}]
+let DUPE_RUNNING   = false;     // local scan in progress
+let DUPE_AI_RUNNING = false;    // Claude review in progress
+let HAB_BATCH_RUNNING  = false; // batch provenance research in progress
+let HAB_BATCH_DONE     = 0;
+let HAB_BATCH_TOTAL    = 0;
+let HAB_SUGGEST_TEXT   = '';    // AI habitat grouping suggestion JSON
+let HAB_SUGGEST_RUNNING = false;
 
 // SECTION 3: Server API helpers
 async function extractError(r) {
@@ -1123,6 +1167,7 @@ function renderSidebar() {
     {id:'groupcare',  icon:'☀',  label:'Group Care'},
     {id:'linkmatcher',icon:'🔗', label:'Link Matcher'},
     {id:'linktpl',    icon:'⛓', label:'Link Templates'},
+    {id:'dupes',      icon:'⧉',  label:'Find Duplicates'},
     {id:'habitats',   icon:'⬡',  label:'Habitats'},
     {id:'extsites',   icon:'🌐', label:'Ext Sites'},
     {id:'settings',   icon:'⚙',  label:'Settings'}
@@ -1160,6 +1205,7 @@ function renderPage() {
   if (CURRENT_PAGE === 'groupcare')   return renderGroupCare();
   if (CURRENT_PAGE === 'linkmatcher') return renderLinkMatcher();
   if (CURRENT_PAGE === 'linktpl')     return renderLinkTemplates();
+  if (CURRENT_PAGE === 'dupes')        return renderDupes();
   if (CURRENT_PAGE === 'habitats')    return renderHabitats();
   if (CURRENT_PAGE === 'extsites')    return renderExtSites();
   if (CURRENT_PAGE === 'settings')    return renderSettings();
@@ -1315,7 +1361,7 @@ function renderTaxaItems(taxa) {
       (t.flagged ? '<span style="font-size:11px;" title="Flagged">🚩</span>' : '') +
       '</div>' +
       '<div class="taxa-genus">' + escHtml(t.genus) + '</div>' +
-      '<span class="pill">' + escHtml(badge) + '</span>' +
+      '<span class="pill entry-type-pill" data-entry-pill="' + escHtml(t.id) + '" title="Click to change entry type">' + escHtml(badge) + '</span>' +
       (MASS_MODE ? '' :
         '<div style="display:flex;gap:6px;flex-shrink:0;">' +
         '<button class="btn btn-secondary btn-sm" data-edit-id="' + escHtml(t.id) + '">Edit</button>' +
@@ -1835,14 +1881,54 @@ function renderHabitats() {
     '<input type="text" class="hab-name-inp" value="'+escHtml(hab.name)+'" placeholder="Display name" style="flex:1;">' +
     '<button class="btn btn-danger btn-sm" data-remove-hab="'+i+'">×</button></div>'
   ).join('');
+
+  const taxaCount  = (APP_DATA.taxa || []).length;
+  const emptyCount = (APP_DATA.taxa || []).filter(t => !t.nativeHabitat && !t.nativeRange && !t.country).length;
+
+  const batchProg = HAB_BATCH_RUNNING
+    ? '<div style="margin-top:8px;color:var(--dim);font-size:12px;">⏳ Researching… ' + HAB_BATCH_DONE + ' / ' + HAB_BATCH_TOTAL + ' done</div>'
+    : (HAB_BATCH_DONE > 0
+      ? '<div style="margin-top:8px;color:var(--green);font-size:12px;">✓ Batch complete — ' + HAB_BATCH_DONE + ' taxa processed</div>'
+      : '');
+
+  const suggestSection =
+    '<div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">' +
+    '<div class="label" style="margin-bottom:6px;">AI Habitat Grouping</div>' +
+    '<div style="color:var(--dim);font-size:11px;margin-bottom:8px;">After running batch research, ask AI to propose improved habitat categories based on the collected native habitat descriptions. You can edit the JSON before applying.</div>' +
+    '<div style="display:flex;gap:8px;margin-bottom:8px;">' +
+    '<button class="btn btn-secondary" id="hab-suggest-btn"' + (HAB_SUGGEST_RUNNING ? ' disabled' : '') + '>' +
+    (HAB_SUGGEST_RUNNING ? '⏳ Analysing…' : '🤖 Suggest Habitat Groups') + '</button>' +
+    (HAB_SUGGEST_TEXT ? '<button class="btn btn-accent" id="hab-apply-suggest-btn">✓ Apply Suggestions</button>' : '') +
+    '</div>' +
+    (HAB_SUGGEST_TEXT
+      ? '<textarea id="hab-suggest-text" style="width:100%;height:180px;font-family:monospace;font-size:11px;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:8px;border-radius:4px;box-sizing:border-box;">' + escHtml(HAB_SUGGEST_TEXT) + '</textarea>'
+      : '') +
+    '</div>';
+
   return '<h1 class="page-title">Habitats</h1>' +
     '<div class="page-sub">Habitat type lookup used by taxa</div>' +
-    '<div class="card">'+rows+
+    '<div class="card">' +
+    '<div class="card-header"><span class="card-title">Habitat Types</span></div>' +
+    rows +
     '<div style="display:flex;gap:8px;margin-top:10px;">' +
     '<input type="text" id="new-hab-id" placeholder="habitat_id" style="width:160px;font-family:monospace;font-size:11px;">' +
     '<input type="text" id="new-hab-name" placeholder="Display name" style="flex:1;">' +
     '<button class="btn btn-accent btn-sm" id="add-hab-btn">+ Add</button></div>' +
-    '<button class="btn btn-primary" id="save-habitats-btn" style="margin-top:12px;">Save Habitats</button></div>';
+    '<div style="margin-top:10px;">' +
+    '<button class="btn btn-primary" id="save-habitats-btn">Save Habitats</button></div></div>' +
+
+    '<div class="card" style="margin-top:16px;">' +
+    '<div class="card-header"><span class="card-title">AI Provenance Research</span></div>' +
+    '<div style="color:var(--dim);font-size:11px;margin-bottom:10px;">Research native habitat, range, country, and climate for taxa in token-efficient batches (15 per API call) using Claude Sonnet. Results are saved automatically.</div>' +
+    '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
+    '<button class="btn btn-secondary" id="hab-batch-empty-btn"' + (HAB_BATCH_RUNNING ? ' disabled' : '') + '>' +
+    (HAB_BATCH_RUNNING ? '⏳ Running…' : '🤖 Fill Empty (' + emptyCount + ' taxa)') + '</button>' +
+    '<button class="btn btn-secondary" id="hab-batch-all-btn"' + (HAB_BATCH_RUNNING ? ' disabled' : '') + '>' +
+    (HAB_BATCH_RUNNING ? '⏳ Running…' : '🔄 Refill All (' + taxaCount + ' taxa)') + '</button>' +
+    '</div>' +
+    batchProg +
+    suggestSection +
+    '</div>';
 }
 
 // ═══ EXTERNAL SITES ══════════════════════════════════════════
@@ -1891,6 +1977,251 @@ function renderSettings() {
     '<input type="file" id="import-file" accept=".json" style="display:none;">' +
     '<button class="btn btn-danger" id="clear-data-btn">⚠ Clear All Data</button>' +
     '</div></div>';
+}
+
+// ═══ DUPLICATE FINDER ════════════════════════════════════════
+
+function taxonSource(t) {
+  const photos = t.photos || [];
+  if ((t.shopLinks && t.shopLinks.length > 0) || photos.some(p => p.startsWith('sq:'))) return 'squarespace';
+  if (photos.some(p => p.startsWith('drive:'))) return 'drive';
+  return 'unknown';
+}
+function taxonHasCare(t) {
+  const c = t.care || {};
+  return !!(c.light || c.water || c.soil || c.temp);
+}
+
+function renderDupes() {
+  const pending    = DUPE_RESULTS.filter(p => p.status === 'pending');
+  const toDelete   = DUPE_RESULTS.filter(p => p.status === 'delete');
+  const dismissed  = DUPE_RESULTS.filter(p => p.status === 'keep');
+  const visible    = DUPE_RESULTS.filter(p => p.status !== 'keep');
+
+  let html = '<h1 class="page-title">Find Duplicates</h1>' +
+    '<div class="page-sub">Fuzzy-match taxa names to detect duplicates — typically between Squarespace imports (with care data) and Drive imports (photos only).</div>';
+
+  // ── Controls ──
+  html += '<div style="display:flex;gap:10px;margin:24px 0 20px;flex-wrap:wrap;align-items:center;">' +
+    '<button class="btn btn-primary" id="dupe-find-btn"' + (DUPE_RUNNING ? ' disabled' : '') + '>' +
+    (DUPE_RUNNING ? 'Scanning…' : (DUPE_RESULTS.length ? '↺ Re-scan' : '🔍 Find Duplicates')) + '</button>';
+  if (DUPE_RESULTS.length && !DUPE_RUNNING) {
+    html += '<button class="btn btn-secondary" id="dupe-ai-btn"' + (DUPE_AI_RUNNING ? ' disabled' : '') + '>' +
+      (DUPE_AI_RUNNING ? '✦ Reviewing…' : '✦ Review with Claude') + '</button>';
+  }
+  if (toDelete.length) {
+    html += '<button class="btn btn-danger" id="dupe-bulk-delete-btn">' +
+      '🗑 Delete ' + toDelete.length + ' marked duplicate' + (toDelete.length !== 1 ? 's' : '') + '</button>';
+  }
+  html += '</div>';
+
+  // ── Summary bar ──
+  if (DUPE_RESULTS.length) {
+    html += '<div style="display:flex;gap:16px;margin-bottom:20px;font-size:12px;flex-wrap:wrap;">' +
+      '<span style="color:var(--dim);">Found <strong style="color:var(--white);">' + DUPE_RESULTS.length + '</strong> pairs</span>' +
+      (pending.length  ? '<span style="color:var(--dim);">· <strong style="color:var(--white);">' + pending.length + '</strong> pending</span>' : '') +
+      (toDelete.length ? '<span style="color:var(--red);">· <strong>' + toDelete.length + '</strong> marked for deletion</span>' : '') +
+      (dismissed.length? '<span style="color:var(--dimmer);">· <strong>' + dismissed.length + '</strong> dismissed</span>' : '') +
+      '</div>';
+  }
+
+  // ── Pair cards ──
+  if (!DUPE_RESULTS.length && !DUPE_RUNNING) {
+    html += '<div style="padding:48px 0;color:var(--dimmer);font-size:13px;">Click "Find Duplicates" to scan all ' + APP_DATA.taxa.length + ' taxa.</div>';
+  }
+
+  function srcBadge(src) {
+    if (src === 'squarespace') return '<span style="background:rgba(90,122,158,0.2);color:var(--blue);padding:1px 7px;border-radius:10px;font-size:10px;letter-spacing:0.05em;">Squarespace</span>';
+    if (src === 'drive')       return '<span style="background:rgba(90,158,114,0.2);color:var(--green);padding:1px 7px;border-radius:10px;font-size:10px;letter-spacing:0.05em;">Drive</span>';
+    return '<span style="background:rgba(255,255,255,0.05);color:var(--dimmer);padding:1px 7px;border-radius:10px;font-size:10px;">Unknown</span>';
+  }
+  function taxonMeta(t) {
+    const ph  = (t.photos || []).length;
+    const care = taxonHasCare(t);
+    const shop = (t.shopLinks || []).length > 0;
+    return '<span style="font-size:11px;color:var(--dimmer);">' +
+      ph + ' photo' + (ph !== 1 ? 's' : '') +
+      ' &nbsp;·&nbsp; Care: ' + (care ? '<span style="color:var(--green)">✓</span>' : '<span style="color:var(--dimmer)">✗</span>') +
+      ' &nbsp;·&nbsp; Shop: ' + (shop ? '<span style="color:var(--green)">✓</span>' : '<span style="color:var(--dimmer)">✗</span>') +
+      '</span>';
+  }
+
+  visible.forEach((pair, visIdx) => {
+    const realIdx = DUPE_RESULTS.indexOf(pair);
+    const scoreColor = pair.score >= 0.9 ? 'var(--red)' : pair.score >= 0.75 ? 'var(--accent)' : 'var(--dim)';
+    const borderColor = pair.status === 'delete' ? '1px solid rgba(158,90,90,0.5)' : '1px solid var(--border)';
+
+    const aiHtml = pair.aiConfidence
+      ? '<div style="margin-top:6px;font-size:11px;color:var(--dim);padding:6px 10px;background:var(--bg);border-radius:3px;">' +
+          '✦ Claude: ' +
+          (pair.aiConfidence === 'not-duplicate'
+            ? '<span style="color:var(--green);">Not a duplicate</span>'
+            : '<span style="color:var(--accent);">' + escHtml(pair.aiConfidence) + ' confidence duplicate</span>') +
+          (pair.aiReason ? ' — ' + escHtml(pair.aiReason) : '') +
+        '</div>'
+      : '';
+
+    html += '<div style="border:' + borderColor + ';border-radius:4px;padding:14px 16px;margin-bottom:10px;background:var(--bg2);">' +
+      // Header
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
+        '<span style="font-size:12px;font-weight:400;color:' + scoreColor + ';">' + Math.round(pair.score * 100) + '% match</span>' +
+        (pair.aiConfidence ? '<span style="font-size:10px;color:var(--dimmer);">· AI reviewed</span>' : '') +
+        (pair.status === 'delete' ? '<span style="font-size:11px;color:var(--red);margin-left:auto;">⚑ Marked for deletion</span>' : '') +
+      '</div>' +
+      // Keep row
+      '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;">' +
+        '<span style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--green);flex-shrink:0;width:36px;margin-top:2px;">Keep</span>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<span style="font-size:13px;">' + escHtml(pair.keep.displayName) + '</span> ' + srcBadge(taxonSource(pair.keep)) + '<br>' +
+          taxonMeta(pair.keep) +
+        '</div>' +
+        '<button class="btn btn-secondary btn-sm" data-edit-id="' + escHtml(pair.keep.id) + '" style="flex-shrink:0;">Edit</button>' +
+      '</div>' +
+      // Delete row
+      '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">' +
+        '<span style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dimmer);flex-shrink:0;width:36px;margin-top:2px;">Dup?</span>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<span style="font-size:13px;">' + escHtml(pair.del.displayName) + '</span> ' + srcBadge(taxonSource(pair.del)) + '<br>' +
+          taxonMeta(pair.del) +
+        '</div>' +
+        '<button class="btn btn-secondary btn-sm" data-edit-id="' + escHtml(pair.del.id) + '" style="flex-shrink:0;">Edit</button>' +
+      '</div>' +
+      aiHtml +
+      // Actions
+      '<div style="display:flex;gap:8px;margin-top:10px;">' +
+        (pair.status === 'delete'
+          ? '<button class="btn btn-secondary btn-sm" data-dupe-undo="' + realIdx + '">↩ Undo</button>'
+          : '<button class="btn btn-danger btn-sm" data-dupe-mark="' + realIdx + '">⚑ Mark for Deletion</button>' +
+            '<button class="btn btn-secondary btn-sm" data-dupe-dismiss="' + realIdx + '">Keep Both</button>') +
+        '<button class="btn btn-secondary btn-sm" data-dupe-swap="' + realIdx + '" title="Swap which taxon is marked for deletion">⇄ Swap</button>' +
+      '</div>' +
+    '</div>';
+  });
+
+  // ── Dismissed list ──
+  if (dismissed.length) {
+    html += '<div style="margin-top:16px;font-size:12px;color:var(--dimmer);">' +
+      dismissed.length + ' pair' + (dismissed.length !== 1 ? 's' : '') + ' dismissed as "keep both" ' +
+      '— <span style="color:var(--accent);cursor:pointer;" id="dupe-show-dismissed">show</span>' +
+      '</div>' +
+      '<div id="dupe-dismissed-list" style="display:none;margin-top:8px;">';
+    dismissed.forEach(pair => {
+      const ri = DUPE_RESULTS.indexOf(pair);
+      html += '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;display:flex;align-items:center;gap:10px;">' +
+        '<span>' + escHtml(pair.keep.displayName) + '</span>' +
+        '<span style="color:var(--dimmer);">/</span>' +
+        '<span>' + escHtml(pair.del.displayName) + '</span>' +
+        '<button class="btn btn-secondary btn-sm" data-dupe-undo="' + ri + '" style="margin-left:auto;">Restore</button>' +
+      '</div>';
+    });
+    html += '</div>';
+  }
+
+  return html;
+}
+
+function doFindDupes() {
+  DUPE_RUNNING = true;
+  DUPE_RESULTS = [];
+  render();
+
+  const taxa = APP_DATA.taxa;
+  const pairs = [];
+
+  for (let i = 0; i < taxa.length; i++) {
+    for (let j = i + 1; j < taxa.length; j++) {
+      const a = taxa[i], b = taxa[j];
+      // Must share a genus; skip parent-child relationships
+      if (a.genus !== b.genus) continue;
+      if (a.parentId === b.id || b.parentId === a.id) continue;
+
+      const score = matchScore(a.displayName, b.displayName);
+      if (score < 0.6) continue;
+
+      // Determine which to keep vs which is the probable duplicate.
+      // Higher keepScore = better candidate to keep.
+      const scoreFor = t => {
+        const src = taxonSource(t);
+        return (src === 'squarespace' ? 3 : src === 'drive' ? 0 : 1) +
+               (taxonHasCare(t) ? 2 : 0) +
+               ((t.shopLinks || []).length > 0 ? 1 : 0) +
+               (t.photos || []).length * 0.1;
+      };
+      const sa = scoreFor(a), sb = scoreFor(b);
+      const keep = sa >= sb ? a : b;
+      const del  = sa >= sb ? b : a;
+
+      pairs.push({ keep, del, score, status: 'pending', aiConfidence: null, aiReason: '' });
+    }
+  }
+
+  pairs.sort((x, y) => y.score - x.score);
+  DUPE_RESULTS = pairs;
+  DUPE_RUNNING = false;
+  render();
+}
+
+async function doAiReviewDupes() {
+  const pending = DUPE_RESULTS.filter(p => p.status === 'pending');
+  if (!pending.length) { showToast('No pending pairs to review', 'error'); return; }
+  if (DUPE_AI_RUNNING) return;
+  DUPE_AI_RUNNING = true;
+  render();
+
+  // Build compact list for Claude — send in batches of 30 to stay within token limits
+  const BATCH = 30;
+  try {
+    for (let start = 0; start < pending.length; start += BATCH) {
+      const batch = pending.slice(start, start + BATCH);
+      const list  = batch.map((p, i) => ({
+        index:      i,
+        a:          p.keep.displayName,
+        b:          p.del.displayName,
+        fuzzyScore: Math.round(p.score * 100) + '%'
+      }));
+
+      const prompt = 'You are reviewing potential duplicate entries in a carnivorous plant database.\n' +
+        'For each pair decide if they refer to the SAME taxon (duplicate) or are genuinely distinct.\n' +
+        'Common reasons for duplicates: same species imported twice (once from shop, once from photo folder), ' +
+        'different capitalisation or punctuation, location form vs. species entry for the same plant.\n' +
+        'Return ONLY a JSON array — no other text:\n' +
+        '[{"index":N,"isDuplicate":true/false,"confidence":"high"|"medium"|"low","reason":"brief"},...]\n\n' +
+        'Pairs:\n' + JSON.stringify(list, null, 2);
+
+      const response = await apiPost('/api/ai/research', {
+        model: 'claude-haiku-4-5',
+        max_tokens: 1500,
+        messages: [{ role: 'user', content: prompt }]
+      });
+
+      const text = (response.content && response.content[0] && response.content[0].text) || '';
+      const m    = text.match(/\[[\s\S]*\]/);
+      if (m) {
+        JSON.parse(m[0]).forEach(r => {
+          const pair = batch[r.index];
+          if (!pair) return;
+          pair.aiConfidence = r.isDuplicate ? r.confidence : 'not-duplicate';
+          pair.aiReason     = r.reason || '';
+        });
+      }
+    }
+    showToast('Claude review complete', 'success');
+  } catch(e) {
+    showToast('Claude review failed: ' + e.message, 'error');
+  }
+  DUPE_AI_RUNNING = false;
+  render();
+}
+
+function doBulkDeleteDupes() {
+  const toDelete = DUPE_RESULTS.filter(p => p.status === 'delete');
+  if (!toDelete.length) return;
+  const names = toDelete.map(p => '• ' + p.del.displayName).join('\n');
+  if (!confirm('Permanently delete ' + toDelete.length + ' taxa?\n\n' + names + '\n\nThis cannot be undone.')) return;
+  const ids = new Set(toDelete.map(p => p.del.id));
+  APP_DATA.taxa = APP_DATA.taxa.filter(t => !ids.has(t.id));
+  DUPE_RESULTS  = DUPE_RESULTS.filter(p => !ids.has(p.del.id));
+  saveAndRender('Deleted ' + toDelete.length + ' duplicate taxa');
 }
 
 // ═══ CSV IMPORT ══════════════════════════════════════════════
@@ -2253,6 +2584,19 @@ function attachPageEvents() {
       renderMassState(); return;
     }
 
+    // Entry type pill — open picker (must come before row-click to short-circuit navigation)
+    const pillTaxonId = e.target.closest('[data-entry-pill]')?.dataset.entryPill;
+    if (pillTaxonId && !MASS_MODE) {
+      showEntryTypePicker(pillTaxonId, e.target.closest('[data-entry-pill]'));
+      return;
+    }
+
+    // Click anywhere on a taxa list row (non-mass mode) to edit
+    const rowId = e.target.closest('.taxa-list-item')?.dataset.taxonId;
+    if (rowId && !MASS_MODE && !e.target.closest('button')) {
+      EDIT_TAXON_ID = rowId; ACTIVE_TAB = 'identity'; navigate('edit', {editId: rowId}); return;
+    }
+
     // Edit taxon
     const editId = e.target.closest('[data-edit-id]')?.dataset.editId;
     if (editId) { EDIT_TAXON_ID = editId; ACTIVE_TAB = 'identity'; navigate('edit', {editId}); return; }
@@ -2266,6 +2610,32 @@ function attachPageEvents() {
         saveAndRender('Deleted');
       }
       return;
+    }
+
+    // ── Duplicate finder actions ──
+    if (e.target.id === 'dupe-find-btn')         { doFindDupes(); return; }
+    if (e.target.id === 'dupe-ai-btn')           { doAiReviewDupes(); return; }
+    if (e.target.id === 'dupe-bulk-delete-btn')  { doBulkDeleteDupes(); return; }
+    if (e.target.id === 'dupe-show-dismissed') {
+      const dl = document.getElementById('dupe-dismissed-list');
+      if (dl) { dl.style.display = dl.style.display === 'none' ? 'block' : 'none'; } return;
+    }
+    const dupeMarkIdx = e.target.closest('[data-dupe-mark]')?.dataset.dupeMark;
+    if (dupeMarkIdx !== undefined) {
+      DUPE_RESULTS[parseInt(dupeMarkIdx)].status = 'delete'; render(); return;
+    }
+    const dupeDismissIdx = e.target.closest('[data-dupe-dismiss]')?.dataset.dupeDismiss;
+    if (dupeDismissIdx !== undefined) {
+      DUPE_RESULTS[parseInt(dupeDismissIdx)].status = 'keep'; render(); return;
+    }
+    const dupeUndoIdx = e.target.closest('[data-dupe-undo]')?.dataset.dupeUndo;
+    if (dupeUndoIdx !== undefined) {
+      DUPE_RESULTS[parseInt(dupeUndoIdx)].status = 'pending'; render(); return;
+    }
+    const dupeSwapIdx = e.target.closest('[data-dupe-swap]')?.dataset.dupeSwap;
+    if (dupeSwapIdx !== undefined) {
+      const p = DUPE_RESULTS[parseInt(dupeSwapIdx)];
+      [p.keep, p.del] = [p.del, p.keep]; render(); return;
     }
 
     // Match site tabs
@@ -2342,7 +2712,29 @@ function attachPageEvents() {
       if (APP_DATA.genusCoverPhotos[g]) { APP_DATA.genusCoverPhotos[g].splice(parseInt(i),1); }
       saveAndRender(); return; }
 
-    // Add genus photo (save on blur of inputs)
+    // Remove habitat row (save current DOM state first, then splice)
+    const rmHabIdx = e.target.closest('[data-remove-hab]')?.dataset.removeHab;
+    if (rmHabIdx !== undefined) {
+      doSaveHabitats(); // flush any edited values to APP_DATA first
+      APP_DATA.habitats.splice(parseInt(rmHabIdx), 1);
+      saveAndRender(); return;
+    }
+
+    // Remove ext site row
+    const rmSiteIdx = e.target.closest('[data-remove-site]')?.dataset.removeSite;
+    if (rmSiteIdx !== undefined) {
+      doSaveExtSites(); // flush any edited values first
+      APP_DATA.extSites.splice(parseInt(rmSiteIdx), 1);
+      saveAndRender(); return;
+    }
+
+    // Habitat batch research buttons
+    if (e.target.id === 'hab-batch-empty-btn') { doBatchProvenance('empty'); return; }
+    if (e.target.id === 'hab-batch-all-btn')   { doBatchProvenance('all');   return; }
+    if (e.target.id === 'hab-suggest-btn')     { doSuggestHabitats();        return; }
+    if (e.target.id === 'hab-apply-suggest-btn') { doApplyHabitatSuggestions(); return; }
+
+    // Habitats / sites / genus photo save buttons
     if (e.target.id === 'save-habitats-btn') { doSaveHabitats(); return; }
     if (e.target.id === 'save-sites-btn')    { doSaveExtSites(); return; }
     if (e.target.id === 'add-hab-btn')       { doAddHabitat(); return; }
@@ -2518,6 +2910,42 @@ function refreshTaxaList() {
   if (container) container.innerHTML = renderTaxaItems(getFilteredTaxa());
   const lbl = document.getElementById('taxa-count-label');
   if (lbl) lbl.textContent = getFilteredTaxa().length + ' / ' + APP_DATA.taxa.length;
+}
+
+function showEntryTypePicker(taxonId, anchorEl) {
+  document.querySelectorAll('.entry-type-picker').forEach(p => p.remove());
+  const t = APP_DATA.taxa.find(x => x.id === taxonId);
+  if (!t) return;
+
+  const rect = anchorEl.getBoundingClientRect();
+  const picker = document.createElement('div');
+  picker.className = 'entry-type-picker';
+  picker.style.cssText = 'position:fixed;z-index:9999;top:' + (rect.bottom + 4) + 'px;left:' + rect.left + 'px;';
+
+  ENTRY_TYPES.forEach(et => {
+    const opt = document.createElement('div');
+    opt.className = 'entry-type-picker-opt' + (t.entryType === et.id ? ' current' : '');
+    opt.textContent = et.label.split('(')[0].trim();
+    opt.addEventListener('click', ev => {
+      ev.stopPropagation();
+      t.entryType = et.id;
+      saveData();
+      refreshTaxaList();
+      picker.remove();
+    });
+    picker.appendChild(opt);
+  });
+
+  document.body.appendChild(picker);
+
+  // Close on outside click
+  const close = ev => {
+    if (!picker.contains(ev.target)) {
+      picker.remove();
+      document.removeEventListener('click', close, true);
+    }
+  };
+  setTimeout(() => document.addEventListener('click', close, true), 0);
 }
 
 function renderMassState() {
@@ -3021,15 +3449,22 @@ async function fetchProvenanceAI(taxon) {
   if (!SERVER_CONFIG.hasAnthropicKey) { showToast('Anthropic API key not configured', 'error'); return null; }
   const climates = (APP_DATA.climates || []).map(c => '"' + c.id + '" (' + c.name + ')').join(', ');
   const habitats = (APP_DATA.habitats || []).map(h => '"' + h.id + '" (' + h.name + ')').join(', ');
+  const et = ENTRY_TYPES.find(e => e.id === taxon.entryType) || {};
+  const identity = taxon.displayName
+    + (taxon.genus  ? ' (genus: ' + taxon.genus + ')' : '')
+    + (taxon.group  ? ', group: ' + taxon.group : '')
+    + (et.label     ? ', entry type: ' + et.label : '');
+  const cultivarNote = (taxon.entryType === 'registered_cultivar' || taxon.entryType === 'unregistered_form')
+    ? '\nNote: this is a cultivar/selected form — provide the parent species native range and habitat, not cultivar-specific info.' : '';
   const prompt =
-    'You are an expert botanist specialising in carnivorous plants. Research this taxon and return ONLY a JSON object — no explanation, no markdown.\n\n' +
-    'Taxon: ' + taxon.displayName + (taxon.genus ? ' (genus: ' + taxon.genus + ')' : '') + '\n\n' +
-    'Required JSON fields (omit any you are not confident about):\n' +
-    '  "country"     : primary country or countries of origin, comma-separated\n' +
-    '  "nativeRange" : 1–2 sentences of scientific geographic range (state/province level where known)\n' +
+    'You are an expert botanist specialising in carnivorous plants. Research this specific taxon and return ONLY a JSON object — no explanation, no markdown.\n\n' +
+    'Taxon: ' + identity + cultivarNote + '\n\n' +
+    'JSON fields (omit any you are not confident about):\n' +
+    '  "country"      : primary country or countries of origin, comma-separated\n' +
+    '  "nativeRange"  : 1–2 sentences geographic range (state/province level where known)\n' +
     '  "nativeHabitat": 2–3 sentences describing soil, hydrology, associated vegetation, elevation\n' +
-    '  "climate"     : exactly one of these IDs that best fits: ' + climates + '\n' +
-    '  "habitatId"   : exactly one of these IDs that best fits: ' + habitats + '\n\n' +
+    '  "climate"      : exactly one of these IDs: ' + climates + '\n' +
+    '  "habitatId"    : exactly one of these IDs: ' + habitats + '\n\n' +
     'Return only the JSON object, nothing else.';
   try {
     const resp = await apiPost('/api/ai/research', {
@@ -3101,9 +3536,20 @@ async function doMassProvenance() {
 
 async function runAIResearch(taxon, fields) {
   if (!SERVER_CONFIG.hasAnthropicKey) { showToast('Anthropic API key not configured','error'); return; }
-  const prompt = 'Research the following carnivorous plant taxon and provide accurate growing information and native range details. Taxon: ' + taxon.displayName +
-    '\n\nProvide JSON with these fields (only if confident): ' + fields.join(', ') +
-    '\n\nFor care fields use concise, practical grower-oriented language. For native_range use scientific geographic terminology.';
+  const et = ENTRY_TYPES.find(e => e.id === taxon.entryType) || {};
+  const identity = taxon.displayName
+    + (taxon.genus  ? ' (genus: ' + taxon.genus + ')' : '')
+    + (taxon.group  ? ', group: ' + taxon.group : '')
+    + (et.label     ? ', entry type: ' + et.label : '');
+  const cultivarNote = (taxon.entryType === 'registered_cultivar' || taxon.entryType === 'unregistered_form')
+    ? '\nNote: this is a cultivar/form — use the parent species native range and habitat.' : '';
+  const prompt =
+    'You are an expert botanist specialising in carnivorous plants.\n\n' +
+    'Research this specific taxon: ' + identity + cultivarNote + '\n\n' +
+    'Provide JSON with these fields (only if confident): ' + fields.join(', ') + '\n\n' +
+    'For care fields use concise, practical grower-oriented language. ' +
+    'For native range use scientific geographic terminology. ' +
+    'Return only the JSON object, nothing else.';
   try {
     const resp = await apiPost('/api/ai/research', {
       model: 'claude-sonnet-4-5',
@@ -3125,6 +3571,136 @@ async function runAIResearch(taxon, fields) {
       }
     }
   } catch(e) { console.warn('AI research failed for '+taxon.displayName+':', e.message); }
+}
+
+// ═══ BATCH PROVENANCE (Habitats page) ════════════════════════
+
+async function doBatchProvenance(mode) {
+  if (HAB_BATCH_RUNNING) return;
+  if (!SERVER_CONFIG.hasAnthropicKey) { showToast('Anthropic API key not configured', 'error'); return; }
+  const allTaxa = APP_DATA.taxa || [];
+  const targets = mode === 'empty'
+    ? allTaxa.filter(t => !t.nativeHabitat && !t.nativeRange && !t.country)
+    : [...allTaxa];
+  if (!targets.length) { showToast('No taxa to research', 'info'); return; }
+
+  HAB_BATCH_RUNNING = true;
+  HAB_BATCH_DONE    = 0;
+  HAB_BATCH_TOTAL   = targets.length;
+  render();
+
+  const BATCH    = 15;
+  const climates = (APP_DATA.climates || []).map(c => '"' + c.id + '" (' + c.name + ')').join(', ');
+  const habitats = (APP_DATA.habitats || []).map(h => '"' + h.id + '" (' + h.name + ')').join(', ');
+  let updated = 0;
+
+  try {
+    for (let start = 0; start < targets.length; start += BATCH) {
+      const batch    = targets.slice(start, start + BATCH);
+      const taxaList = batch.map((t, i) => {
+        const et = ENTRY_TYPES.find(e => e.id === t.entryType) || {};
+        return { idx: i, name: t.displayName, genus: t.genus || '', entryType: et.label || t.entryType || 'species', group: t.group || '' };
+      });
+      const prompt =
+        'You are an expert botanist specialising in carnivorous plants.\n\n' +
+        'Research each of the following taxa and return ONLY a JSON array — no explanation, no markdown.\n\n' +
+        'Taxa:\n' + JSON.stringify(taxaList, null, 2) + '\n\n' +
+        'Valid climate IDs: ' + climates + '\n' +
+        'Valid habitatId IDs: ' + habitats + '\n\n' +
+        'Return a JSON array, one object per taxon, matching the input "idx". ' +
+        'For cultivars/forms (entryType contains "cultivar" or "form"), use the parent species provenance. ' +
+        'Only include fields you are confident about. Each object:\n' +
+        '  "idx"          : integer (same as input)\n' +
+        '  "country"      : primary countries of origin, comma-separated\n' +
+        '  "nativeRange"  : 1–2 sentences geographic range (state/province level where known)\n' +
+        '  "nativeHabitat": 2–3 sentences: soil, hydrology, vegetation, elevation\n' +
+        '  "climate"      : one valid climate ID\n' +
+        '  "habitatId"    : one valid habitatId ID\n\n' +
+        'Return only the JSON array, nothing else.';
+      try {
+        const resp = await apiPost('/api/ai/research', {
+          model: 'claude-sonnet-4-5',
+          max_tokens: 4000,
+          messages: [{ role: 'user', content: prompt }]
+        });
+        const text = (resp.content && resp.content[0]?.text) || '';
+        const m = text.match(/\[[\s\S]+\]/);
+        if (m) {
+          const results = JSON.parse(m[0]);
+          for (const r of results) {
+            const taxon = batch[r.idx];
+            if (!taxon) continue;
+            if (r.country)       taxon.country       = r.country;
+            if (r.nativeRange)   taxon.nativeRange   = r.nativeRange;
+            if (r.nativeHabitat) taxon.nativeHabitat = r.nativeHabitat;
+            if (r.climate)       taxon.climate       = r.climate;
+            if (r.habitatId)     taxon.habitatId     = r.habitatId;
+            updated++;
+          }
+        }
+      } catch(e) { console.warn('Batch provenance error (batch ' + start + '):', e.message); }
+
+      HAB_BATCH_DONE = Math.min(start + BATCH, targets.length);
+      render();
+      await new Promise(r => setTimeout(r, 500));
+    }
+    await saveData();
+    showToast('Provenance filled for ' + updated + ' taxa', 'success');
+  } catch(e) {
+    showToast('Batch error: ' + e.message, 'error');
+  } finally {
+    HAB_BATCH_RUNNING = false;
+    render();
+  }
+}
+
+async function doSuggestHabitats() {
+  if (HAB_SUGGEST_RUNNING) return;
+  if (!SERVER_CONFIG.hasAnthropicKey) { showToast('Anthropic API key not configured', 'error'); return; }
+  const taxa    = APP_DATA.taxa || [];
+  const samples = taxa.filter(t => t.nativeHabitat).map(t => ({ name: t.displayName, genus: t.genus || '', nativeHabitat: t.nativeHabitat }));
+  if (samples.length < 5) { showToast('Need at least 5 taxa with native habitat data — run batch research first', 'error'); return; }
+  HAB_SUGGEST_RUNNING = true;
+  HAB_SUGGEST_TEXT    = '';
+  render();
+  const currentHabitats = (APP_DATA.habitats || []).map(h => h.id + ' (' + h.name + ')').join(', ');
+  const prompt =
+    'You are an expert botanist specialising in carnivorous plants.\n\n' +
+    'Below are native habitat descriptions for ' + samples.length + ' taxa in a carnivorous plant gallery. ' +
+    'Propose an improved set of habitat categories that accurately groups these plants by ecological niche.\n\n' +
+    'Current categories: ' + currentHabitats + '\n\n' +
+    'Habitat samples:\n' + JSON.stringify(samples, null, 2) + '\n\n' +
+    'Return ONLY a JSON array of habitat objects — no explanation:\n' +
+    '[{"id": "boggy_lowland", "name": "Boggy Lowland"}, ...]\n\n' +
+    'Guidelines: snake_case ids, aim for 6–12 categories, reflect distinct ecological niches, ' +
+    'preserve well-represented existing categories. Return only the JSON array.';
+  try {
+    const resp = await apiPost('/api/ai/research', {
+      model: 'claude-sonnet-4-5',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }]
+    });
+    const text = (resp.content && resp.content[0]?.text) || '';
+    const m = text.match(/\[[\s\S]+\]/);
+    if (m) { HAB_SUGGEST_TEXT = m[0]; showToast('Suggestions ready — review then apply', 'success'); }
+    else   { showToast('AI returned unexpected format', 'error'); }
+  } catch(e) { showToast('AI error: ' + e.message, 'error'); }
+  finally { HAB_SUGGEST_RUNNING = false; render(); }
+}
+
+function doApplyHabitatSuggestions() {
+  const textarea = document.getElementById('hab-suggest-text');
+  const text = (textarea ? textarea.value : HAB_SUGGEST_TEXT).trim();
+  if (!text) { showToast('No suggestions to apply', 'error'); return; }
+  try {
+    const suggestions = JSON.parse(text);
+    if (!Array.isArray(suggestions) || !suggestions[0]?.id) { showToast('Invalid format — expected [{id, name}] array', 'error'); return; }
+    if (!confirm('Replace habitat list with ' + suggestions.length + ' AI-suggested categories?\n\nNote: existing taxon habitatId values are NOT changed — you may need to remap them.')) return;
+    APP_DATA.habitats = suggestions.map(h => ({ id: h.id.trim(), name: h.name.trim() })).filter(h => h.id);
+    HAB_SUGGEST_TEXT  = text;
+    saveAndRender();
+    showToast('Habitats updated — ' + APP_DATA.habitats.length + ' categories', 'success');
+  } catch(e) { showToast('JSON parse error: ' + e.message, 'error'); }
 }
 
 // ═══ CSV PARSING (Squarespace) ════════════════════════════════
