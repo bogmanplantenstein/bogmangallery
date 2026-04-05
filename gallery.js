@@ -134,6 +134,16 @@
   color: var(--bmg-off-white);
   opacity: 0.6;
 }
+.bmg-header-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--bmg-dim);
+  max-width: 640px;
+  margin-top: 20px;
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 1;
+}
 
 /* ── SEARCH + FILTERS ── */
 .bmg-controls {
@@ -1181,7 +1191,8 @@
       habitats:          habitatMap,
       climates:          climateMap,
       genusCoverPhotos:  genusCoverPhotos,
-      groupCareDefaults: groupCareDefaults
+      groupCareDefaults: groupCareDefaults,
+      siteContent:       raw.siteContent || {}
     };
   }
 
@@ -1355,10 +1366,22 @@
 
   // ── Header ──
   function renderHeader() {
+    var sc       = (DATA && DATA.siteContent) || {};
+    var eyebrow  = sc.eyebrow  || 'Bogman Plantenstein \u00B7 Grow Collection';
+    var title    = sc.title    || 'Photos';
+    var subtitle = sc.subtitle || 'Carnivorous plant photo reference & species gallery';
+    var szStyle  = function (v) { return v ? ' style="font-size:' + esc(v) + '"' : ''; };
+
+    var descHtml = '';
+    if (STATE.view === 'genera' && sc.description) {
+      descHtml = '<div class="bmg-header-desc"' + szStyle(sc.descriptionSize) + '>' + sc.description + '</div>';
+    }
+
     return '<div class="bmg-header">' +
-      '<div class="bmg-header-eyebrow">Bogman Plantenstein \u00B7 Grow Collection</div>' +
-      '<h1 class="bmg-header-title">Photos</h1>' +
-      '<div class="bmg-header-sub">Carnivorous plant photo reference &amp; species gallery</div>' +
+      '<div class="bmg-header-eyebrow"' + szStyle(sc.eyebrowSize) + '>' + esc(eyebrow) + '</div>' +
+      '<h1 class="bmg-header-title"' + szStyle(sc.titleSize) + '>' + esc(title) + '</h1>' +
+      '<div class="bmg-header-sub"' + szStyle(sc.subtitleSize) + '>' + esc(subtitle) + '</div>' +
+      descHtml +
       '</div>';
   }
 

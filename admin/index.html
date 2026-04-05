@@ -1963,8 +1963,45 @@ function renderExtSites() {
 
 function renderSettings() {
   const cfg = SERVER_CONFIG || {};
+  const sc  = APP_DATA.siteContent || {};
+
+  const headerCard =
+    '<div class="card" style="margin-bottom:16px;">' +
+    '<div class="card-header"><span class="card-title">Gallery Header</span></div>' +
+    '<div style="color:var(--dim);font-size:11px;margin-bottom:14px;">Customise the text at the top of the gallery. Font size is optional — leave blank to use the default.</div>' +
+
+    '<div class="form-group"><label class="label">Eyebrow</label>' +
+    '<div style="display:flex;gap:8px;">' +
+    '<input type="text" id="sc-eyebrow" value="' + escHtml(sc.eyebrow || 'Bogman Plantenstein \u00B7 Grow Collection') + '" style="flex:1;">' +
+    '<input type="text" id="sc-eyebrow-size" value="' + escHtml(sc.eyebrowSize || '') + '" placeholder="font-size e.g. 14px" style="width:160px;">' +
+    '</div></div>' +
+
+    '<div class="form-group"><label class="label">Title</label>' +
+    '<div style="display:flex;gap:8px;">' +
+    '<input type="text" id="sc-title" value="' + escHtml(sc.title || 'Photos') + '" style="flex:1;">' +
+    '<input type="text" id="sc-title-size" value="' + escHtml(sc.titleSize || '') + '" placeholder="font-size e.g. 56px" style="width:160px;">' +
+    '</div></div>' +
+
+    '<div class="form-group"><label class="label">Subtitle</label>' +
+    '<div style="display:flex;gap:8px;">' +
+    '<input type="text" id="sc-subtitle" value="' + escHtml(sc.subtitle || 'Carnivorous plant photo reference \u0026 species gallery') + '" style="flex:1;">' +
+    '<input type="text" id="sc-subtitle-size" value="' + escHtml(sc.subtitleSize || '') + '" placeholder="font-size e.g. 13px" style="width:160px;">' +
+    '</div></div>' +
+
+    '<div class="form-group">' +
+    '<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">' +
+    '<label class="label" style="margin:0;">Description <span style="color:var(--dimmer);font-weight:300;text-transform:none;letter-spacing:0;">(home screen only · HTML supported)</span></label>' +
+    '<input type="text" id="sc-desc-size" value="' + escHtml(sc.descriptionSize || '') + '" placeholder="font-size e.g. 14px" style="width:160px;">' +
+    '</div>' +
+    '<textarea id="sc-description" style="width:100%;height:90px;font-family:var(--font-u);font-size:12px;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:8px;border-radius:4px;box-sizing:border-box;resize:vertical;">' + escHtml(sc.description || '') + '</textarea>' +
+    '</div>' +
+
+    '<button class="btn btn-primary" id="save-header-content-btn">Save Header</button>' +
+    '</div>';
+
   return '<h1 class="page-title">Settings</h1>' +
     '<div class="page-sub">Server configuration and data management</div>' +
+    headerCard +
     '<div class="card">' +
     '<div class="card-header"><span class="card-title">Server Status</span></div>' +
     '<div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">' +
@@ -2742,6 +2779,7 @@ function attachPageEvents() {
     if (e.target.id === 'hab-apply-suggest-btn') { doApplyHabitatSuggestions(); return; }
 
     // Habitats / sites / genus photo save buttons
+    if (e.target.id === 'save-header-content-btn') { doSaveHeaderContent(); return; }
     if (e.target.id === 'save-habitats-btn') { doSaveHabitats(); return; }
     if (e.target.id === 'save-sites-btn')    { doSaveExtSites(); return; }
     if (e.target.id === 'add-hab-btn')       { doAddHabitat(); return; }
@@ -3347,6 +3385,21 @@ function doAddHabitat() {
   if (!APP_DATA.habitats) APP_DATA.habitats = [];
   APP_DATA.habitats.push({id,name});
   saveAndRender();
+}
+
+function doSaveHeaderContent() {
+  const get = id => document.getElementById(id)?.value?.trim() || '';
+  if (!APP_DATA.siteContent) APP_DATA.siteContent = {};
+  const sc = APP_DATA.siteContent;
+  sc.eyebrow         = get('sc-eyebrow');
+  sc.eyebrowSize     = get('sc-eyebrow-size');
+  sc.title           = get('sc-title');
+  sc.titleSize       = get('sc-title-size');
+  sc.subtitle        = get('sc-subtitle');
+  sc.subtitleSize    = get('sc-subtitle-size');
+  sc.description     = document.getElementById('sc-description')?.value || '';
+  sc.descriptionSize = get('sc-desc-size');
+  saveData().then(() => showToast('Header content saved', 'success'));
 }
 
 function doSaveExtSites() {
