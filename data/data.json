@@ -3933,8 +3933,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Northern Territory, Australia, specifically from the Flying Fox Creek area in the Top End.",
-      "nativeHabitat": "Found in seasonally waterlogged sandy soils near creek lines and seepage areas in tropical savanna. Plants grow in areas that are inundated during the wet season and remain moist during the dry season, typically in open sun or light shade.",
+      "nativeRange": "Known only from sandy habitats to the southeast of Darwin, Northern Territory.",
+      "nativeHabitat": "Grows in sandy soils. In the wet season has few hairs on its leaves; by the dry season the same leaves become densely hairy, similar to Drosera lanata.",
       "care": {
         "light": "Part to Full Sun or 20W per sq ft LED light",
         "water": "Distilled or Reverse Osmosis water. Sitting in 0.5”-1” of water using the tray method (depending on pot height). Some species like very wet conditions, while others prefer good drainage and less moisture. This roughly correlates to how hairy they are (hairier = drier). However, most are quite tolerant of wet conditions if given high temperatures and powerful light. If plants decide to go dormant (shrink and slow growth), keep them drier until they resume growth",
@@ -3950,7 +3950,12 @@
           "url": "drosera-aff-lanata-flying-fox-creek"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -3978,8 +3983,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Northern Australia, spanning the Northern Territory and Western Australia (Kimberley region), part of the petiolaris species complex.",
-      "nativeHabitat": "Inhabits seasonally wet sandy soils in tropical savanna wetlands and creek margins. Plants experience distinct wet and dry seasons, growing in nutrient-poor substrates with periodic inundation during monsoon rains.",
+      "nativeRange": "An undescribed perennial tropical Drosera known from the Northern Territory.",
+      "nativeHabitat": "Grows in tropical savannah habitats of the Northern Territory. Distinguished from the Queensland Drosera petiolaris by its leaves up to 12 cm long and semi-erect pedicels 3–8 mm long.",
       "care": {
         "light": "Part to Full Sun or 20W per sq ft LED light",
         "water": "Distilled or Reverse Osmosis water. Sitting in 0.5”-1” of water using the tray method (depending on pot height). Some species like very wet conditions, while others prefer good drainage and less moisture. This roughly correlates to how hairy they are (hairier = drier). However, most are quite tolerant of wet conditions if given high temperatures and powerful light. If plants decide to go dormant (shrink and slow growth), keep them drier until they resume growth. This form prefers wetter conditions but is quite adaptable",
@@ -3995,7 +4000,12 @@
           "url": "drosera-aff-petiolaris-dilatatopetiolaris"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -8960,12 +8970,12 @@
       "parentId": "txn_fx77n3gqyb4",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Parent species Drosera broomensis is endemic to the Kimberley region of northern Western Australia.",
-      "nativeHabitat": "Woolly sundew inhabiting red sandy soils in tropical savanna. Found in seasonally inundated claypans, wetland margins, and shallow depressions that flood during the summer monsoon and dry completely during the winter dry season. Grows among grasses and low vegetation in open woodland."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_eug6xcp6x5t",
@@ -8983,13 +8993,18 @@
       "country": "Australia",
       "climate": "lowland_tropical",
       "habitatId": "tropical_savanna",
-      "nativeRange": "Parent species Drosera caduca occurs in the Kimberley region of northern Western Australia, with this form from Bachsten Creek in the Kimberley.",
-      "nativeHabitat": "Woolly sundew found in sandy soils near streams and seasonal wetlands in tropical savanna. Inhabits areas that are wet or waterlogged during the summer monsoon but dry in the winter dry season. Grows in open woodland and grassland communities at low elevations.",
+      "nativeRange": "Distributed throughout the Edkins Range to the southern regions of the Prince Regent River Reserve. Also occurs on Augustus Island, Kimberley, Western Australia.",
+      "nativeHabitat": "On the mainland, grows on creek margins in silty white sand soils. On Augustus Island, grows in stony brown sand on the edge of a basin on the lower slopes of a sandstone ridge with Eucalyptus miniata woodland and Spinifex.",
       "care": {
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9012,7 +9027,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9021,8 +9041,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Endemic to the Kimberley region of northern Western Australia, occurring in areas around Derby and the broader west Kimberley.",
-      "nativeHabitat": "Woolly sundew inhabiting sandy or loamy soils in tropical savanna wetlands. Found in seasonally inundated areas including claypan margins and creek flats that flood during summer monsoon rains and dry during the winter dry season. Grows among grasses in open woodland."
+      "nativeRange": "Known from Western Australia. Common on the Yampi Peninsula and a number of offshore islands in the Buccaneer Archipelago to the northwest of the peninsula. Also extends south of the Yampi Peninsula to the Erskine Ranges and southeast to the Leopold Ranges.",
+      "nativeHabitat": "Grows in sandy soils on the aprons of sandstone rock outcrops, as well as in seasonally wet savannahs."
     },
     {
       "id": "txn_zywnc33udr",
@@ -9042,6 +9062,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-falconeri-grows-in-acidic-substrates/"
+        },
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
         }
       ],
       "notes": "",
@@ -9052,8 +9076,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Endemic to the northern Kimberley region of Western Australia, occurring in areas north of the King Leopold Ranges.",
-      "nativeHabitat": "Woolly sundew found in red sandy or loamy soils in tropical savanna. Inhabits seasonally wet areas including claypan margins and wetland flats that flood during the summer monsoon and are dry during winter. One of the larger woolly sundews, growing in open woodland and grassland."
+      "nativeRange": "Occurs in the Northern Territory, with records from Palmerston, Berry Springs, Fly Creek, the Finniss River catchment, and Melville Island.",
+      "nativeHabitat": "Grows in grey, silty clay, often on gently sloping savannah in areas that are inundated for periods of time, especially during the earlier part of the wet season."
     },
     {
       "id": "txn_1nxldhl1wzl",
@@ -9075,7 +9099,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "txn_zywnc33udr",
       "isHybrid": false,
@@ -9084,8 +9113,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Endemic to the northern Kimberley region of Western Australia, particularly in sandstone areas near the coast and adjacent islands.",
-      "nativeHabitat": "Grows in shallow sandy or peaty soils over sandstone, often in seepage areas and along creek margins. Found in open woodland and heath communities where seasonal moisture persists. Elevation typically 0-300 meters."
+      "nativeRange": "Occurs in the Northern Territory, with records from Palmerston, Berry Springs, Fly Creek, the Finniss River catchment, and Melville Island.",
+      "nativeHabitat": "Grows in grey, silty clay, often on gently sloping savannah in areas that are inundated for periods of time, especially during the earlier part of the wet season."
     },
     {
       "id": "txn_hjhylbasmxv",
@@ -9113,6 +9142,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-fulva/"
+        },
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
         }
       ],
       "notes": "",
@@ -9123,8 +9156,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Native to the Northern Territory of Australia, particularly in the Top End region around Darwin and Arnhem Land plateau.",
-      "nativeHabitat": "Occurs in shallow sandy soils over laterite or sandstone in seasonally wet depressions and seepage areas. Found in open tropical savanna woodland with Eucalyptus and grasses, experiencing distinct wet and dry seasons. Elevation ranges from 50-400 meters."
+      "nativeRange": "All records from the Northern Territory, including Howard Springs, Palmerston, Humpty Doo, and Port Essington on the Cobourg Peninsula.",
+      "nativeHabitat": "Grows in sandy soil on damp flats, seepage areas, and ephemeral wet depressions just above the wet season flood levels. Plants may remain under water for several weeks at a time during heavy rains and flooding."
     },
     {
       "id": "txn_s7se6as0ggm",
@@ -9144,6 +9177,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-lanata/"
+        },
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
         }
       ],
       "notes": "",
@@ -9154,8 +9191,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Distributed across northern Australia from the Kimberley region of Western Australia through the Northern Territory to Cape York Peninsula in Queensland.",
-      "nativeHabitat": "Grows in sandy or gravelly soils in seasonally inundated depressions, creek margins, and seepage zones. Typically found in tropical savanna woodland and grassland that experiences dramatic seasonal flooding and drying. Elevation from near sea level to 500 meters."
+      "nativeRange": "Endemic to Queensland, with records from Mareeba, Chewko, and Undarra.",
+      "nativeHabitat": "Grows in sandy or gravelly well-drained soils in woodlands or in shallow, decomposed granite in rocky areas, often in open Casuarina woodland. In the Mareeba region on the Atherton Tablelands, favours well-drained white sand habitats."
     },
     {
       "id": "txn_vidt8ska0w",
@@ -9175,7 +9212,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "txn_s7se6as0ggm",
       "isHybrid": false,
@@ -9184,8 +9226,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Distributed across northern Australia from the Kimberley region of Western Australia through the Northern Territory to Cape York Peninsula in Queensland. Flying Fox Creek is a location in the Northern Territory.",
-      "nativeHabitat": "Grows in sandy or gravelly soils in seasonally inundated depressions, creek margins, and seepage zones. Typically found in tropical savanna woodland and grassland that experiences dramatic seasonal flooding and drying. Elevation from near sea level to 500 meters."
+      "nativeRange": "Endemic to Queensland, with records from Mareeba, Chewko, and Undarra.",
+      "nativeHabitat": "Grows in sandy or gravelly well-drained soils in woodlands or in shallow, decomposed granite in rocky areas, often in open Casuarina woodland. In the Mareeba region on the Atherton Tablelands, favours well-drained white sand habitats."
     },
     {
       "id": "txn_u75f2hyasq",
@@ -9209,7 +9251,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "txn_s7se6as0ggm",
       "isHybrid": false,
@@ -9218,8 +9265,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Distributed across northern Australia from the Kimberley region of Western Australia through the Northern Territory to Cape York Peninsula in Queensland.",
-      "nativeHabitat": "Grows in sandy or gravelly soils in seasonally inundated depressions, creek margins, and seepage zones. Typically found in tropical savanna woodland and grassland that experiences dramatic seasonal flooding and drying. Elevation from near sea level to 500 meters."
+      "nativeRange": "Endemic to Queensland, with records from Mareeba, Chewko, and Undarra.",
+      "nativeHabitat": "Grows in sandy or gravelly well-drained soils in woodlands or in shallow, decomposed granite in rocky areas, often in open Casuarina woodland. In the Mareeba region on the Atherton Tablelands, favours well-drained white sand habitats."
     },
     {
       "id": "txn_4kar8z9f3dx",
@@ -9236,8 +9283,8 @@
       "country": "Australia",
       "climate": "lowland_tropical",
       "habitatId": "tropical_savanna",
-      "nativeRange": "Parent species D. ordensis is endemic to the east Kimberley region of Western Australia and adjacent Northern Territory, particularly around Kununurra and the Ord River valley.",
-      "nativeHabitat": "Occurs in sandy soils in seasonally wet depressions and margins of ephemeral pools in tropical savanna. Found in areas that are inundated during the wet season and completely dry during the dry season. Elevation typically 50-300 meters.",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": false
       },
@@ -9247,7 +9294,7 @@
       "parentId": "txn_iq29l303r1c",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false
+      "flagged": true
     },
     {
       "id": "txn_zzribrbbp3",
@@ -9263,7 +9310,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -9272,8 +9324,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Endemic to the northern Kimberley region of Western Australia and adjacent Northern Territory, particularly in coastal and near-coastal areas.",
-      "nativeHabitat": "Grows in sandy or peaty soils in seasonally wet depressions, creek banks, and seepage areas over sandstone. Found in open tropical woodland and heath vegetation that experiences intense seasonal variation in moisture. Elevation from near sea level to 400 meters."
+      "nativeRange": "Widely distributed in Western Australia from the west and north coasts of the Kimberley, inland to Beverley Springs, and eastwards to Arnhem Land and Kakadu National Park in the Northern Territory.",
+      "nativeHabitat": "Grows in skeletal, sandy soils over sandstone pavements on the banks and beds of seasonally dry creeks, in the cracks of sandstone pavements, in pads of moss adjacent to sandstone seepages, and amongst sandstone boulders."
     },
     {
       "id": "txn_jz1qptd7lim",
@@ -9294,7 +9346,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "txn_zzribrbbp3",
       "isHybrid": false,
@@ -9303,8 +9360,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Endemic to the northern Kimberley region of Western Australia and adjacent Northern Territory, particularly in coastal and near-coastal areas.",
-      "nativeHabitat": "Grows in sandy or peaty soils in seasonally wet depressions, creek banks, and seepage areas over sandstone. Found in open tropical woodland and heath vegetation that experiences intense seasonal variation in moisture. Elevation from near sea level to 400 meters."
+      "nativeRange": "Widely distributed in Western Australia from the west and north coasts of the Kimberley, inland to Beverley Springs, and eastwards to Arnhem Land and Kakadu National Park in the Northern Territory.",
+      "nativeHabitat": "Grows in skeletal, sandy soils over sandstone pavements on the banks and beds of seasonally dry creeks, in the cracks of sandstone pavements, in pads of moss adjacent to sandstone seepages, and amongst sandstone boulders."
     },
     {
       "id": "txn_d808sziwn4k",
@@ -9329,7 +9386,12 @@
         "override": false
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "CPN Article",
+          "url": "https://cpn.carnivorousplants.org/articles/CPNv50n3p118_132.pdf"
+        }
+      ],
       "notes": "",
       "parentId": "txn_zzribrbbp3",
       "isHybrid": false,
@@ -9338,8 +9400,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Endemic to the northern Kimberley region of Western Australia and adjacent Northern Territory, particularly in coastal and near-coastal areas.",
-      "nativeHabitat": "Grows in sandy or peaty soils in seasonally wet depressions, creek banks, and seepage areas over sandstone. Found in open tropical woodland and heath vegetation that experiences intense seasonal variation in moisture. Elevation from near sea level to 400 meters."
+      "nativeRange": "Widely distributed in Western Australia from the west and north coasts of the Kimberley, inland to Beverley Springs, and eastwards to Arnhem Land and Kakadu National Park in the Northern Territory.",
+      "nativeHabitat": "Grows in skeletal, sandy soils over sandstone pavements on the banks and beds of seasonally dry creeks, in the cracks of sandstone pavements, in pads of moss adjacent to sandstone seepages, and amongst sandstone boulders."
     },
     {
       "id": "txn_xa4dhfyad9",
@@ -9360,12 +9422,12 @@
       "parentId": "",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Hybrid cultivars derived from woolly sundew species native to northern Australia including the Kimberley, Northern Territory, and Cape York regions.",
-      "nativeHabitat": "Parent species grow in sandy or peaty soils in seasonally wet depressions and seepage areas in tropical savanna. Natural habitats experience dramatic seasonal flooding and drying cycles. Elevation typically 0-500 meters."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_n84bfhtug2l",
@@ -9390,12 +9452,12 @@
       "parentId": "txn_xa4dhfyad9",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Hybrid derived from D. lanata forms native to northern Australia from the Kimberley through the Northern Territory to Cape York Peninsula.",
-      "nativeHabitat": "Parent species grow in sandy or gravelly soils in seasonally inundated depressions, creek margins, and seepage zones. Typically found in tropical savanna woodland and grassland that experiences dramatic seasonal flooding and drying. Elevation from near sea level to 500 meters."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_g47afr61lcf",
@@ -9418,12 +9480,12 @@
       "parentId": "txn_xa4dhfyad9",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Hybrid derived from D. lanata and D. paradoxa, both native to northern Australia including the Kimberley, Northern Territory, and Cape York regions.",
-      "nativeHabitat": "Parent species grow in sandy or peaty soils in seasonally wet depressions and seepage areas in tropical savanna. Found in areas that experience intense wet and dry seasonal cycles. Elevation typically 0-500 meters."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_l1fe72qygcd",
@@ -9454,12 +9516,12 @@
       "parentId": "txn_xa4dhfyad9",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Hybrid derived from D. lanata forms native to northern Australia from the Kimberley through the Northern Territory to Cape York Peninsula.",
-      "nativeHabitat": "Parent species grow in sandy or gravelly soils in seasonally inundated depressions, creek margins, and seepage zones. Typically found in tropical savanna woodland and grassland that experiences dramatic seasonal flooding and drying. Elevation from near sea level to 500 meters."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_dqevujv294",
@@ -9483,12 +9545,12 @@
       "parentId": "txn_xa4dhfyad9",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Hybrid derived from D. lanata and D. paradoxa, both native to northern Australia including the Kimberley, Northern Territory, and Cape York regions.",
-      "nativeHabitat": "Parent species grow in sandy or peaty soils in seasonally wet depressions and seepage areas in tropical savanna. Found in areas that experience intense wet and dry seasonal cycles. Elevation typically 0-500 meters."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_apmyllu8va",
@@ -9517,12 +9579,12 @@
       "parentId": "txn_xa4dhfyad9",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Hybrid derived from D. lanata (widespread across northern Australia) and D. falconeri (northern Kimberley region of Western Australia).",
-      "nativeHabitat": "Parent species grow in sandy or peaty soils in seasonally wet depressions, creek margins, and seepage areas. Typically found in tropical savanna woodland experiencing dramatic seasonal wet and dry cycles. Elevation from near sea level to 500 meters."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_7amvcgsm5wl",
@@ -9559,12 +9621,12 @@
       "parentId": "txn_xa4dhfyad9",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Drosera lanata is endemic to the Northern Territory, Australia, occurring in the Top End region. Drosera paradoxa is also found in the Northern Territory in similar wetland habitats.",
-      "nativeHabitat": "These species grow in seasonally wet tropical savannas with distinct wet and dry seasons. They inhabit sandy soils near ephemeral creeks and seepage areas, experiencing waterlogged conditions during the wet season and complete drying during the dry season. Vegetation includes grasses, sedges, and scattered eucalypts."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_i15pt8lodc8",
@@ -9589,12 +9651,12 @@
       "parentId": "txn_xa4dhfyad9",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Both parent species are endemic to the Northern Territory, Australia, primarily in the Top End tropical savanna regions.",
-      "nativeHabitat": "Found in seasonally inundated sandy wetlands and seepage areas within tropical savanna. Soils are nutrient-poor sand that becomes saturated during the monsoon wet season and completely dry during the extended dry season. Associated vegetation includes grasses, sedges, and scattered Eucalyptus and Melaleuca species."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_x4t2mw609ic",
@@ -9623,12 +9685,12 @@
       "parentId": "txn_xa4dhfyad9",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Drosera falconeri is found in the Northern Territory near Darwin, while Drosera lanata occurs throughout the Top End of the Northern Territory.",
-      "nativeHabitat": "Both species inhabit seasonally wet tropical savannas with sandy substrates. They grow in areas with seasonal waterlogging during the wet season monsoons, followed by extreme drying. Habitat includes open woodland with Eucalyptus, Melaleuca, and grass understory at low elevations."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_0w9eayxq1gx",
