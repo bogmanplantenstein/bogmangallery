@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0",
-    "savedAt": "2026-04-05T05:52:52.279Z",
+    "savedAt": "2026-04-05T18:31:51.092Z",
     "publishedAt": "",
     "taxaCount": 270,
     "githubRepo": "bogmanplantenstein/bogmangallery"
@@ -12477,5 +12477,15 @@
         "entries": []
       }
     }
+  },
+  "siteContent": {
+    "eyebrow": "Bogman Plantenstein · Grow Collection",
+    "eyebrowSize": "",
+    "title": "Photos",
+    "titleSize": "",
+    "subtitle": "Carnivorous plant photo reference & species gallery",
+    "subtitleSize": "",
+    "description": "A photo gallery of select species from my carnivorous plant collection -- all plants and photos by me.",
+    "descriptionSize": ""
   }
 }
