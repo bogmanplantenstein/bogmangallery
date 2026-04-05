@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0",
-    "savedAt": "2026-04-03T18:42:36.289Z",
+    "savedAt": "2026-04-05T05:52:52.279Z",
     "publishedAt": "",
     "taxaCount": 270,
     "githubRepo": "bogmanplantenstein/bogmangallery"
@@ -80,8 +80,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to the Scott River area in the far southwest of Western Australia. The distribution is highly localized within the Warren bioregion.",
-      "nativeHabitat": "Grows in seasonally waterlogged sandy soils and peaty substrates along creek margins and seepage areas. Associated with low heathland and sedgeland communities in areas with winter-wet conditions. Occurs at low elevations in coastal plain environments with acidic, nutrient-poor substrates.",
+      "nativeRange": "Endemic to the extreme southwestern corner of Western Australia, with records from Scott River and Windy Harbour.",
+      "nativeHabitat": "Grows in black peaty sand on the margins of swamps.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -102,7 +102,12 @@
           "url": "drosera-enodes-scott-river-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droseraenodes"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -140,8 +145,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the Avon Wheatbelt, Jarrah Forest, and Swan Coastal Plain bioregions. The species is found primarily in the southwestern region of the state.",
-      "nativeHabitat": "Grows in sandy or lateritic soils in winter-wet depressions, swamps, and seepage areas. Occurs in open heathland and woodland margins, often in areas that are seasonally inundated during winter and spring but dry out in summer. Associated vegetation includes Banksia woodland, Eucalyptus marginata forest, and heathland communities.",
+      "nativeRange": "Endemic to Western Australia, with records from the Porongurup Range north of Albany and Mount Lindesay northwest of Denmark.",
+      "nativeHabitat": "Grows in loam-laterite soils in open areas on the higher scree slopes of low jarrah forest.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -166,6 +171,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-lasiantha/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droseralasiantha"
         }
       ],
       "notes": "",
@@ -204,8 +213,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Southwestern Australia, primarily in the region between Perth and Albany in Western Australia. Both parent species (D. omissa and D. pulchella) are endemic to this region.",
-      "nativeHabitat": "Found in sandy or lateritic soils in winter-wet depressions, seepage areas, and along the margins of seasonal swamps. The habitat experiences seasonal waterlogging during winter and spring, followed by drying in summer. Typically occurs in open heathland or in gaps within low shrubland vegetation at low elevations near the coast.",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -231,7 +240,7 @@
       "parentId": "",
       "isHybrid": true,
       "isGrex": false,
-      "flagged": false
+      "flagged": true
     },
     {
       "id": "txn_bldi1x8edo8",
@@ -260,8 +269,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the southwest botanical province from near Perth south to the Stirling Range and east to the Esperance region.",
-      "nativeHabitat": "Grows in sandy or lateritic soils in winter-wet depressions, swamps, and seepage areas. Occurs in low shrubland and heath communities, often in association with sedges and other carnivorous plants. Found at elevations from near sea level to approximately 300 meters.",
+      "nativeRange": "Endemic to Western Australia, with records common in the Albany to Manypeaks region.",
+      "nativeHabitat": "Grows in clayey sand soils between and under low shrubs on heathland and low scrubland.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -286,6 +295,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-verrucata/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droseraverrucata"
         }
       ],
       "notes": "",
@@ -316,8 +329,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to South Australia, specifically found in the Mount Lofty Ranges region near Adelaide.",
-      "nativeHabitat": "Grows in seasonally moist sandy or gravelly soils on granite outcrops and rocky slopes. Occurs in open heathland and woodland communities at elevations typically between 300-700 meters. The habitat experiences winter-wet conditions with drying in summer, often found in shallow depressions or seepage areas on rocky substrates.",
+      "nativeRange": "Widespread in southeastern Australia and near Albany and Karridale in Western Australia. Also found in New Zealand (North Island: far north and central volcanic plateau; South Island: northwestern and southern tips). The only pygmy Drosera found outside of Western Australia.",
+      "nativeHabitat": "Grows in a wide range of nutrient-poor soils and conditions. On the margins of lakes and swamps it can be submerged for weeks at a time. In alpine areas it can be covered by snow for months. In heath near Sydney it occurs on laterite soils that dry out seasonally. In New Zealand, found in sub-alpine ash deposits on the volcanic plateau and in mossy loam in the South Island.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -338,6 +351,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-pygmaea-photo/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserapygmaea"
         }
       ],
       "notes": "",
@@ -377,8 +394,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to southwestern Australia, occurring in a narrow coastal belt from near Perth south to the Stirling Range and east to Cape Arid in Western Australia.",
-      "nativeHabitat": "Grows in white to grey sand or sandy loam in winter-wet depressions, shallow swales, and seepage areas. Occurs in low shrubland and heath communities, often associated with sedges and other carnivorous plants. Found at low elevations, typically within 200 km of the coast in areas with seasonal waterlogging.",
+      "nativeRange": "Endemic to Western Australia, with records from Albany, Manypeaks, Bowelling, and Gidgegannup.",
+      "nativeHabitat": "Grows on rocky laterite outcrops mixed with a little silica sand in open areas of woodland or heathland.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -403,6 +420,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-scorpioides/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserascorpioides"
         }
       ],
       "notes": "",
@@ -483,8 +504,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the southern regions of the state.",
-      "nativeHabitat": "Grows in seasonally wet sandy or lateritic soils in winter-wet depressions and seepage areas. Found in heath and shrubland communities with low-growing vegetation. Occurs at low elevations in areas that are waterlogged in winter but dry out in summer.",
+      "nativeRange": "Endemic to Western Australia, with records from York, Brookton, Cranbrook, Arthur River, and Esperance.",
+      "nativeHabitat": "Grows in clayey sand and laterite soils between and under low shrubs in heathland regions.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -509,6 +530,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-leucoblasta/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droseraleucoblasta"
         }
       ],
       "notes": "",
@@ -1313,8 +1338,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Fitzgerald River National Park area in the southern coastal region.",
-      "nativeHabitat": "Grows in winter-wet depressions and seepage areas with sandy or gravelly soils. Found in low-lying areas among heath vegetation at elevations near sea level to low elevations. Associated with seasonal wetlands that experience winter rainfall and summer drying.",
+      "nativeRange": "Endemic to Western Australia, with records from Chittering Valley, Muchea, and Toodyay.",
+      "nativeHabitat": "Grows in laterite mixed with silica sand soil in bright, open forest, and in laterite soils over sheet laterite rock.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1339,6 +1364,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-sewelliae/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserasewelliae"
         }
       ],
       "notes": "",
@@ -1366,8 +1395,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to southwestern Western Australia, specifically found in the Stirling Range region near the town of Carbarup.",
-      "nativeHabitat": "Grows in winter-wet depressions and seepage areas with sandy or peaty soils. Found in low-lying areas where seasonal waterlogging occurs, typically associated with heath vegetation and sedgeland communities. Occurs at elevations between 200-400 meters in the Stirling Range foothills.",
+      "nativeRange": "Known only from the type location in Carbarup, Western Australia. A sterile natural hybrid between Drosera occidentalis and Drosera platystigma.",
+      "nativeHabitat": "",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1384,7 +1413,12 @@
           "url": "drosera-x-carbarup-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg5#Drosera%C3%97carbarup"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": true,
@@ -1411,8 +1445,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "sandplain_heath",
-      "nativeRange": "Endemic to southwestern Australia, primarily occurring in the southwestern corner of Western Australia. The species is found in a relatively restricted coastal and near-coastal area of the southwest botanical province.",
-      "nativeHabitat": "Grows in white, grey or yellow sand in winter-wet depressions, seepages, and along the margins of swamps and seasonal watercourses. Occurs in open heathland and sandplain communities, often associated with sedges and other low heath vegetation. Sites are typically at low elevations near sea level to approximately 300 meters.",
+      "nativeRange": "Endemic to Western Australia, with records from Perth, Augusta, Albany, and Esperance.",
+      "nativeHabitat": "Grows in sand, peaty sand, peat, laterite, and loam soils on the margins of lakes, swamps, and streams.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1429,7 +1463,12 @@
           "url": "drosera-pulchella-pink-maroon-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droserapulchella"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1456,8 +1495,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Drosera micrantha is endemic to Western Australia, occurring in the southwestern region of the state. The species is found in areas around Perth and extending south into the lower southwest botanical province.",
-      "nativeHabitat": "This species grows in sandy or gravelly soils in winter-wet depressions, seepage areas, and along the margins of swamps. It inhabits low-lying areas that are seasonally inundated during the winter wet season and dry out in summer. The habitat typically includes low shrubland and heath vegetation communities at low elevations near the coastal plain.",
+      "nativeRange": "Endemic to Western Australia, relatively common and widely distributed from Perth to Albany.",
+      "nativeHabitat": "Grows in white silica sand soils on the margins of swamps on higher ground, in similar soils scattered throughout Banksia menziesii woodlands, and in deep silica sand areas in the Darling Range region east of Perth.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1474,7 +1513,12 @@
           "url": "drosera-micrantha-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droseramicrantha"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1502,8 +1546,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Brookton area in the Avon Wheatbelt region of southwestern Australia.",
-      "nativeHabitat": "Grows in winter-wet depressions and seasonally waterlogged sandy or lateritic soils. Occurs in open woodland and heathland vegetation communities that experience Mediterranean-type seasonal rainfall patterns.Habitats are typically waterlogged during winter and spring, becoming dry in summer.",
+      "nativeRange": "Endemic to Western Australia, recorded around Gidgegannup and the lakes and state forest along the Brookton Highway.",
+      "nativeHabitat": "Grows in heavy, laterite-covered sandy soils, as well as in patches of pure sand surrounded by laterite-derived soils.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1520,7 +1564,12 @@
           "url": "drosera-callistos-brookton-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droseracallistos"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1551,8 +1600,8 @@
       "country": "Brazil",
       "climate": "highland_tropical",
       "habitatId": "tropical_savanna",
-      "nativeRange": "Endemic to Brazil, specifically found in the states of Minas Gerais and Bahia in the southeastern and northeastern regions.",
-      "nativeHabitat": "Grows in seasonally wet grasslands and campos rupestres at elevations between 900-1400 meters. Found in sandy or gravelly soils with seepage areas, often among grasses and other low vegetation. The substrate is typically nutrient-poor and acidic, with high water tables during the wet season.",
+      "nativeRange": "Endemic to Western Australia, with records from Bullsbrook, Byford, Muchea, and Gingin.",
+      "nativeHabitat": "Grows in grey, white-grained sandy soils sometimes mixed with a little laterite in winter-wet depressions, as well as in black, humic sandy soils on the margins of seasonal swampland systems.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1573,7 +1622,12 @@
           "url": "drosera-helodes-red"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droserahelodes"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1603,8 +1657,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Stirling Range National Park and adjacent areas in the southwest botanical province.",
-      "nativeHabitat": "Grows in shallow soils over granite or laterite on rocky slopes and outcrops at elevations between 300-1000 meters. Occurs in seepage areas and drainage lines where moisture persists seasonally. Associated with low heath vegetation including Drosophyllum and other ericaceous shrubs in exposed montane habitats.",
+      "nativeRange": "Endemic to Western Australia, occurring at the base of the Darling Range.",
+      "nativeHabitat": "Grows in sandy clay mixed with laterite pebbles on low heathland.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1621,7 +1675,12 @@
           "url": "drosera-oreopodion-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droseraoreopodion"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1653,8 +1712,8 @@
       "country": "Australia",
       "climate": "subtropical",
       "habitatId": "coastal_wetland",
-      "nativeRange": "Endemic to Australia, occurring in coastal and subcoastal regions of Queensland and northern New South Wales. The species is found from approximately Fraser Island southward to the Coffs Harbour region.",
-      "nativeHabitat": "Grows in seasonally moist to permanently wet sandy or peaty soils in heathlands, sedgelands, and open eucalypt forests. Typically found in coastal lowland areas and adjacent ranges at elevations from sea level to approximately 800 meters. Associated with Banksia, Eucalyptus, and sedge communities in nutrient-poor acidic substrates with seasonal waterlogging.",
+      "nativeRange": "Endemic to a strip of land approximately 40 km wide running along the south coast of southwestern Western Australia, between Augusta and an area east of Esperance.",
+      "nativeHabitat": "Grows in sandy soils overlying laterite, favouring drier situations on ground near wet depressions.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1679,6 +1738,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-australis-species-profile/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droseraaustralis"
         }
       ],
       "notes": "",
@@ -1711,8 +1774,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "sandplain_heath",
-      "nativeRange": "Endemic to Western Australia, occurring in the southwest botanical province. Found in a relatively narrow coastal and near-coastal strip from the Perth region south to the Stirling Ranges.",
-      "nativeHabitat": "Grows in winter-wet sandy or gravelly soils associated with heath and low scrubland communities. Typically found in seasonally inundated flats and depressions that are waterlogged in winter but dry out in summer. Associated vegetation includes other pygmy sundews, sedges, and low ericaceous shrubs on white or grey sand substrates.",
+      "nativeRange": "Endemic to Western Australia, with records from Perth, Augusta, Albany, and Esperance.",
+      "nativeHabitat": "Grows in sand, peaty sand, peat, laterite, and loam soils on the margins of lakes, swamps, and streams.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1737,6 +1800,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-pulchella/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droserapulchella"
         }
       ],
       "notes": "",
@@ -1812,8 +1879,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "sandplain_heath",
-      "nativeRange": "Endemic to Western Australia, occurring in the Esperance and adjacent inland regions of the south coast.",
-      "nativeHabitat": "Grows in white-grey sand or sandy loam in winter-wet depressions and seepage areas. Occurs in low shrubland and heath communities with sedges and other sundews. Found at elevations near sea level to approximately 300 meters.",
+      "nativeRange": "Endemic to Western Australia, with records from Kalbarri, Strawberry, Eneabba, Cataby, Pingelly, and Ravensthorpe.",
+      "nativeHabitat": "Grows in deep white sand around the margins of winter-wet depressions. Also found in laterite soils.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1834,7 +1901,12 @@
           "url": "drosera-omissa-seeds"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droseraomissa"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -1863,8 +1935,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to southwestern Western Australia, specifically found in the region between Albany and Esperance.",
-      "nativeHabitat": "Grows in sandy or gravelly soils in winter-wet depressions and seepage areas. Occurs in low-lying areas that experience seasonal waterlogging during the wet season. Associated with heath vegetation and low shrubland communities typical of the southwest Australian floristic region.",
+      "nativeRange": "Endemic to Western Australia, occurring near the base of Bluff Knoll and on Stirling Range Drive, approximately 13 km to the west.",
+      "nativeHabitat": "Grows on watershed slopes in clayey, sandy soils covered with an alluvium of small, flat, scattered sandstone rocks, with Kingia australis, dwarf Eucalyptus species, and smoke bush on low heath and scrubland.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1889,6 +1961,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-gibsonii/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droseragibsonii"
         }
       ],
       "notes": "",
@@ -1918,8 +1994,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the southwest botanical province. Found primarily in the area between Perth and Albany.",
-      "nativeHabitat": "Grows in sandy or gravelly soils in winter-wet depressions, swamps, and along drainage lines. Occurs in low-lying areas that are seasonally inundated during winter months but dry out in summer. Associated vegetation includes low heathland and sedgeland communities typical of the southwest Australian flora.",
+      "nativeRange": "Endemic to Western Australia, with records from Albany, Bannister, Busselton, Pinjarra, the Stirling Range, and Ravensthorpe.",
+      "nativeHabitat": "Grows in clayey sand or laterite and loam soils in open heath, or in open areas in Jarrah forest.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1940,6 +2016,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-platystigma/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droseraplatystigma"
         }
       ],
       "notes": "",
@@ -1970,8 +2050,8 @@
       "country": "Australia",
       "climate": "subtropical",
       "habitatId": "coastal_wetland",
-      "nativeRange": "Drosera x 'Dork's Pink' is a horticultural hybrid and does not occur naturally in the wild. It is believed to be a cross involving Drosera capensis or related South African species.",
-      "nativeHabitat": "As a cultivated hybrid, this plant does not have a native habitat. Parent species typically grow in nutrient-poor, acidic soils with high moisture content in wetland margins and seepage areas.",
+      "nativeRange": "",
+      "nativeHabitat": "",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -1993,7 +2073,7 @@
       "parentId": "",
       "isHybrid": true,
       "isGrex": false,
-      "flagged": false
+      "flagged": true
     },
     {
       "id": "txn_x6v4t9p1m9o",
@@ -2014,8 +2094,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to southwestern Western Australia, occurring in a limited coastal region between Perth and Albany.",
-      "nativeHabitat": "Found in winter-wet sandy or lateritic soils in low-lying areas, often on seasonal seepage sites and margins of swamps. Grows among low sedges and heath vegetation in areas with Mediterranean-type seasonal waterlogging. Typically occurs at elevations near sea level to 300 meters.",
+      "nativeRange": "Endemic to Western Australia, with records from Perth, Augusta, Albany, and Esperance.",
+      "nativeHabitat": "Grows in sand, peaty sand, peat, laterite, and loam soils on the margins of lakes, swamps, and streams.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -2036,6 +2116,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-pulchella/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droserapulchella"
         }
       ],
       "notes": "",
@@ -2063,8 +2147,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to the southwestern corner of Western Australia, primarily occurring in the region between Perth and Albany. Found in scattered populations within approximately 200 km of the coast in the Southwest Botanical Province.",
-      "nativeHabitat": "Grows in winter-wet sandy or lateritic soils in low-lying areas, swampy depressions, and along seepage zones. Occurs in open heathland and low shrubland communities that experience seasonal inundation during winter months and become dry in summer. Associated with other sundews, sedges, and low ericaceous shrubs in nutrient-poor substrates.",
+      "nativeRange": "Endemic to Western Australia, with records from Perth, Augusta, Albany, and Esperance.",
+      "nativeHabitat": "Grows in sand, peaty sand, peat, laterite, and loam soils on the margins of lakes, swamps, and streams.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -2085,6 +2169,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-pulchella/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droserapulchella"
         }
       ],
       "notes": "",
@@ -2120,8 +2208,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to southwestern Australia, occurring in a narrow coastal zone from near Perth south to the Cape Riche area. Primarily found in the Jarrah Forest and Swan Coastal Plain bioregions of Western Australia.",
-      "nativeHabitat": "Grows in winter-wet depressions, seepage areas, and along the margins of seasonal swamps in sandy or gravelly lateritic soils. Associated vegetation includes low heath communities dominated by sedges, Melaleuca species, and other dwarf shrubs. Occurs at elevations from near sea level to approximately 300 meters.",
+      "nativeRange": "Endemic to Western Australia, with records from Perth, Augusta, Albany, and Esperance.",
+      "nativeHabitat": "Grows in sand, peaty sand, peat, laterite, and loam soils on the margins of lakes, swamps, and streams.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -2142,7 +2230,12 @@
           "url": "drosera-pulchella-orange-flower-red-veins"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droserapulchella"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -2433,8 +2526,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to southwestern Western Australia, occurring in a limited range between the Perth region and the Stirling Range.",
-      "nativeHabitat": "Grows in white or grey sand in winter-wet depressions and seepage areas. Occurs in low-lying seasonally inundated sites within kwongan heathland and open scrub vegetation. Habitats dry out considerably in summer.",
+      "nativeRange": "Endemic to Western Australia, with records from the Albany region, including Lake Sepping, Princess Royal Harbour, Frenchman Bay, and Little Grove.",
+      "nativeHabitat": "Grows in dense shrub amongst reeds near paperbark trees, generally in black sandy soils on flats covered with water in winter.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -2455,7 +2548,12 @@
           "url": "drosera-paleacea-true-type"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droserapaleacea"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -2970,8 +3068,8 @@
       "country": "Australia",
       "habitatId": "sandplain_heath",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically found in the northern sandplains region north of Perth, particularly in the Eneabba and Badgingarra areas.",
-      "nativeHabitat": "Grows in white or grey sand in winter-wet depressions and shallow sandy soils over laterite. Occurs in open kwongan heath vegetation with seasonal waterlogging during winter months. Found at low elevations typically below 300 meters.",
+      "nativeRange": "Endemic to Western Australia, with records from the Regan's Ford (Moore River) and Boonanarring areas.",
+      "nativeHabitat": "Grows in well-drained, deep yellow sand between and under low shrubs on open heathland or under the shelter of Banksia menziesii woodland.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -2996,6 +3094,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-citrina/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droseracitrina"
         }
       ],
       "notes": "",
@@ -3034,8 +3136,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the Ravensthorpe and Esperance regions of the south coast.",
-      "nativeHabitat": "Grows in winter-wet depressions and flats in sandy or gravelly soils, often over laterite or granite. Found in low shrubland and heath communities that experience seasonal waterlogging during winter months but dry out considerably in summer. Typically occurs at low elevations near the coast.",
+      "nativeRange": "Distributed across two regions in Western Australia: from Eneabba to York, and the Dumbleyung, Lake Grace, and Jilakin Rocks area.",
+      "nativeHabitat": "Grows only on the summits of laterite hills in white silica sand and laterite gravel soils.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -3060,6 +3162,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-barbigera/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droserabarbigera"
         }
       ],
       "notes": "",
@@ -3176,8 +3282,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to southwestern Australia, occurring in a narrow coastal belt from the Perth region south to Albany and east to Esperance in Western Australia.",
-      "nativeHabitat": "Grows in sandy or lateritic soils in winter-wet depressions, shallow swamps, and seepage areas. Typically found in low heathland and kwongan shrubland communities where water accumulates seasonally. Often occurs in areas that are waterlogged in winter but dry out completely in summer, at elevations from near sea level to approximately 300 meters.",
+      "nativeRange": "Endemic to Western Australia, with records from Perth, Augusta, Albany, and Esperance.",
+      "nativeHabitat": "Grows in sand, peaty sand, peat, laterite, and loam soils on the margins of lakes, swamps, and streams.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -3202,6 +3308,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-pulchella/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droserapulchella"
         }
       ],
       "notes": "",
@@ -3260,7 +3370,7 @@
       "entryType": "location",
       "displayName": "Drosera gunniana (Conara, Tasmania, Australia)",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/1747876925317-3GW86NMZ0PS7589Y1CBA/IMG_9455.jpg",
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/3019c0e6-9a33-4bf5-b298-098463b54b6c/IMG_1007.JPEG"
@@ -3418,8 +3528,8 @@
       "country": "Australia",
       "habitatId": "tropical_savanna",
       "climate": "lowland_tropical",
-      "nativeRange": "Endemic to Western Australia, occurring in the far northern Kimberley region.",
-      "nativeHabitat": "Grows in seasonally wet sandy or lateritic soils on sandstone plateaus and escarpments. Found in open tropical woodland and savanna habitats with seasonal inundation during the wet season. Occurs at elevations between 300-600 meters.",
+      "nativeRange": "Endemic to Western Australia, with records from Pingelly, Tammin, Goomalling, west of Hatter Hill, and east and south of Lake King.",
+      "nativeHabitat": "Grows in clayey white sand soils over laterite gravels, in white silica sands sometimes with a little laterite gravel, and in deep yellow sand soils. All habitats are in low, open heath.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -3444,6 +3554,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-pycnoblasta/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserapycnoblasta"
         }
       ],
       "notes": "",
@@ -4373,7 +4487,7 @@
       "parentId": "",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false
+      "flagged": true
     },
     {
       "id": "txn_2efvm67kwrt",
@@ -4395,8 +4509,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically occurring in the Bindoon area north of Perth in the Southwest Botanical Province.",
-      "nativeHabitat": "Grows in sandy or lateritic soils in winter-wet depressions and seepage areas. Occurs in low-lying heath and scrubland communities that experience seasonal waterlogging during the winter months. Found at low elevations in areas with Mediterranean-type seasonal flooding patterns.",
+      "nativeRange": "Endemic to Western Australia, with a restricted range found only between Muchea and Wannamal, over a distance of approximately 40 km.",
+      "nativeHabitat": "Grows in heavy laterite soils.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4417,6 +4531,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-bindoon/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droserabindoon"
         }
       ],
       "notes": "",
@@ -4443,8 +4561,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to southwestern Australia, occurring in the southwestern corner of Western Australia. Known from areas around Perth and the Swan Coastal Plain region.",
-      "nativeHabitat": "Grows in winter-wet depressions, swampy areas, and along seasonal creek lines in jarrah and marri forest. Occurs in sandy or lateritic soils that are waterlogged during the winter months but may dry out in summer. Associated with eucalypt woodland vegetation and often found in cleared forest areas or forest margins.",
+      "nativeRange": "Endemic to Western Australia, with records from Avon Valley, North Bannister, and Boddington.",
+      "nativeHabitat": "Grows in Jarrah woodland habitat in open areas associated with jarrah forest.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4469,6 +4587,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-silvicola/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserasilvicola"
         }
       ],
       "notes": "",
@@ -4498,8 +4620,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the southwestern botanical province. Known from scattered localities in the Avon Wheatbelt and Jarrah Forest bioregions.",
-      "nativeHabitat": "Grows in sandy or lateritic soils in winter-wet depressions and seepage areas. Occurs in open heath and woodland habitats, often associated with sedges and other Drosera species. Typically found at low elevations in areas with seasonal waterlogging.",
+      "nativeRange": "Endemic to Western Australia, occurring in jarrah forest between Busselton and Margaret River.",
+      "nativeHabitat": "Grows in laterite soils, sometimes mixed with a little silica sand, along creek lines and similar sites in jarrah forest.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4520,7 +4642,12 @@
           "url": "drosera-stelliflora"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserastelliflora"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4547,8 +4674,8 @@
       "country": "Madagascar",
       "climate": "highland_tropical",
       "habitatId": "subtropical_bog",
-      "nativeRange": "Drosera mannii is endemic to Madagascar, occurring in the central highland regions of the island.",
-      "nativeHabitat": "This species grows in highland marshes, bogs, and seepage areas at elevations typically between 1200-2000 meters. It is found in nutrient-poor, acidic soils with constant moisture, often in association with sedges, mosses, and other bog vegetation typical of Madagascar's highland wetlands.",
+      "nativeRange": "Endemic to Western Australia, with records from Gleneagle, Boulder Rock, and towards Jarrahdale.",
+      "nativeHabitat": "Grows at scattered locations in Jarrah forest on loam soils, in peaty sand on winter-wet watersheds, and in loamy sand on the aprons of granite outcrops.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4565,7 +4692,12 @@
           "url": "drosera-mannii-b-pale-pink-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droseramannii"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4592,8 +4724,8 @@
       "country": "Madagascar",
       "climate": "highland_tropical",
       "habitatId": "subtropical_bog",
-      "nativeRange": "Endemic to Madagascar, found in the central highlands region including areas near Antsirabe and the Ankaratra Massif.",
-      "nativeHabitat": "Grows in seasonally wet grasslands and marshy areas at elevations between 1,200 and 2,000 meters. Occurs in peaty or sandy soils that remain moist during the growing season but may experience some drying during the cooler months. Associated vegetation includes grasses, sedges, and other herbaceous plants typical of Madagascar's highland marshes.",
+      "nativeRange": "Endemic to Western Australia, ranging from the Lake Grace area east to Baanga Hill, southeast to Fitzgerald from Lake King, and west of Lake King to Newdegate.",
+      "nativeHabitat": "Grows in beige, sandy clay mixed with a little laterite in low, open heath.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4618,6 +4750,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-grievei-species-profile/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droseragrievei"
         }
       ],
       "notes": "",
@@ -4649,8 +4785,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically recorded from the Stirling Range and adjacent areas in the southwest botanical province.",
-      "nativeHabitat": "Grows in winter-wet depressions and seepage areas on sandy or gravelly soils over laterite. Occurs in low shrubland and heath communities at elevations between 200-600 meters. Associated with other sedges and heath species in seasonally inundated sites that dry out in summer.",
+      "nativeRange": "Endemic to Western Australia, known from a few scattered roadside locations near Hill River, north of Perth, along the Brand Highway.",
+      "nativeHabitat": "Grows in loam, silica sand, or peaty sand soils on the margins of winter-wet depressions.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4667,7 +4803,12 @@
           "url": "drosera-allantostigma-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droseraallantostigma"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4692,8 +4833,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically found in the Darling Range near Perth, in the Walyunga National Park area and surrounding regions.",
-      "nativeHabitat": "Grows in sandy or gravelly lateritic soils along creek margins and seepage areas in open jarrah-marri woodland. Occurs in seasonally moist to wet habitats where water flow is present during winter and spring months. Associated vegetation includes eucalypt woodland with native sedges and heathland species.",
+      "nativeRange": "Endemic to Western Australia, with records from Walyunga National Park and surrounding regions.",
+      "nativeHabitat": "Grows in sandy white clay with a thin overlay of laterite pea gravel, on and around winter-wet springs, seepage areas, and sand swales. Frequently associated with granite outcrops in open areas covered with light heath.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4710,7 +4851,12 @@
           "url": "drosera-walyunga-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserawalyunga"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4732,8 +4878,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to southwestern Western Australia, specifically found in the Jarrahwood area near Busselton in the Warren bioregion.",
-      "nativeHabitat": "Grows in seasonally wet sandy or lateritic soils in low-lying areas. Occurs in open jarrah (Eucalyptus marginata) forest and woodland, often along drainage lines or winter-wet depressions. Habitat is characterized by sandy soils that are waterlogged in winter but dry out in summer.",
+      "nativeRange": "Endemic to Western Australia, with records from Albany, Bannister, Busselton, Pinjarra, the Stirling Range, and Ravensthorpe.",
+      "nativeHabitat": "Grows in clayey sand or laterite and loam soils in open heath, or in open areas in Jarrah forest.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4750,7 +4896,12 @@
           "url": "drosera-platystigma-jarrahwood-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droseraplatystigma"
+        }
+      ],
       "notes": "",
       "parentId": "txn_wtnhb8jrcb",
       "isHybrid": false,
@@ -4776,8 +4927,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to southwestern Western Australia, occurring in a relatively small area near Perth and extending south to the Busselton region.",
-      "nativeHabitat": "Grows in sandy, seasonally moist soils in winter-wet depressions and seepage areas. Typically found in low-lying areas within heathland and open woodland communities that become waterlogged in winter but dry out considerably in summer. Associated with other Drosera species and typical kwongan heath vegetation.",
+      "nativeRange": "Endemic to Western Australia, with widespread records from Bullsbrook and throughout the woodlands east of Perth, south to Augusta and east to Cape Le Grand near Esperance, in coastal and near-coastal areas.",
+      "nativeHabitat": "Grows in clayey sand soils in and on the margins of winter-wet depressions and swamps.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4794,7 +4945,12 @@
           "url": "drosera-nitidula-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droseranitidula"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4821,8 +4977,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the Stirling Range and adjacent areas of the southwest botanical province.",
-      "nativeHabitat": "Grows in seasonally moist sandy or gravelly soils on slopes and flats in heathland and shrubland communities. Found at elevations ranging from approximately 200 to 600 meters in areas with winter-wet conditions. Associated with typical southwest Australian kwongan vegetation including Eucalyptus, Hakea, and various proteaceous shrubs.",
+      "nativeRange": "Endemic to Western Australia, with records from the Cataby region southeast to Mogumber.",
+      "nativeHabitat": "Grows in sandy soils on the margins of winter-wet depressions.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4839,7 +4995,12 @@
           "url": "drosera-leucostigma-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droseraleucostigma"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -4861,8 +5022,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "sandplain_heath",
-      "nativeRange": "Endemic to Western Australia, specifically found in the vicinity of Frenchman Peak in the Cape Le Grand National Park area, east of Esperance.",
-      "nativeHabitat": "Grows in shallow sandy soils over granite outcrops and on sandplain heath. Found in seasonally moist to temporarily waterlogged areas during winter and spring, drying out in summer. Associated with low heathland vegetation typical of Western Australian sandplains and granite areas.",
+      "nativeRange": "Endemic to Western Australia, with records from Albany, Manypeaks, Bowelling, and Gidgegannup.",
+      "nativeHabitat": "Grows on rocky laterite outcrops mixed with a little silica sand in open areas of woodland or heathland.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4883,6 +5044,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-scorpioides/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserascorpioides"
         }
       ],
       "notes": "",
@@ -4904,8 +5069,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically found in the Gidgegannup area northeast of Perth in the Darling Range.",
-      "nativeHabitat": "Grows in shallow depressions and seepage areas on granite outcrops and lateritic soils. Found in winter-wet habitats that dry out in summer, associated with low heath vegetation and seasonal pools. Occurs at elevations between 200-400 meters in the Darling Range.",
+      "nativeRange": "Endemic to Western Australia, with records from Albany, Manypeaks, Bowelling, and Gidgegannup.",
+      "nativeHabitat": "Grows on rocky laterite outcrops mixed with a little silica sand in open areas of woodland or heathland.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4926,6 +5091,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-scorpioides/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserascorpioides"
         }
       ],
       "notes": "",
@@ -4947,8 +5116,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to the south coast of Western Australia, specifically restricted to the Albany region in the far southwest of the state.",
-      "nativeHabitat": "Grows in sandy or gravelly soils in winter-wet depressions and seepage areas. Occurs in low-lying heathland and scrubland habitats that experience seasonal waterlogging during winter months but dry out in summer. Associated with kwongan vegetation communities at low elevations near the coast.",
+      "nativeRange": "Endemic to Western Australia, with records from Albany, Manypeaks, Bowelling, and Gidgegannup.",
+      "nativeHabitat": "Grows on rocky laterite outcrops mixed with a little silica sand in open areas of woodland or heathland.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -4969,6 +5138,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-scorpioides/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserascorpioides"
         }
       ],
       "notes": "",
@@ -5343,8 +5516,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Stirling Range National Park area in the southern part of the state.",
-      "nativeHabitat": "Grows in sandy or gravelly soils on slopes and rocky outcrops in heath vegetation. Occurs in areas with seasonal moisture, typically in well-drained substrates associated with lateritic soils. Found at elevations between 300-600 meters in mountainous terrain.",
+      "nativeRange": "Endemic to Western Australia, widespread in the Hill River region, Coomallo, and Mount Lesueur, with a range extending approximately 100 km to the north and 200 km to the south of this core area.",
+      "nativeHabitat": "Grows in deep white sandy soils or beige clayey-sand soils between and under low shrubs on heathland. Favours sites beside winter-wet streams, streamlets, depressions, and watershed areas.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -5365,7 +5538,12 @@
           "url": "drosera-echinoblastus-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droseraechinoblastus"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -5391,8 +5569,8 @@
       "country": "Australia",
       "habitatId": "sandplain_heath",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Boonanarring area north of Perth in the Swan Coastal Plain region.",
-      "nativeHabitat": "Occurs in sandy soils in winter-wet depressions and seasonally moist areas. Associated with low heath vegetation typical of the Swan Coastal Plain. Found in areas subject to winter rainfall and summer drought conditions at low elevations.",
+      "nativeRange": "Endemic to Western Australia, with records from Gingin to Cataby and eastwards towards Mogumber.",
+      "nativeHabitat": "Grows in deep white sand, which often appears grey due to the presence of humus. Typically situated in winter-wet depressions or swampland heath in association with herbaceous species, low shrubs, and paperbark trees (Melaleuca sp.).",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -5413,7 +5591,12 @@
           "url": "drosera-closterostigma-boonanarring-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droseraclosterostigma"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -5439,8 +5622,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Bindoon area north of Perth in the Southwest Botanical Province.",
-      "nativeHabitat": "Grows in winter-wet sandy or gravelly soils in open heathland and low scrubland. Found in seasonally inundated depressions and seepage areas that dry out over the summer months. Associated with typical Southwest Australian kwongan vegetation including banksias, melaleucas, and other ericaceous shrubs.",
+      "nativeRange": "Endemic to Western Australia, with a restricted range found only between Muchea and Wannamal, over a distance of approximately 40 km.",
+      "nativeHabitat": "Grows in heavy laterite soils.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -5465,6 +5648,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-bindoon/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droserabindoon"
         }
       ],
       "notes": "",
@@ -5495,8 +5682,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically found in the Esperance region and adjacent areas of the south coast.",
-      "nativeHabitat": "Grows in sandy or gravelly soils in winter-wet depressions and seepage areas. Occurs in low-lying areas that are seasonally inundated, often associated with sedgelands and low heath vegetation. Found at low elevations near the coastal plain.",
+      "nativeRange": "Endemic to Western Australia, with records from Esperance to Cape Le Grand and Cape Arid.",
+      "nativeHabitat": "Grows in sandy soils in low, open heath in the coastal region east of Esperance.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -5521,6 +5708,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-sargentii/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserasargentii"
         }
       ],
       "notes": "",
@@ -5547,8 +5738,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the Jarrah Forest region of the southwest botanical province. The locality is approximately 7 kilometers south of the town of North Bannister in the Darling Range.",
-      "nativeHabitat": "Grows in sandy or lateritic soils in open forest and woodland areas dominated by Jarrah (Eucalyptus marginata) and other eucalypt species. Typically found in areas with winter-wet conditions and seasonal waterlogging in low-lying areas or drainage lines. Occurs at elevations of approximately 250-350 meters above sea level in the Darling Range uplands.",
+      "nativeRange": "Endemic to Western Australia, with records from Avon Valley, North Bannister, and Boddington.",
+      "nativeHabitat": "Grows in Jarrah woodland habitat in open areas associated with jarrah forest.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -5569,6 +5760,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-silvicola/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droserasilvicola"
         }
       ],
       "notes": "",
@@ -5598,8 +5793,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Stirling Range National Park area in the southern part of the state.",
-      "nativeHabitat": "Grows in seepage areas and winter-wet depressions on granite outcrops and rocky slopes. Occurs in sandy or peaty soils with seasonal waterlogging, typically associated with low heath vegetation. Found at elevations between 300-600 meters in montane areas.",
+      "nativeRange": "Endemic to Western Australia, with records from the south coast from Albany to Augusta.",
+      "nativeHabitat": "Grows in peaty sand on the margins of swamps.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -5620,7 +5815,12 @@
           "url": "drosera-roseana-gemmae"
         }
       ],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droseraroseana"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -6415,12 +6615,12 @@
       "parentId": "",
       "isHybrid": true,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to the Cranbrook area in the southern coastal region of Western Australia. Found in a restricted area near the junction of the Frankland and Gordon Rivers.",
-      "nativeHabitat": "This natural hybrid occurs in winter-wet sandy soils along seasonally inundated creek lines and seepage areas. The habitat consists of low shrubland and heath vegetation with sedges and rushes, experiencing waterlogging in winter and drying out in summer. Elevation is low, typically below 100 meters above sea level in the coastal plain region."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_214zax19lba",
@@ -6442,8 +6642,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "sandplain_heath",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Mogumber area in the Wheatbelt region, north of Perth.",
-      "nativeHabitat": "Grows in sandy or lateritic soils in winter-wet depressions and seepage areas. Occurs in low scrub heath vegetation with seasonal waterlogging during winter and spring months. The habitat experiences complete drying during the hot summer months typical of the southwestern Australian sandplains.",
+      "nativeRange": "Endemic to Western Australia, with records from Gingin to Cataby and eastwards towards Mogumber.",
+      "nativeHabitat": "Grows in deep white sand, which often appears grey due to the presence of humus. Typically situated in winter-wet depressions or swampland heath in association with herbaceous species, low shrubs, and paperbark trees (Melaleuca sp.).",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -6455,7 +6655,12 @@
         "notes": ""
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droseraclosterostigma"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -6526,6 +6731,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-coomallo/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg1#Droseracoomallo"
         }
       ],
       "notes": "",
@@ -6536,8 +6745,8 @@
       "country": "Australia",
       "habitatId": "sandplain_heath",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in a restricted area north of Perth in the Coomallo Creek region of the Dandaragan Plateau.",
-      "nativeHabitat": "Grows in winter-wet depressions and seepage areas on white or grey sand over laterite. Associated with low shrubland and heath vegetation typical of the northern sandplains. Occurs at low elevations in seasonally waterlogged sites that dry out in summer."
+      "nativeRange": "Endemic to Western Australia, with records around Badgingarra, Cataby, and Coomallo.",
+      "nativeHabitat": "Grows in laterite pebbles with a little silica sand over laterite sheet rock on the slopes of lateritic hills."
     },
     {
       "id": "txn_k5f6hzzf2yb",
@@ -6562,8 +6771,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "sandplain_heath",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Eneabba area north of Perth in the northern sandplains region.",
-      "nativeHabitat": "Grows in white-grey sand in winter-wet depressions and shallow swales on sandplain. Occurs in low shrubland and heath vegetation communities that are seasonally inundated during winter months. The habitat experiences a Mediterranean climate with wet winters and dry summers.",
+      "nativeRange": "Endemic to Western Australia, principally recorded from Eneabba, Badgingarra, Coomallo, and Mount Lesueur.",
+      "nativeHabitat": "Grows in white silica sand soils in low, open heath.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -6575,7 +6784,12 @@
         "notes": ""
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droseraeneabba"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -6606,8 +6820,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically known from the Bullsbrook area north of Perth in the Swan Coastal Plain region.",
-      "nativeHabitat": "Occurs in winter-wet depressions and seepage areas on sandy or lateritic soils. The habitat consists of low heath vegetation with seasonal waterlogging during the cooler months. Associated with other carnivorous plants and sedges in nutrient-poor substrates at low elevations near the coastal plain.",
+      "nativeRange": "Endemic to Western Australia, with records from Bullsbrook, Byford, Muchea, and Gingin.",
+      "nativeHabitat": "Grows in grey, white-grained sandy soils sometimes mixed with a little laterite in winter-wet depressions, as well as in black, humic sandy soils on the margins of seasonal swampland systems.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -6619,7 +6833,12 @@
         "notes": ""
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droserahelodes"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -6658,6 +6877,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-hyperostigma-species-profile/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg2#Droserahyperostigma"
         }
       ],
       "notes": "",
@@ -6668,8 +6891,8 @@
       "country": "Australia",
       "habitatId": "sandplain_heath",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the southwest botanical province between Perth and Albany regions.",
-      "nativeHabitat": "Grows in deep white or grey sand in winter-wet depressions and seepage areas. Found in low-lying areas within kwongan heathland and open woodland communities. Occurs at low elevations near the coastal plain."
+      "nativeRange": "Endemic to Western Australia, with records from Bannister, Bowelling, Gidgegannup, Lesmurdie, Marradong, Parkerville, and The Lakes.",
+      "nativeHabitat": "Grows in laterite mixed with silica sand soil in light, open forest."
     },
     {
       "id": "txn_kjnadubpyyn",
@@ -6709,8 +6932,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the Geraldton Sandplains and Avon Wheatbelt bioregions. The hybrid occurs where the parent species D. lasiantha and D. leucoblasta overlap in range.",
-      "nativeHabitat": "Found in winter-wet sandy or lateritic soils in kwongan heath and open woodland communities. Occurs in areas with seasonal waterlogging during winter and spring months, followed by dry summers. Typically associated with low shrubland vegetation on sandplains at elevations below 400 meters."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_s8lt7cl81zk",
@@ -6729,8 +6952,8 @@
       "country": "Australia",
       "climate": "mediterranean",
       "habitatId": "sandplain_heath",
-      "nativeRange": "Endemic to Western Australia, occurring in the southwest botanical province from the Perth region south to the Stirling Range and east to the Esperance area.",
-      "nativeHabitat": "Grows in seasonally wet sandy or lateritic soils in low-lying areas, seepage zones, and winter-wet depressions. Typically found in open heath, woodland margins, and along drainage lines where moisture persists through spring. Occurs at elevations from near sea level to approximately 300 meters.",
+      "nativeRange": "Endemic to Western Australia, relatively common and widely distributed from Perth to Albany.",
+      "nativeHabitat": "Grows in white silica sand soils on the margins of swamps on higher ground, in similar soils scattered throughout Banksia menziesii woodlands, and in deep silica sand areas in the Darling Range region east of Perth.",
       "care": {
         "override": true,
         "temp": "Mediterranean (SW Australia). 40-100F, low to moderate humidity.",
@@ -6742,7 +6965,12 @@
         "notes": ""
       },
       "shopLinks": [],
-      "externalLinks": [],
+      "externalLinks": [
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg3#Droseramicrantha"
+        }
+      ],
       "notes": "",
       "parentId": "",
       "isHybrid": false,
@@ -6791,12 +7019,12 @@
       "parentId": "",
       "isHybrid": true,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically occurring in the Brookton area of the Wheatbelt region, approximately 130-150 km southeast of Perth.",
-      "nativeHabitat": "Grows in seasonally wet depressions and along drainage lines in lateritic soils with winter-spring waterlogging. The habitat consists of low heath vegetation with associated kwongan flora on laterite or gravelly clay substrates. Sites experience winter rainfall followed by dry summers with water tables receding significantly during the warm season."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_yx1feej4te",
@@ -6827,12 +7055,12 @@
       "parentId": "txn_krdi0foknyl",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically found in the Brookton area of the Wheatbelt region, approximately 140 km east of Perth.",
-      "nativeHabitat": "Grows in lateritic soils and sandy loams in winter-wet depressions and along ephemeral watercourses. The habitat experiences seasonal waterlogging during winter months with complete drying in summer. Associated vegetation includes low Eucalyptus woodland and scrubland with sedges and other herbaceous plants."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_aub5wo1iw",
@@ -6863,12 +7091,12 @@
       "parentId": "txn_krdi0foknyl",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Southwestern Australia, specifically the Brookton area in the Western Australian wheatbelt region. This hybrid occurs naturally where the parent species D. omissa and D. callistos have overlapping ranges.",
-      "nativeHabitat": "Found in winter-wet seasonally inundated depressions and clay-based soils in areas of lateritic gravel. The habitat experiences waterlogging during winter months followed by drying in summer. Associated vegetation includes low heath and woodland species typical of the wheatbelt transition zone."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_zfdnj5i1ix",
@@ -6899,12 +7127,12 @@
       "parentId": "txn_krdi0foknyl",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, specifically found in the Brookton area of the Wheatbelt region, approximately 140 km southeast of Perth.",
-      "nativeHabitat": "Grows in winter-wet depressions and seasonal swamps on sandy or lateritic soils. The habitat experiences waterlogging during winter months (June-September) and dries out completely in summer. Associated vegetation includes low heathland and scattered eucalyptus woodlands typical of the Wheatbelt region."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_9mkrhvr318",
@@ -6934,12 +7162,12 @@
       "parentId": "txn_krdi0foknyl",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
+      "flagged": true,
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "The parent species are endemic to southwestern Western Australia. Drosera omissa occurs near Brookton and surrounding areas, while D. callistos is found in the same general region of the Wheatbelt.",
-      "nativeHabitat": "Found in lateritic gravel and clay soils in winter-wet depressions and swampy areas. The habitat experiences seasonal waterlogging during winter months with complete drying in summer. Associated vegetation includes low heathland and open Eucalyptus woodland communities typical of Western Australia's Wheatbelt region."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_q0p3mk1c3on",
@@ -6978,8 +7206,8 @@
       "country": "Australia",
       "habitatId": "sandplain_heath",
       "climate": "mediterranean",
-      "nativeRange": "Southwestern Australia, Western Australia. Both parent species are endemic to the southwest botanical province of Western Australia, with D. pulchella occurring in coastal and near-coastal areas and D. callistos found inland including the Brookton area.",
-      "nativeHabitat": "Grows in sandy or lateritic soils in winter-wet depressions, seepage areas, and margins of swamps. The habitat is characterized by seasonal waterlogging during winter and spring, followed by drying in summer. Associated vegetation includes low heathland and scrubland with other carnivorous plants and seasonally wet-adapted flora."
+      "nativeRange": "",
+      "nativeHabitat": ""
     },
     {
       "id": "txn_zm0zeit1ij",
@@ -7024,6 +7252,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-trichocaulis/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/PygmyDrosera/pg4#Droseratrichocaulis"
         }
       ],
       "notes": "",
@@ -7034,8 +7266,8 @@
       "country": "Australia",
       "habitatId": "mediterranean",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to Western Australia, occurring in the Esperance and Cape Arid regions of the south coast.",
-      "nativeHabitat": "Grows in white-grey sand or sandy peat in winter-wet depressions and seepage areas. Found in low heathland and shrubland vegetation, often associated with sedges and other heathland species. Occurs at elevations near sea level to low elevations."
+      "nativeRange": "Endemic to Western Australia, with records from the Stirling Range, Ravensthorpe, Hopetoun, Scaddan, Esperance, and Cape Arid.",
+      "nativeHabitat": "Grows in deep white sand, or laterite and silica sand soils, under and between low heath and open woodland in a coastal region."
     },
     {
       "id": "txn_smdrfjbkiv",
@@ -7470,10 +7702,15 @@
       "entryType": "species",
       "displayName": "Drosera aberrans",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1y3C4SvZk_z9Lc9XWAwmadgy7ARNSvlD6"
       ],
+      "country": "Australia",
+      "climate": "mediterranean",
+      "habitatId": "",
+      "nativeRange": "Endemic to Western Australia, found in the Stirling Range area northeast of Albany in the southwest botanical region.",
+      "nativeHabitat": "Grows in sandy or gravelly soils on slopes and flats in kwongan heathland vegetation. Found in seasonally moist to wet areas that dry out significantly in summer. Associated with low shrubland and heath communities typical of the southwest Australian floristic region.",
       "care": {
         "override": false
       },
@@ -7488,12 +7725,7 @@
       "parentId": "",
       "isHybrid": false,
       "isGrex": false,
-      "flagged": false,
-      "country": "South Africa",
-      "habitatId": "mediterranean",
-      "climate": "mediterranean",
-      "nativeRange": "Endemic to the Western Cape Province of South Africa, occurring in the southwestern Cape winter rainfall region.",
-      "nativeHabitat": "Grows in seasonally wet clay or sandy soils in fynbos and renosterveld vegetation. Active during winter rainy season (May-October), dormant in summer as underground tubers. Found in flats and lower slopes with Mediterranean climate and nutrient-poor substrates."
+      "flagged": false
     },
     {
       "id": "txn_cvdf1absgij",
@@ -7520,6 +7752,10 @@
         {
           "site": "Fierce Flora",
           "url": "https://www.fierceflora.com/drosera-auriculata/"
+        },
+        {
+          "site": "ICPS Taxonomy",
+          "url": "https://www.carnivorousplants.org/cp/taxonomy/tuberousDrosera/pg1"
         }
       ],
       "notes": "",
@@ -7530,8 +7766,8 @@
       "country": "Australia",
       "habitatId": "sandplain_heath",
       "climate": "mediterranean",
-      "nativeRange": "Endemic to southwestern Western Australia, occurring in a relatively wide range across the southwest botanical region.",
-      "nativeHabitat": "Grows in winter-wet sandy or gravelly soils in open kwongan heathland and woodland clearings. Emerges during cool, wet winter months and becomes dormant as underground tubers during hot, dry summers. Typically found on sandplain at low to mid elevations in Mediterranean climate zones."
+      "nativeRange": "South Australia – Bordertown, Glencoe, swamps between Mt Compass and Mt Moon, Naracoorte, Peters Creek, and Kangaroo Island. Victoria – Raymond Island, Middle Tarwin, Snake Island, San Remo, Wilsons Promontory, and Brisbane Ranges. New South Wales – Braidwood, Kempsey, Mulgoa, Nelligen, Nowra, Pigeon House Range, Yetholme, Ilford, and Bilpin. Tasmania – Bruny Island, between Deadman's Bay and Lousy Bay, Flinders Island, King Island, Mt Nelson, Corinna, and Ulverstone. New Zealand – throughout the North Island and the northern tip of the South Island.",
+      "nativeHabitat": "Grows in laterite and sandy clay in South Australia; grey sand in dry situations under Eucalyptus in Tasmania; and in open, poorly drained areas in moss pads on clay flats or in areas of regenerating bush, often at the base of tea tree, in New Zealand."
     },
     {
       "id": "txn_8yl2oga16bu",
@@ -7645,7 +7881,7 @@
       "entryType": "species",
       "displayName": "Drosera gigantea",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1hMqIUoaEHw_gQLulX5lMpIdFY7cbBVD2",
         "drive:1pCqS0TguqZcNedoXQ5rzGjdLPHO5dWB_",
@@ -7717,7 +7953,7 @@
       "entryType": "species",
       "displayName": "Drosera hookeri",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [],
       "care": {
         "override": false
@@ -7748,7 +7984,7 @@
       "entryType": "species",
       "displayName": "Drosera hookeri Lake Eildon",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1NfoSwaM9M7KRKCTtYueyVLNmcCGPmVCm"
       ],
@@ -7776,7 +8012,7 @@
       "entryType": "location",
       "displayName": "Drosera hookeri orange red (Conara Junction, Tasmania)",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1vVO1RjweUMmrcRJRFxq4R496DrPcskXz",
         "drive:1d49u29gUlmmYRQezqYsticRPhbSNSQp4",
@@ -7816,7 +8052,7 @@
       "entryType": "species",
       "displayName": "Drosera lowriei Holt Rock",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1g1g5_gbC6wZvCOJOBodShTJUtYyah1Wr",
         "drive:1U8Kx9H-OB8GPPrTh35RQAOdZ_ji51CiY",
@@ -7846,7 +8082,7 @@
       "entryType": "species",
       "displayName": "Drosera lunata",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:12s6rRLnYBDZXTE6X9W4GF0w-abJsY2Qd",
         "drive:1NAOvtpRt_Kx1TXOm-Q7q562rD9f4-6n3",
@@ -7876,7 +8112,7 @@
       "entryType": "species",
       "displayName": "Drosera macrantha",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1UT1tK7VzQDknS7UA_JIlFSY6isG9SiL5",
         "drive:1JwnCuPEgRh5gDMK39FeUGNLlBvHLbsch",
@@ -7918,7 +8154,7 @@
       "entryType": "species",
       "displayName": "Drosera macrophylla",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1ciFz7iPbDN8_fZIfuVfhN8eB8n5DyeC_",
         "drive:1Ru03-GYvqGg_DOsa4jrJT40Pv7_E7jkN",
@@ -7977,7 +8213,7 @@
       "entryType": "species",
       "displayName": "Drosera magna",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1KKsp6p5CKq_Lk03TFt0GvmB4O7NpMV7D",
         "drive:1YYsfV6qUXdjiDMWQcBQ1ul3qgW9dojke",
@@ -8014,7 +8250,7 @@
       "entryType": "species",
       "displayName": "Drosera menziesii",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:10c4u4sFiA0DihqZ2uQeXmvKkqZL9CZT8",
         "drive:1PM7A3LZowWggtOb90aUvaWT-f5pyq3Hj",
@@ -8089,7 +8325,7 @@
       "entryType": "named_hybrid",
       "displayName": "Drosera monantha x macrophylla",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1-MWo10SWAB2UAPi1sp5DLCHQIzL8vcK2"
       ],
@@ -8117,7 +8353,7 @@
       "entryType": "species",
       "displayName": "Drosera porrecta",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1kcpOoZmAwhcsqpFdl6DBvSx60KihkU5L",
         "drive:1jn8RRaoTl1Oky_mRp67LVBKylxEE3ems",
@@ -8159,7 +8395,7 @@
       "entryType": "species",
       "displayName": "Drosera ramellosa",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1zCrX1WHfHj0V8JcvqJTsVp03iF3m7IK9",
         "drive:10gKE-Y2k138Nk2gar6hLe140vmZtbYga",
@@ -8208,7 +8444,7 @@
       "entryType": "species",
       "displayName": "Drosera squamosa",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:199OrXvUtnOoP0XL1YX1UBedosDXzlhbm"
       ],
@@ -8241,7 +8477,7 @@
       "entryType": "species",
       "displayName": "Drosera squamosa Drosera squamosa - laterite form",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1JpWQOj8dJa0G_-QiB4XVmrnHftcTzKk-"
       ],
@@ -8269,7 +8505,7 @@
       "entryType": "location",
       "displayName": "Drosera squamosa sand form, giant plants (Yarloop)",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:18Qme4JGOrc1LLTrAQvdWdMFfWtPQ-fg7",
         "drive:1MsbwI4sQY9uEu9pXC17yZWX1yH6dsYsC",
@@ -8300,7 +8536,7 @@
       "entryType": "named_hybrid",
       "displayName": "Drosera squamosa x collina",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1df_AlE4iZmrYcSCocL2NOyDbEsY1CIoF",
         "drive:1iLkkLkqhofva5RKoWhZ6fgLHDmSDqmlG",
@@ -8338,7 +8574,7 @@
       "entryType": "species",
       "displayName": "Drosera stolonifera",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1NQDSLO_Z9cYprHigNENH63gKWS2__ZtE",
         "drive:1QYp3pxBRxzW83V1PZ5TlNfxo7qdP7x8P",
@@ -8373,7 +8609,7 @@
       "entryType": "named_hybrid",
       "displayName": "Drosera stolonifera Mattner x dark green form",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:10J_XLu0hZXv8Zm9PEPB8MRckEqSqQ2si",
         "drive:1wAJj59Dpzb3XQOAvJxoT3jYfZnfvmplG"
@@ -8514,7 +8750,7 @@
       "entryType": "cultivar_unreg",
       "displayName": "Drosera tubaestylis \"Ex. Phil Mann\"",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1UyCGOG18k8RyJ62NfVpW-IwsapDw5OvE",
         "drive:1deZdpa3sAgVBvrKqHkPUF_F6ue3TRRK6",
@@ -8550,7 +8786,7 @@
       "entryType": "species",
       "displayName": "Drosera yilgarnensis",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1HXGD8ATCi3VN1aHB1Aevajoe9A4Hp7SI"
       ],
@@ -8583,7 +8819,7 @@
       "entryType": "species",
       "displayName": "Drosera zigzagia",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1mAlUqNEY4BfI8s1TWyyT2kIItTUzXmBE",
         "drive:1hX8K7ao2vHSsZ50Sm6V9W5OF0MhWQDzY",
@@ -8645,7 +8881,7 @@
       "entryType": "location",
       "displayName": "Drosera zigzagia Drosera zigzagia (Spain)",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1BzRHl_GpyzX0WimetTLuAJVjfkFyRafN"
       ],
@@ -8673,7 +8909,7 @@
       "entryType": "species",
       "displayName": "Drosera zonaria",
       "commonName": "",
-      "group": "Winter Growing",
+      "group": "Tuberous",
       "photos": [
         "drive:1UAvZQ9Yx-w2c702qYQrnqKFMVvAxjJdE",
         "drive:1AG0T81SpHRZeaTxlud4B5QR4rr5F0iz2",
@@ -11142,48 +11378,7 @@
       "nativeHabitat": "Grows on mossy rocks, cliffs, and banks in pine-oak forests and cloud forests at elevations of 1800-3000 meters. Prefers humid montane environments with frequent fog and mist, rooting in thin layers of moss and humus over limestone or volcanic rock."
     }
   ],
-  "habitats": [
-    {
-      "id": "sphagnum_bog",
-      "name": "Sphagnum Bog"
-    },
-    {
-      "id": "sandplain_heath",
-      "name": "Sandplain Heath"
-    },
-    {
-      "id": "tropical_savanna",
-      "name": "Tropical Savanna Wetland"
-    },
-    {
-      "id": "mediterranean",
-      "name": "Mediterranean Scrub & Heath"
-    },
-    {
-      "id": "cloud_forest",
-      "name": "Cloud Forest & Fog Belt"
-    },
-    {
-      "id": "limestone_karst",
-      "name": "Limestone Cliff & Karst"
-    },
-    {
-      "id": "tepui_outcrop",
-      "name": "Tepui & Rocky Outcrop"
-    },
-    {
-      "id": "subtropical_bog",
-      "name": "Subtropical Bog & Fen"
-    },
-    {
-      "id": "tropical_rainforest",
-      "name": "Tropical Rainforest"
-    },
-    {
-      "id": "coastal_wetland",
-      "name": "Coastal Plain Wetland"
-    }
-  ],
+  "habitats": [],
   "climates": [
     {
       "id": "highland_tropical",
