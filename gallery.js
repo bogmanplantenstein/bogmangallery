@@ -2177,10 +2177,12 @@
         hadCache = true;
 
         if ((Date.now() - cached.ts) < CONFIG.CACHE_TTL) {
-          // Cache is fresh — silently refresh in background
+          // Cache is fresh — refresh in background then re-render so published
+          // changes (e.g. new header content) appear without a hard refresh
           fetchData().then(function (raw) {
             sessionStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify(Object.assign({}, raw, { ts: Date.now() })));
             DATA = processData(raw);
+            render();
           }).catch(function () {});
           return;
         }
@@ -2197,8 +2199,9 @@
         root.innerHTML = renderShell(DATA.taxa);
         attachRootEvents();
         applyInitialHash();
+      } else {
+        render(); // stale cache was shown — re-render now with fresh data
       }
-      // If hadCache: DATA is now updated for next navigation; already rendered
     } catch (err) {
       if (!hadCache) {
         root.innerHTML = '<div class="bmg-error">' +

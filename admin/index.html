@@ -3387,19 +3387,26 @@ function doAddHabitat() {
   saveAndRender();
 }
 
-function doSaveHeaderContent() {
-  const get = id => document.getElementById(id)?.value?.trim() || '';
-  if (!APP_DATA.siteContent) APP_DATA.siteContent = {};
-  const sc = APP_DATA.siteContent;
-  sc.eyebrow         = get('sc-eyebrow');
-  sc.eyebrowSize     = get('sc-eyebrow-size');
-  sc.title           = get('sc-title');
-  sc.titleSize       = get('sc-title-size');
-  sc.subtitle        = get('sc-subtitle');
-  sc.subtitleSize    = get('sc-subtitle-size');
-  sc.description     = document.getElementById('sc-description')?.value || '';
-  sc.descriptionSize = get('sc-desc-size');
-  saveData().then(() => showToast('Header content saved', 'success'));
+async function doSaveHeaderContent() {
+  const btn = document.getElementById('save-header-content-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+  try {
+    const get = id => document.getElementById(id)?.value?.trim() || '';
+    if (!APP_DATA.siteContent) APP_DATA.siteContent = {};
+    const sc = APP_DATA.siteContent;
+    sc.eyebrow         = get('sc-eyebrow');
+    sc.eyebrowSize     = get('sc-eyebrow-size');
+    sc.title           = get('sc-title');
+    sc.titleSize       = get('sc-title-size');
+    sc.subtitle        = get('sc-subtitle');
+    sc.subtitleSize    = get('sc-subtitle-size');
+    sc.description     = document.getElementById('sc-description')?.value || '';
+    sc.descriptionSize = get('sc-desc-size');
+    await saveData();
+    showToast('Header content saved', 'success');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Save Header'; }
+  }
 }
 
 function doSaveExtSites() {
