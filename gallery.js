@@ -107,7 +107,7 @@
 
 /* ── PAGE HEADER ── */
 .bmg-header {
-  padding: 52px 48px 40px;
+  padding: 52px 64px 40px;
   border-bottom: 1px solid var(--bmg-border);
 }
 .bmg-header-eyebrow {
@@ -147,7 +147,7 @@
 
 /* ── SEARCH + FILTERS ── */
 .bmg-controls {
-  padding: 24px 48px;
+  padding: 24px 64px;
   border-bottom: 1px solid var(--bmg-border);
   display: flex;
   flex-direction: column;
@@ -165,22 +165,24 @@
 }
 .bmg-search-icon {
   position: absolute;
-  left: 18px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--bmg-dimmer);
-  font-size: 20px;
+  font-size: 18px;
   pointer-events: none;
   line-height: 1;
+  width: 24px;
+  text-align: center;
 }
 .bmg-search {
   width: 100%;
-  padding: 16px 18px 16px 54px;
+  padding: 20px 18px 20px 56px;
   background: transparent;
   border: 1px solid var(--bmg-border);
   color: var(--bmg-white);
   font-family: var(--bmg-font-u);
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 300;
   letter-spacing: 0.04em;
   outline: none;
@@ -209,17 +211,17 @@
   border: 1px solid var(--bmg-border);
   color: var(--bmg-white);
   font-family: var(--bmg-font-u);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 300;
   letter-spacing: 0.03em;
-  padding: 12px 34px 12px 14px;
+  padding: 20px 36px 20px 16px;
   outline: none;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23555'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center;
+  background-position: right 14px center;
   transition: border-color var(--bmg-t);
   flex: 1;
   min-width: 156px;
@@ -238,7 +240,7 @@
 
 /* ── BREADCRUMB ── */
 .bmg-breadcrumb {
-  padding: 12px 48px;
+  padding: 12px 64px;
   font-size: 12px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -258,7 +260,7 @@
 .bmg-bc-sep { color: var(--bmg-dimmer); opacity: 0.4; }
 
 /* ── MAIN CONTENT ── */
-.bmg-main { padding: 40px 48px; }
+.bmg-main { padding: 40px 64px; }
 
 /* ── GENUS GRID ── */
 .bmg-genus-grid {
@@ -906,7 +908,7 @@
 
 /* ── FOOTER ── */
 .bmg-footer {
-  padding: 28px 48px;
+  padding: 28px 64px;
   border-top: 1px solid var(--bmg-border);
   margin-top: 40px;
   display: flex;
@@ -929,28 +931,28 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .bmg-header { padding: 36px 20px 28px; }
+  .bmg-header { padding: 36px 24px 28px; }
   .bmg-header-sub { font-size: 11px; }
-  .bmg-controls { padding: 18px 20px; gap: 12px; }
-  .bmg-search { font-size: 16px; padding: 14px 16px 14px 48px; }
-  .bmg-search-icon { font-size: 18px; left: 16px; }
-  .bmg-filter-select { min-width: calc(50% - 5px); font-size: 14px; padding: 11px 28px 11px 12px; }
+  .bmg-controls { padding: 18px 24px; gap: 12px; }
+  .bmg-search { font-size: 16px; padding: 18px 14px 18px 50px; }
+  .bmg-search-icon { font-size: 17px; left: 14px; width: 22px; }
+  .bmg-filter-select { min-width: calc(50% - 5px); font-size: 14px; padding: 18px 30px 18px 12px; }
   .bmg-filter-label { font-size: 12px; }
   .bmg-results-count { font-size: 13px; }
-  .bmg-breadcrumb { padding: 10px 20px; }
-  .bmg-main { padding: 28px 20px; }
+  .bmg-breadcrumb { padding: 10px 24px; }
+  .bmg-main { padding: 28px 24px; }
   .bmg-genus-grid { grid-template-columns: 1fr; }
   .bmg-species-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
   .bmg-cultivars-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
   .bmg-care-grid { grid-template-columns: 1fr; }
   .bmg-hybrids-search { max-width: 100%; }
   .bmg-detail-hero { grid-template-columns: 1fr; gap: 28px; }
-  .bmg-footer { padding: 24px 20px; }
+  .bmg-footer { padding: 24px 24px; }
 }
 @media (max-width: 480px) {
   .bmg-header-title { font-size: 40px; }
-  .bmg-search { font-size: 16px; } /* prevent iOS zoom on focus */
-  .bmg-filter-select { min-width: 100%; font-size: 16px; } /* prevent iOS zoom + full width */
+  .bmg-search { font-size: 16px; padding: 16px 14px 16px 50px; } /* font-size: 16px prevents iOS zoom on focus */
+  .bmg-filter-select { min-width: 100%; font-size: 16px; padding: 16px 30px 16px 12px; } /* 16px prevents iOS zoom + full width */
   .bmg-species-grid { grid-template-columns: repeat(2, 1fr); }
   .bmg-cultivars-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1284,8 +1286,7 @@
     if (STATE.view === 'species') STATE.activeGroup = 'all';
     render();
     if (STATE.view === 'genera') startGenusSlideshow();
-    var root = document.getElementById('bmg-root');
-    if (root) root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function attachPopstate() {
@@ -1322,9 +1323,7 @@
 
     render();
     if (view === 'genera') startGenusSlideshow();
-
-    var root = document.getElementById('bmg-root');
-    if (root) root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // ─── RENDER ENGINE ────────────────────────────────────────────
@@ -2021,7 +2020,7 @@
       if (groupTab) {
         STATE.activeGroup = groupTab.dataset.groupTab;
         render();
-        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
 
@@ -2063,11 +2062,20 @@
     // Search — delegated input event with 250ms debounce so typing doesn't trigger
     // a full render on every keystroke. The search input is recreated on each render
     // so we delegate to root rather than binding directly to the element.
+    // After render(), refocus the new input element so the user doesn't lose their cursor.
     root.addEventListener('input', function (e) {
       if (e.target.id !== 'bmg-search-input') return;
       STATE.search = e.target.value;
       clearTimeout(_searchDebounce);
-      _searchDebounce = setTimeout(render, 250);
+      _searchDebounce = setTimeout(function () {
+        render();
+        var inp = document.getElementById('bmg-search-input');
+        if (inp) {
+          var len = inp.value.length;
+          inp.focus();
+          inp.setSelectionRange(len, len);
+        }
+      }, 250);
     });
 
     // Filter selects — delegated change event
