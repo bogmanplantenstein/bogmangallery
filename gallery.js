@@ -713,6 +713,41 @@
   gap: 14px;
 }
 
+/* ── PHOTO GALLERY (detail page bottom) ── */
+.bmg-photo-gallery-section {
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid var(--bmg-border);
+}
+.bmg-photo-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 6px;
+}
+.bmg-photo-gallery-tile {
+  aspect-ratio: 1/1;
+  background: #0a0a0a;
+  border: 1px solid var(--bmg-border);
+  overflow: hidden;
+  cursor: pointer;
+}
+.bmg-photo-gallery-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: brightness(0.85);
+  transition: filter var(--bmg-t), transform 0.4s ease;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.bmg-photo-gallery-tile:hover img {
+  filter: brightness(1);
+  transform: scale(1.04);
+}
+
 /* ── EXTERNAL LINKS ── */
 .bmg-ext-section {
   margin-top: 40px;
@@ -1810,6 +1845,22 @@
         '</div>';
     }
 
+    // ── Photo gallery (all photos, shown when taxon has ≥2 photos) ──
+    let photoGalleryHtml = '';
+    if (photos.length >= 2) {
+      let tiles = '';
+      photos.forEach(function (ph, i) {
+        const src = resolvePhoto(ph, 'w400');
+        tiles += '<div class="bmg-photo-gallery-tile" data-lightbox="' + esc(t.id) + '" data-idx="' + i + '">' +
+          '<img src="' + esc(src) + '" alt="' + esc(t.displayName) + ' · photo ' + (i + 1) + '" loading="lazy">' +
+          '</div>';
+      });
+      photoGalleryHtml = '<div class="bmg-photo-gallery-section">' +
+        '<div class="bmg-section-title">All Photos <span style="font-size:10px;opacity:0.45;letter-spacing:0.1em;">&middot; ' + photos.length + '</span></div>' +
+        '<div class="bmg-photo-gallery-grid">' + tiles + '</div>' +
+        '</div>';
+    }
+
     // ── Back button ──
     let backBtn = '';
     if (STATE.parentId && STATE.parentId !== t.id) {
@@ -1864,6 +1915,7 @@
       notesHtml +
       extHtml +
       cultivarsHtml +
+      photoGalleryHtml +
       '</div>';
   }
 
