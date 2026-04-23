@@ -1913,9 +1913,9 @@
           '<div class="bmg-care-grid">' + careItemsHtml + '</div>'
         : '') +
       notesHtml +
-      extHtml +
       cultivarsHtml +
       photoGalleryHtml +
+      extHtml +
       '</div>';
   }
 
