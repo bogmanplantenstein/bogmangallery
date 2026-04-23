@@ -628,6 +628,201 @@
       color: var(--accent);
     }
 
+    /* ─── Photo Tile Grid ────────────────────────────────────────────────────── */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .photo-tile {
+      position: relative;
+      aspect-ratio: 1/1;
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .photo-tile:hover { border-color: var(--accent); }
+    .photo-tile.dragging { opacity: 0.35; border-style: dashed; }
+    .photo-tile.drag-over { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(200,169,110,0.35); }
+    .photo-tile img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .photo-tile-num {
+      position: absolute;
+      top: 5px; left: 5px;
+      font-size: 9px;
+      letter-spacing: 0.05em;
+      background: rgba(0,0,0,0.72);
+      color: rgba(255,255,255,0.55);
+      padding: 2px 5px;
+      border-radius: 3px;
+      pointer-events: none;
+      font-family: var(--font-u);
+    }
+    .photo-tile-badge {
+      position: absolute;
+      bottom: 5px; left: 5px;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(0,0,0,0.78);
+      color: var(--accent);
+      padding: 2px 5px;
+      border-radius: 3px;
+      pointer-events: none;
+      font-family: var(--font-u);
+    }
+    .photo-tile-badge.drive { color: var(--blue); }
+    .photo-tile-remove {
+      position: absolute;
+      top: 4px; right: 4px;
+      width: 20px; height: 20px;
+      background: rgba(0,0,0,0.78);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50%;
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s, background 0.15s;
+      cursor: pointer;
+      z-index: 2;
+      padding: 0;
+    }
+    .photo-tile:hover .photo-tile-remove { opacity: 1; }
+    .photo-tile-remove:hover { background: rgba(200,50,50,0.85); border-color: transparent; color: #fff; }
+
+    /* ─── URL Edit Panel ──────────────────────────────────────────────────────── */
+    .photo-url-panel {
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: var(--bg3);
+      margin-bottom: 10px;
+    }
+    .photo-url-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dimmer);
+      cursor: pointer;
+      user-select: none;
+    }
+    .photo-url-toggle:hover { color: var(--white); }
+    .photo-url-body {
+      padding: 4px 12px 12px;
+      display: none;
+    }
+    .photo-url-body.open { display: block; }
+    .photo-url-vis-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .photo-url-vis-num {
+      font-size: 10px;
+      color: var(--dimmer);
+      min-width: 18px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ─── Admin Lightbox ──────────────────────────────────────────────────────── */
+    .admin-lb {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.94);
+      z-index: 99999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .admin-lb.open { display: flex; }
+    .admin-lb-img {
+      max-width: 88vw;
+      max-height: 78vh;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+    .admin-lb-close {
+      position: fixed;
+      top: 16px; right: 20px;
+      font-size: 26px;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+      transition: color 0.15s;
+      z-index: 1;
+    }
+    .admin-lb-close:hover { color: #fff; }
+    .admin-lb-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 30px;
+      color: rgba(255,255,255,0.3);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 16px 10px;
+      transition: color 0.15s;
+      user-select: none;
+      line-height: 1;
+    }
+    .admin-lb-nav:hover { color: rgba(255,255,255,0.85); }
+    .admin-lb-prev { left: 8px; }
+    .admin-lb-next { right: 8px; }
+    .admin-lb-footer {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .admin-lb-counter {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.35);
+      min-width: 56px;
+      text-align: center;
+      font-family: var(--font-u);
+    }
+    .admin-lb-remove {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(210,70,70,0.7);
+      cursor: pointer;
+      background: none;
+      border: 1px solid rgba(210,70,70,0.3);
+      padding: 5px 14px;
+      border-radius: var(--r);
+      transition: background 0.15s, color 0.15s;
+      font-family: var(--font-u);
+    }
+    .admin-lb-remove:hover { background: rgba(210,70,70,0.14); color: #e05555; border-color: rgba(210,70,70,0.5); }
+
     /* ─── Shop / Ext Link Rows ──────────────────────────────────────────── */
     .shop-row,
     .ext-link-row {
@@ -921,6 +1116,8 @@ let HAB_BATCH_DONE     = 0;
 let HAB_BATCH_TOTAL    = 0;
 let HAB_SUGGEST_TEXT   = '';    // AI habitat grouping suggestion JSON
 let HAB_SUGGEST_RUNNING = false;
+let ADMIN_LB_IDX  = 0;
+let ADMIN_LB_SRCS = [];
 
 // SECTION 3: Server API helpers
 async function extractError(r) {
@@ -1146,6 +1343,7 @@ function render() {
     '</div>';
   attachNavEvents();
   attachPageEvents();
+  injectAdminLightbox();
   updatePublishBadge();
   if (CURRENT_PAGE === 'taxa') refreshTaxaList();
 }
@@ -1466,18 +1664,37 @@ function renderTabIdentity(t) {
 
 function renderTabPhotos(t) {
   const photos = t.photos || [];
-  const rows = photos.map((src, i) =>
-    '<div class="photo-row" draggable="true" data-photo-idx="'+i+'">' +
-    '<span class="drag-handle" title="Reorder">⋮⋮</span>' +
-    '<img class="photo-thumb-preview" src="'+escHtml(resolvePhotoUrl(src,'w100'))+'" alt="" onerror="this.style.opacity=\'0\'">' +
-    '<span class="pill '+(src.startsWith('drive:')?'blue':'accent')+'" style="flex-shrink:0;">'+photoSourceLabel(src)+'</span>' +
-    '<input type="text" class="photo-url-input" value="'+escHtml(src)+'" placeholder="sq:URL or drive:ID" style="flex:1;">' +
-    '<button class="photo-remove-btn" data-remove-photo="'+i+'" type="button">×</button>' +
-    '</div>'
-  ).join('');
 
-  return '<div class="tab-content" id="tab-photos"'+(ACTIVE_TAB==='photos'?'':' style="display:none"')+'>' +
-    '<div id="photo-rows-container">'+rows+'</div>' +
+  let gridHtml = '';
+  if (photos.length) {
+    const tiles = photos.map((src, i) =>
+      '<div class="photo-tile" draggable="true" data-photo-idx="' + i + '" data-photo-src="' + escHtml(src) + '">' +
+      '<img src="' + escHtml(resolvePhotoUrl(src, 'w200')) + '" alt="" loading="lazy" onerror="this.style.opacity=\'0\'">' +
+      '<span class="photo-tile-num">#' + (i + 1) + '</span>' +
+      '<span class="photo-tile-badge' + (src.startsWith('drive:') ? ' drive' : '') + '">' + photoSourceLabel(src) + '</span>' +
+      '<button class="photo-tile-remove" data-remove-photo="' + i + '" type="button" title="Remove">×</button>' +
+      '</div>'
+    ).join('');
+
+    const urlRows = photos.map((src, i) =>
+      '<div class="photo-url-vis-row">' +
+      '<span class="photo-url-vis-num">' + (i + 1) + '</span>' +
+      '<input type="text" class="photo-url-vis" data-url-idx="' + i + '" value="' + escHtml(src) + '" style="flex:1;" placeholder="sq:URL or drive:FILE_ID">' +
+      '</div>'
+    ).join('');
+
+    gridHtml =
+      '<div class="photo-grid" id="photo-grid">' + tiles + '</div>' +
+      '<div class="photo-url-panel">' +
+      '<div class="photo-url-toggle" id="photo-url-toggle">▸ Edit URLs</div>' +
+      '<div class="photo-url-body" id="photo-url-body">' + urlRows + '</div>' +
+      '</div>';
+  } else {
+    gridHtml = '<div style="color:var(--dimmer);font-size:12px;padding:16px 0 10px;">No photos yet.</div>';
+  }
+
+  return '<div class="tab-content" id="tab-photos"' + (ACTIVE_TAB === 'photos' ? '' : ' style="display:none"') + '>' +
+    gridHtml +
     '<div class="photo-drop-zone" id="photo-drop-zone">' +
     '<div class="photo-drop-icon">🖼</div><div>Drag an image from your browser here</div></div>' +
     '<div style="display:flex;gap:8px;margin-top:12px;">' +
@@ -2566,9 +2783,10 @@ function collectFormTaxon() {
   const isGrex     = document.getElementById('f-grex')?.checked    || false;
   const flagged    = document.getElementById('f-flagged')?.checked  || false;
 
-  // Photos — collect from input fields
-  const photoInputs = document.querySelectorAll('.photo-url-input');
-  const photos = [...photoInputs].map(inp => inp.value.trim()).filter(Boolean);
+  // Photos — read from tile grid (new) or legacy photo-url-input fields (fallback)
+  const photos = getPhotoSrcsFromGrid().length
+    ? getPhotoSrcsFromGrid()
+    : [...document.querySelectorAll('.photo-url-input')].map(inp => inp.value.trim()).filter(Boolean);
 
   // Provenance
   const country       = document.getElementById('f-country')?.value?.trim()       || '';
@@ -2693,6 +2911,22 @@ function attachPageEvents() {
     // Reject match
     const rejectIdx = e.target.closest('[data-reject-match]')?.dataset.rejectMatch;
     if (rejectIdx !== undefined) { LINK_MATCH_RESULTS[parseInt(rejectIdx)].rejected = true; re_renderMatchTable(); return; }
+
+    // Open admin lightbox on tile click
+    const tile = e.target.closest('.photo-tile');
+    if (tile && !e.target.closest('.photo-tile-remove')) {
+      openAdminLb(parseInt(tile.dataset.photoIdx || '0'));
+      return;
+    }
+
+    // Toggle URL edit panel
+    if (e.target.id === 'photo-url-toggle') {
+      const body = document.getElementById('photo-url-body');
+      const tog  = document.getElementById('photo-url-toggle');
+      if (body) body.classList.toggle('open');
+      if (tog)  tog.textContent = (body?.classList.contains('open') ? '▾' : '▸') + ' Edit URLs';
+      return;
+    }
 
     // Remove photo
     const rmPhoto = e.target.closest('[data-remove-photo]')?.dataset.removePhoto;
@@ -2897,6 +3131,26 @@ function attachPageEvents() {
 
   // Live filter events for taxa list
   main.addEventListener('input', e => {
+    // Sync URL panel edits back to tile data-photo-src
+    if (e.target.classList.contains('photo-url-vis')) {
+      const idx = parseInt(e.target.dataset.urlIdx);
+      const grid = document.getElementById('photo-grid');
+      if (grid) {
+        const tiles = grid.querySelectorAll('.photo-tile');
+        if (tiles[idx]) {
+          tiles[idx].dataset.photoSrc = e.target.value.trim();
+          const img = tiles[idx].querySelector('img');
+          if (img) img.src = resolvePhotoUrl(e.target.value.trim(), 'w200');
+          const badge = tiles[idx].querySelector('.photo-tile-badge');
+          if (badge) {
+            const src = e.target.value.trim();
+            badge.textContent = photoSourceLabel(src);
+            badge.className = 'photo-tile-badge' + (src.startsWith('drive:') ? ' drive' : '');
+          }
+        }
+      }
+      return;
+    }
     if (e.target.id==='taxa-search')      { TAXA_SEARCH=e.target.value; refreshTaxaList(); }
     if (e.target.id==='taxa-genus-filter'){ TAXA_GENUS=e.target.value;  refreshTaxaList(); }
     if (e.target.id==='taxa-group-filter'){ TAXA_GROUP=e.target.value;  refreshTaxaList(); }
@@ -2948,6 +3202,7 @@ function attachPageEvents() {
 
   // Photo drag-drop
   attachPhotoDrop();
+  attachPhotoGridDrag();
 }
 
 function refreshTaxaList() {
@@ -3122,26 +3377,73 @@ function addPhotoUrl() {
   inp.value = '';
 }
 
+function getPhotoSrcsFromGrid() {
+  const grid = document.getElementById('photo-grid');
+  if (!grid) return [];
+  return [...grid.querySelectorAll('.photo-tile')].map(t => t.dataset.photoSrc || '').filter(Boolean);
+}
+
 function addPhotoRow(src) {
-  const container = document.getElementById('photo-rows-container');
-  if (!container) return;
-  const i = container.children.length;
+  const grid = document.getElementById('photo-grid');
+  if (!grid) {
+    // Grid doesn't exist yet (no photos before) — full re-render of tab
+    const t = APP_DATA.taxa.find(x => x.id === EDIT_TAXON_ID);
+    if (t) { t.photos = [...(t.photos || []), src]; }
+    const tabEl = document.getElementById('tab-photos');
+    if (tabEl) tabEl.outerHTML = renderTabPhotos(
+      APP_DATA.taxa.find(x => x.id === EDIT_TAXON_ID) || { photos: [src] }
+    );
+    attachPhotoDrop();
+    attachPhotoGridDrag();
+    return;
+  }
+  const i = grid.children.length;
   const div = document.createElement('div');
-  div.className = 'photo-row';
+  div.className = 'photo-tile';
   div.draggable = true;
   div.dataset.photoIdx = i;
+  div.dataset.photoSrc = src;
   div.innerHTML =
-    '<span class="drag-handle" title="Reorder">⋮⋮</span>' +
-    '<img class="photo-thumb-preview" src="'+escHtml(resolvePhotoUrl(src,'w100'))+'" alt="" onerror="this.style.opacity=\'0\'">' +
-    '<span class="pill '+(src.startsWith('drive:')?'blue':'accent')+'" style="flex-shrink:0;">'+photoSourceLabel(src)+'</span>' +
-    '<input type="text" class="photo-url-input" value="'+escHtml(src)+'" placeholder="sq:URL or drive:ID" style="flex:1;">' +
-    '<button class="photo-remove-btn" data-remove-photo="'+i+'" type="button">×</button>';
-  container.appendChild(div);
+    '<img src="' + escHtml(resolvePhotoUrl(src, 'w200')) + '" alt="" loading="lazy" onerror="this.style.opacity=\'0\'">' +
+    '<span class="photo-tile-num">#' + (i + 1) + '</span>' +
+    '<span class="photo-tile-badge' + (src.startsWith('drive:') ? ' drive' : '') + '">' + photoSourceLabel(src) + '</span>' +
+    '<button class="photo-tile-remove" data-remove-photo="' + i + '" type="button" title="Remove">×</button>';
+  grid.appendChild(div);
+  // Also add a row to the URL panel if it's open
+  const urlBody = document.getElementById('photo-url-body');
+  if (urlBody) {
+    const row = document.createElement('div');
+    row.className = 'photo-url-vis-row';
+    row.innerHTML = '<span class="photo-url-vis-num">' + (i + 1) + '</span>' +
+      '<input type="text" class="photo-url-vis" data-url-idx="' + i + '" value="' + escHtml(src) + '" style="flex:1;" placeholder="sq:URL or drive:FILE_ID">';
+    urlBody.appendChild(row);
+  }
 }
 
 function removePhotoRow(idx) {
-  const rows = document.querySelectorAll('.photo-row');
-  if (rows[idx]) rows[idx].remove();
+  const grid = document.getElementById('photo-grid');
+  if (!grid) return;
+  const tiles = [...grid.querySelectorAll('.photo-tile')];
+  if (tiles[idx]) tiles[idx].remove();
+  // Renumber remaining tiles
+  [...grid.querySelectorAll('.photo-tile')].forEach((tile, i) => {
+    tile.dataset.photoIdx = i;
+    const num = tile.querySelector('.photo-tile-num');
+    if (num) num.textContent = '#' + (i + 1);
+    const rmBtn = tile.querySelector('.photo-tile-remove');
+    if (rmBtn) rmBtn.dataset.removePhoto = i;
+  });
+  // Rebuild URL panel rows
+  const urlBody = document.getElementById('photo-url-body');
+  if (urlBody) {
+    const srcs = getPhotoSrcsFromGrid();
+    urlBody.innerHTML = srcs.map((src, i) =>
+      '<div class="photo-url-vis-row">' +
+      '<span class="photo-url-vis-num">' + (i + 1) + '</span>' +
+      '<input type="text" class="photo-url-vis" data-url-idx="' + i + '" value="' + escHtml(src) + '" style="flex:1;" placeholder="sq:URL or drive:FILE_ID">' +
+      '</div>'
+    ).join('');
+  }
 }
 
 function attachPhotoDrop() {
@@ -3157,6 +3459,144 @@ function attachPhotoDrop() {
                 (e.dataTransfer.getData('text/html')||'').match(/src="([^"]+)"/)?.[1] || '';
     if (url) addPhotoRow(url.startsWith('sq:') ? url : 'sq:'+url);
   });
+}
+
+function attachPhotoGridDrag() {
+  const grid = document.getElementById('photo-grid');
+  if (!grid) return;
+  let dragSrc = null;
+
+  grid.addEventListener('dragstart', function(e) {
+    const tile = e.target.closest('.photo-tile');
+    if (!tile) return;
+    dragSrc = tile;
+    setTimeout(() => tile.classList.add('dragging'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  grid.addEventListener('dragend', function(e) {
+    const tile = e.target.closest('.photo-tile');
+    if (tile) tile.classList.remove('dragging');
+    grid.querySelectorAll('.photo-tile').forEach(t => t.classList.remove('drag-over'));
+    dragSrc = null;
+  });
+  grid.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    const tile = e.target.closest('.photo-tile');
+    if (!tile || tile === dragSrc) return;
+    grid.querySelectorAll('.photo-tile').forEach(t => t.classList.remove('drag-over'));
+    tile.classList.add('drag-over');
+  });
+  grid.addEventListener('dragleave', function(e) {
+    const tile = e.target.closest('.photo-tile');
+    if (tile) tile.classList.remove('drag-over');
+  });
+  grid.addEventListener('drop', function(e) {
+    e.preventDefault();
+    const tile = e.target.closest('.photo-tile');
+    if (!tile || !dragSrc || tile === dragSrc) return;
+    tile.classList.remove('drag-over');
+    // Insert dragSrc before or after tile based on position
+    const allTiles = [...grid.querySelectorAll('.photo-tile')];
+    const srcIdx   = allTiles.indexOf(dragSrc);
+    const dstIdx   = allTiles.indexOf(tile);
+    if (srcIdx < dstIdx) {
+      grid.insertBefore(dragSrc, tile.nextSibling);
+    } else {
+      grid.insertBefore(dragSrc, tile);
+    }
+    // Renumber
+    [...grid.querySelectorAll('.photo-tile')].forEach((t, i) => {
+      t.dataset.photoIdx = i;
+      const num = t.querySelector('.photo-tile-num');
+      if (num) num.textContent = '#' + (i + 1);
+      const rmBtn = t.querySelector('.photo-tile-remove');
+      if (rmBtn) rmBtn.dataset.removePhoto = i;
+    });
+    // Rebuild URL panel
+    const urlBody = document.getElementById('photo-url-body');
+    if (urlBody && urlBody.classList.contains('open')) {
+      const srcs = getPhotoSrcsFromGrid();
+      urlBody.innerHTML = srcs.map((src, i) =>
+        '<div class="photo-url-vis-row">' +
+        '<span class="photo-url-vis-num">' + (i + 1) + '</span>' +
+        '<input type="text" class="photo-url-vis" data-url-idx="' + i + '" value="' + escHtml(src) + '" style="flex:1;" placeholder="sq:URL or drive:FILE_ID">' +
+        '</div>'
+      ).join('');
+    }
+  });
+}
+
+function injectAdminLightbox() {
+  if (document.getElementById('admin-lb')) return; // already injected
+  const el = document.createElement('div');
+  el.id = 'admin-lb';
+  el.className = 'admin-lb';
+  el.innerHTML =
+    '<button class="admin-lb-close" id="admin-lb-close" type="button">×</button>' +
+    '<button class="admin-lb-nav admin-lb-prev" id="admin-lb-prev" type="button">&#8249;</button>' +
+    '<img class="admin-lb-img" id="admin-lb-img" src="" alt="">' +
+    '<button class="admin-lb-nav admin-lb-next" id="admin-lb-next" type="button">&#8250;</button>' +
+    '<div class="admin-lb-footer">' +
+    '<button class="admin-lb-remove" id="admin-lb-remove" type="button">Remove this photo</button>' +
+    '<span class="admin-lb-counter" id="admin-lb-counter"></span>' +
+    '</div>';
+  document.body.appendChild(el);
+
+  document.getElementById('admin-lb-close').addEventListener('click', closeAdminLb);
+  document.getElementById('admin-lb-prev').addEventListener('click', function() { stepAdminLb(-1); });
+  document.getElementById('admin-lb-next').addEventListener('click', function() { stepAdminLb(1); });
+  document.getElementById('admin-lb-remove').addEventListener('click', removeAdminLbPhoto);
+  el.addEventListener('click', function(e) { if (e.target === el) closeAdminLb(); });
+  document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('admin-lb')?.classList.contains('open')) return;
+    if (e.key === 'Escape')      closeAdminLb();
+    if (e.key === 'ArrowLeft')   stepAdminLb(-1);
+    if (e.key === 'ArrowRight')  stepAdminLb(1);
+  });
+}
+
+function openAdminLb(idx) {
+  ADMIN_LB_SRCS = getPhotoSrcsFromGrid();
+  if (!ADMIN_LB_SRCS.length) return;
+  ADMIN_LB_IDX = Math.max(0, Math.min(idx, ADMIN_LB_SRCS.length - 1));
+  updateAdminLb();
+  document.getElementById('admin-lb').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAdminLb() {
+  const el = document.getElementById('admin-lb');
+  if (el) el.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function stepAdminLb(dir) {
+  ADMIN_LB_SRCS = getPhotoSrcsFromGrid();
+  if (!ADMIN_LB_SRCS.length) { closeAdminLb(); return; }
+  ADMIN_LB_IDX = (ADMIN_LB_IDX + dir + ADMIN_LB_SRCS.length) % ADMIN_LB_SRCS.length;
+  updateAdminLb();
+}
+
+function updateAdminLb() {
+  const src  = ADMIN_LB_SRCS[ADMIN_LB_IDX] || '';
+  const img  = document.getElementById('admin-lb-img');
+  const ctr  = document.getElementById('admin-lb-counter');
+  const prev = document.getElementById('admin-lb-prev');
+  const next = document.getElementById('admin-lb-next');
+  if (img) img.src = resolvePhotoUrl(src, 'w1600');
+  if (ctr) ctr.textContent = ADMIN_LB_SRCS.length > 1 ? (ADMIN_LB_IDX + 1) + ' / ' + ADMIN_LB_SRCS.length : '';
+  const multi = ADMIN_LB_SRCS.length > 1;
+  if (prev) prev.style.display = multi ? '' : 'none';
+  if (next) next.style.display = multi ? '' : 'none';
+}
+
+function removeAdminLbPhoto() {
+  if (!ADMIN_LB_SRCS.length) return;
+  removePhotoRow(ADMIN_LB_IDX);
+  ADMIN_LB_SRCS = getPhotoSrcsFromGrid();
+  if (!ADMIN_LB_SRCS.length) { closeAdminLb(); return; }
+  ADMIN_LB_IDX = Math.min(ADMIN_LB_IDX, ADMIN_LB_SRCS.length - 1);
+  updateAdminLb();
 }
 
 function addShopRow() {
