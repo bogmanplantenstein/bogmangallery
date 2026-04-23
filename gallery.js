@@ -1803,7 +1803,13 @@
     if (t.shopLinks.length) {
       let shopBtns = '';
       t.shopLinks.forEach(function (sl, i) {
-        shopBtns += '<a href="' + esc(sl.url) + '" target="_blank" rel="noopener" class="bmg-shop-btn' + (i > 0 ? ' secondary' : '') + '">' +
+        // Stored URLs may be bare slugs (e.g. "venus-flytrap-typical") from the SS CSV export.
+        // Reconstruct the full product URL when no protocol is present.
+        var shopUrl = sl.url;
+        if (shopUrl && !shopUrl.startsWith('http')) {
+          shopUrl = 'https://www.burymeinthebog.com/shop/p/' + shopUrl.replace(/^\/+/, '');
+        }
+        shopBtns += '<a href="' + esc(shopUrl) + '" target="_blank" rel="noopener" class="bmg-shop-btn' + (i > 0 ? ' secondary' : '') + '">' +
           esc(sl.label || 'Buy') + ' \u2192</a>';
       });
       shopHtml = '<div class="bmg-shop-row">' + shopBtns + '</div>';
