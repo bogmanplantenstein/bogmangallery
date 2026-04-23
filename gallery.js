@@ -177,7 +177,7 @@
 }
 .bmg-search {
   width: 100%;
-  padding: 20px 18px 20px 56px;
+  padding: 28px 18px 28px 56px;
   background: transparent;
   border: 1px solid var(--bmg-border);
   color: var(--bmg-white);
@@ -214,7 +214,7 @@
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0.03em;
-  padding: 20px 36px 20px 16px;
+  padding: 28px 36px 28px 16px;
   outline: none;
   cursor: pointer;
   appearance: none;
@@ -969,9 +969,9 @@
   .bmg-header { padding: 36px 24px 28px; }
   .bmg-header-sub { font-size: 11px; }
   .bmg-controls { padding: 18px 24px; gap: 12px; }
-  .bmg-search { font-size: 16px; padding: 18px 14px 18px 50px; }
+  .bmg-search { font-size: 16px; padding: 25px 14px 25px 50px; }
   .bmg-search-icon { font-size: 17px; left: 14px; width: 22px; }
-  .bmg-filter-select { min-width: calc(50% - 5px); font-size: 14px; padding: 18px 30px 18px 12px; }
+  .bmg-filter-select { min-width: calc(50% - 5px); font-size: 14px; padding: 25px 30px 25px 12px; }
   .bmg-filter-label { font-size: 12px; }
   .bmg-results-count { font-size: 13px; }
   .bmg-breadcrumb { padding: 10px 24px; }
@@ -986,8 +986,8 @@
 }
 @media (max-width: 480px) {
   .bmg-header-title { font-size: 40px; }
-  .bmg-search { font-size: 16px; padding: 16px 14px 16px 50px; } /* font-size: 16px prevents iOS zoom on focus */
-  .bmg-filter-select { min-width: 100%; font-size: 16px; padding: 16px 30px 16px 12px; } /* 16px prevents iOS zoom + full width */
+  .bmg-search { font-size: 16px; padding: 22px 14px 22px 50px; } /* font-size: 16px prevents iOS zoom on focus */
+  .bmg-filter-select { min-width: 100%; font-size: 16px; padding: 22px 30px 22px 12px; } /* 16px prevents iOS zoom + full width */
   .bmg-species-grid { grid-template-columns: repeat(2, 1fr); }
   .bmg-cultivars-grid { grid-template-columns: repeat(2, 1fr); }
 }
