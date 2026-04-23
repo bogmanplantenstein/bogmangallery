@@ -461,7 +461,7 @@
 .bmg-species-photo {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   transition: transform 0.4s ease;
   filter: brightness(0.9);
@@ -760,13 +760,13 @@
   background: #0a0a0a;
 }
 .bmg-hybrid-photo {
-  aspect-ratio: 4/3;
+  aspect-ratio: 1/1;
   overflow: hidden;
   background: #050505;
 }
 .bmg-hybrid-photo img {
   width: 100%; height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   filter: brightness(0.85);
   pointer-events: none;
