@@ -1282,12 +1282,44 @@
 
   // ─── HASH ROUTING ─────────────────────────────────────────────
 
+  // Generate a URL-safe slug from a display name.
+  // Stored in data.json as t.slug; this helper is used for fallback derivation only.
+  function toSlug(name) {
+    return (name || '')
+      .toLowerCase()
+      .replace(/['"\(\),\.]+/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+
+  // Return the slug for a taxon — prefer stored t.slug, derive as fallback.
+  function taxonSlug(t) {
+    return t.slug || toSlug(t.displayName);
+  }
+
+  // Look up a taxon by slug or legacy txn_ id.
+  function taxonBySlugOrId(key) {
+    if (!DATA) return null;
+    // Try slug first (stored field, then derived)
+    var bySlug = DATA.taxa.find(function (x) { return (x.slug || toSlug(x.displayName)) === key; });
+    if (bySlug) return bySlug;
+    // Fallback: legacy txn_ id (backward compat for old bookmarks)
+    return DATA.taxa.find(function (x) { return x.id === key; }) || null;
+  }
+
   function stateToHash(s) {
     var v = s.view || 'genera';
     if (v === 'species') return '#/genus/' + encodeURIComponent(s.genus || '');
     if (v === 'hybrids') return '#/genus/' + encodeURIComponent(s.genus || '') + '/hybrids';
-    if (v === 'detail')  return '#/taxon/' + encodeURIComponent(s.taxonId || '');
-    if (v === 'forms')   return '#/forms/' + encodeURIComponent(s.parentId || '');
+    if (v === 'detail') {
+      var td = DATA && DATA.taxa.find(function (x) { return x.id === s.taxonId; });
+      return '#/taxon/' + encodeURIComponent(td ? taxonSlug(td) : (s.taxonId || ''));
+    }
+    if (v === 'forms') {
+      var tp = DATA && DATA.taxa.find(function (x) { return x.id === s.parentId; });
+      return '#/forms/' + encodeURIComponent(tp ? taxonSlug(tp) : (s.parentId || ''));
+    }
     return '#/';
   }
 
@@ -1300,12 +1332,14 @@
       return { view: 'species', genus: parts[1] };
     }
     if (parts[0] === 'taxon' && parts[1]) {
-      var td = DATA && DATA.taxa.find(function (x) { return x.id === parts[1]; });
-      return { view: 'detail', taxonId: parts[1], genus: td ? td.genus : null, parentId: td ? (td.parentId || null) : null };
+      var td = taxonBySlugOrId(parts[1]);
+      var taxonId = td ? td.id : parts[1];
+      return { view: 'detail', taxonId: taxonId, genus: td ? td.genus : null, parentId: td ? (td.parentId || null) : null };
     }
     if (parts[0] === 'forms' && parts[1]) {
-      var tp = DATA && DATA.taxa.find(function (x) { return x.id === parts[1]; });
-      return { view: 'forms', parentId: parts[1], genus: tp ? tp.genus : null };
+      var tp = taxonBySlugOrId(parts[1]);
+      var parentId = tp ? tp.id : parts[1];
+      return { view: 'forms', parentId: parentId, genus: tp ? tp.genus : null };
     }
     return { view: 'genera' };
   }
