@@ -6,9 +6,13 @@ credentials/
 node_modules/
 npm-debug.log*
 
-# Local backups
+# Local backups (snapshots kept only on disk, not in repo)
 data/*.bak
 data/*.backup.json
+data/backups/*.json
+
+# Map embed PNGs (generated externally by climate map snapshot script)
+mapEmbed/*.png
 
 # OS
 .DS_Store

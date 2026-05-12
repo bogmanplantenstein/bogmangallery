@@ -1006,7 +1006,6 @@
     filterGenus:   'all',
     filterHabitat: 'all',
     filterCountry: 'all',
-    filterClimate: 'all',
     filterGroup:   'all',
     modalPhotos:   [],
     modalIndex:    0,
@@ -1076,8 +1075,7 @@
     const habitatMap = {};
     (raw.habitats || []).forEach(function (h) { if (h.id) habitatMap[h.id] = h.name; });
 
-    const climateMap = {};
-    (raw.climates || []).forEach(function (c) { if (c.id) climateMap[c.id] = c.name; });
+    // climates lookup removed — Köppen data now stored per-taxon as koppenZone/koppenLabel
 
     const groupCareDefaults = raw.groupCareDefaults || {};
 
@@ -1140,7 +1138,8 @@
 
       const habitatId   = t.habitat_id  || t.habitatId  || '';
       const habitatName = habitatMap[habitatId] || habitatId || '';
-      const climate     = t.climate || '';
+      const koppenZone  = t.koppenZone  || '';
+      const koppenLabel = t.koppenLabel || '';
 
       return {
         id:           t.id           || '',
@@ -1155,7 +1154,8 @@
         country:      t.country      || '',
         habitatId:    habitatId,
         habitatName:  habitatName,
-        climate:      climate,
+        koppenZone:   koppenZone,
+        koppenLabel:  koppenLabel,
         nativeRange:  t.native_range || t.nativeRange || '',
         nativeHabitat:t.native_habitat || t.nativeHabitat || '',
         care:         care,
@@ -1217,7 +1217,6 @@
       genera:    uniqueSorted(topLevelTaxa.map(function (t) { return t.genus; }).filter(Boolean)),
       habitats:  uniqueSorted(topLevelTaxa.filter(function (t) { return t.habitatId; }).map(function (t) { return t.habitatId; })),
       countries: uniqueSorted(sorted.filter(function (t) { return t.country; }).map(function (t) { return t.country; })),
-      climates:  uniqueSorted(sorted.filter(function (t) { return t.climate; }).map(function (t) { return t.climate; })),
       groups:    uniqueSorted(topLevelTaxa.filter(function (t) { return t.group; }).map(function (t) { return t.group; }))
     };
 
@@ -1226,7 +1225,6 @@
       taxaById:          taxaById,
       filterOpts:        filterOpts,
       habitats:          habitatMap,
-      climates:          climateMap,
       genusCoverPhotos:  genusCoverPhotos,
       groupCareDefaults: groupCareDefaults,
       siteContent:       raw.siteContent || {}
@@ -1414,7 +1412,7 @@
     if (STATE.filterGenus   !== 'all') filtered = filtered.filter(function (t) { return t.genus === STATE.filterGenus; });
     if (STATE.filterHabitat !== 'all') filtered = filtered.filter(function (t) { return t.habitatId === STATE.filterHabitat; });
     if (STATE.filterCountry !== 'all') filtered = filtered.filter(function (t) { return t.country === STATE.filterCountry; });
-    if (STATE.filterClimate !== 'all') filtered = filtered.filter(function (t) { return t.climate === STATE.filterClimate; });
+    // Climate filter removed — Köppen data used instead (see Map & Climate tab)
     if (STATE.filterGroup   !== 'all') filtered = filtered.filter(function (t) { return (t.group || '') === STATE.filterGroup; });
 
     root.innerHTML = renderShell(filtered);
@@ -1466,7 +1464,6 @@
     const genera    = opts.genera;
     const habitats  = opts.habitats;
     const countries = opts.countries;
-    const climates  = opts.climates;
     const groups    = opts.groups;
     const count     = filtered.length;
 
@@ -1495,18 +1492,12 @@
         countryOptions += '<option value="' + esc(c) + '"' + (STATE.filterCountry === c ? ' selected' : '') + '>' + esc(c) + '</option>';
       });
 
-      let climateOptions = '<option value="all">All Climates</option>';
-      climates.forEach(function (c) {
-        climateOptions += '<option value="' + esc(c) + '"' + (STATE.filterClimate === c ? ' selected' : '') + '>' + esc(c) + '</option>';
-      });
-
       filtersHtml = '<div class="bmg-filter-row">' +
         '<span class="bmg-filter-label">Filter</span>' +
         '<select class="bmg-filter-select" id="bmg-filter-genus">' + genusOptions + '</select>' +
         (groups.length ? '<select class="bmg-filter-select" id="bmg-filter-group">' + groupOptions + '</select>' : '') +
         '<select class="bmg-filter-select" id="bmg-filter-habitat">' + habitatOptions + '</select>' +
         '<select class="bmg-filter-select" id="bmg-filter-country">' + countryOptions + '</select>' +
-        '<select class="bmg-filter-select" id="bmg-filter-climate">' + climateOptions + '</select>' +
         '</div>';
     }
 
@@ -1922,11 +1913,13 @@
         '<div class="bmg-field-value">' + esc(t.nativeHabitat) + '</div>'
       : '';
     let habitatClimateHtml = '';
-    if (t.habitatName || t.climate) {
+    if (t.habitatName || t.koppenLabel || t.koppenZone) {
       let parts = [];
       if (t.habitatName) parts.push('<span>' + esc(capitalizeHabitat(t.habitatName)) + '</span>');
-      if (t.climate)     parts.push('<span>' + esc(capitalizeHabitat(t.climate)) + '</span>');
-      habitatClimateHtml = '<div class="bmg-field-label">Habitat Type &amp; Climate</div>' +
+      if (t.koppenLabel) parts.push('<span>' + esc(t.koppenLabel) +
+        (t.koppenZone ? ' <span style="opacity:0.55;font-size:0.85em;">(' + esc(t.koppenZone) + ')</span>' : '') + '</span>');
+      else if (t.koppenZone) parts.push('<span>' + esc(t.koppenZone) + '</span>');
+      habitatClimateHtml = '<div class="bmg-field-label">Habitat &amp; Climate</div>' +
         '<div class="bmg-field-value">' + parts.join(' \u00B7 ') + '</div>';
     }
     const groupHtml = t.group

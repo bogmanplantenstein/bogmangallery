@@ -10,13 +10,18 @@ const express  = require('express');
 const cors     = require('cors');
 const fs       = require('fs');
 const path     = require('path');
+const https    = require('https');
 const { execSync, exec } = require('child_process');
 
 const PORT          = process.env.PORT || 3001;
 const DATA_FILE     = path.join(__dirname, 'data', 'data.json');
+const BACKUP_DIR    = path.join(__dirname, 'data', 'backups');
 const GITHUB_REPO   = process.env.GITHUB_REPO || '';   // USER/repo
 const GITHUB_TOKEN  = process.env.GITHUB_TOKEN || '';  // Personal Access Token (repo scope)
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || '';
+
+// Ensure backup directory exists
+if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR, { recursive: true });
 
 const app = express();
 app.use(cors());
@@ -99,6 +104,109 @@ app.delete('/api/data/taxa/:id', (req, res) => {
     res.json({ ok: true });
   } catch (e) {
     res.status(500).json({ error: e.message });
+  }
+});
+
+// ── Backup ─────────────────────────────────────────────────────
+
+// POST /api/backup — create a timestamped local snapshot of data.json
+app.post('/api/backup', (req, res) => {
+  try {
+    const data = readData();
+    if (!data) return res.status(404).json({ error: 'data.json not found' });
+    const ts   = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    const file = path.join(BACKUP_DIR, `data_${ts}.json`);
+    fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+    // Keep only the 20 most recent backups to avoid unbounded growth
+    const backups = fs.readdirSync(BACKUP_DIR)
+      .filter(f => f.startsWith('data_') && f.endsWith('.json'))
+      .sort();
+    if (backups.length > 20) {
+      backups.slice(0, backups.length - 20).forEach(f => {
+        try { fs.unlinkSync(path.join(BACKUP_DIR, f)); } catch (_) {}
+      });
+    }
+    res.json({ ok: true, file: path.basename(file), ts });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// GET /api/backup/download — download current data.json as a file
+app.get('/api/backup/download', (req, res) => {
+  try {
+    const raw = fs.readFileSync(DATA_FILE, 'utf8');
+    const ts  = new Date().toISOString().slice(0, 10);
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="data_backup_${ts}.json"`);
+    res.send(raw);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// GET /api/backup/list — list available local snapshots
+app.get('/api/backup/list', (req, res) => {
+  try {
+    const files = fs.readdirSync(BACKUP_DIR)
+      .filter(f => f.startsWith('data_') && f.endsWith('.json'))
+      .sort().reverse()
+      .map(f => {
+        const stat = fs.statSync(path.join(BACKUP_DIR, f));
+        return { name: f, sizeKb: Math.round(stat.size / 1024), mtime: stat.mtime };
+      });
+    res.json({ backups: files });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ── Climate Data Proxy ──────────────────────────────────────────
+
+// Simple HTTPS GET helper (avoids CORS in the browser for external APIs)
+function httpsGet(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers: { 'User-Agent': 'BogmanGallery/2.0' } }, res => {
+      let body = '';
+      res.on('data', chunk => { body += chunk; });
+      res.on('end', () => {
+        try { resolve(JSON.parse(body)); }
+        catch (e) { reject(new Error('Invalid JSON from upstream: ' + body.slice(0, 100))); }
+      });
+    }).on('error', reject);
+  });
+}
+
+// GET /api/climate?lat=X&lng=Y
+// Returns Open-Meteo 30-year climate normals (1991–2020) for the given coordinates.
+// Monthly arrays: tempMean, tempMin, tempMax, precipMm (all 12 values, Jan–Dec)
+app.get('/api/climate', async (req, res) => {
+  const { lat, lng } = req.query;
+  if (!lat || !lng) return res.status(400).json({ error: 'lat and lng query params required' });
+  const flatLat = parseFloat(lat), flatLng = parseFloat(lng);
+  if (isNaN(flatLat) || isNaN(flatLng)) return res.status(400).json({ error: 'lat and lng must be numbers' });
+
+  try {
+    const url = `https://archive-api.open-meteo.com/v1/archive` +
+      `?latitude=${flatLat}&longitude=${flatLng}` +
+      `&start_date=1991-01-01&end_date=2020-12-31` +
+      `&monthly=temperature_2m_mean,temperature_2m_min,temperature_2m_max,precipitation_sum` +
+      `&timezone=UTC`;
+    const raw = await httpsGet(url);
+    if (raw.error) return res.status(502).json({ error: raw.reason || 'Open-Meteo error' });
+
+    const monthly = raw.monthly || {};
+    res.json({
+      ok: true,
+      source: 'open-meteo',
+      lat: flatLat, lng: flatLng,
+      tempMean:  monthly.temperature_2m_mean  || [],
+      tempMin:   monthly.temperature_2m_min   || [],
+      tempMax:   monthly.temperature_2m_max   || [],
+      precipMm:  monthly.precipitation_sum    || []
+    });
+  } catch (e) {
+    res.status(502).json({ error: 'Climate data fetch failed: ' + e.message });
   }
 });
 

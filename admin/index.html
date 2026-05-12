@@ -1064,6 +1064,9 @@
       }
     }
   </style>
+  <!-- Leaflet (minimap in Map & Climate tab) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WLnY=" crossorigin=""></script>
 </head>
 <body>
   <div id="app-root"></div>
@@ -1593,8 +1596,9 @@ function renderAddEdit(taxonId) {
     {id:'photos',     label:'2 · Photos'},
     {id:'provenance', label:'3 · Provenance'},
     {id:'care',       label:'4 · Care'},
-    {id:'links',      label:'5 · Links'},
-    {id:'review',     label:'6 · Review & Save'}
+    {id:'mapclimate', label:'5 · Map & Climate'},
+    {id:'links',      label:'6 · Links'},
+    {id:'review',     label:'7 · Review & Save'}
   ];
 
   const tabBar = '<div class="tab-bar">' +
@@ -1613,7 +1617,7 @@ function renderAddEdit(taxonId) {
     tabBar +
     '<form id="taxon-form" data-taxon-id="' + escHtml(t.id) + '" style="margin-top:20px;">' +
     renderTabIdentity(t) + renderTabPhotos(t) + renderTabProvenance(t) +
-    renderTabCare(t) + renderTabLinks(t) + renderTabReview(t) +
+    renderTabCare(t) + renderTabMapClimate(t) + renderTabLinks(t) + renderTabReview(t) +
     '</form>';
 }
 
@@ -1623,6 +1627,13 @@ function showTab(tabId) {
   const el = document.getElementById('tab-' + tabId);
   if (el) el.style.display = '';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+  // Initialise Leaflet minimap when Map & Climate tab is shown (Leaflet needs visible container)
+  if (tabId === 'mapclimate') {
+    const precision = document.getElementById('f-map-precision')?.value || 'exact';
+    if (precision !== 'country') setTimeout(initMinimap, 50);
+  }
+  // Destroy map instance when navigating away so it can be re-created fresh on next open
+  if (tabId !== 'mapclimate' && _mcMap) { _mcMap.remove(); _mcMap = null; _mcMarker = null; }
 }
 
 function renderTabIdentity(t) {
@@ -1713,34 +1724,47 @@ function renderTabPhotos(t) {
 
 function renderTabProvenance(t) {
   const hasAny = t.nativeRange || t.nativeHabitat || t.country;
-  const climateList = (APP_DATA.climates||[]).map(c => c.id+'='+c.name).join(', ');
   const habitatList = (APP_DATA.habitats||[]).map(h => h.id+'='+h.name).join(', ');
+  const conf = t.provenanceConfidence || '';
+  const warn = t.provenanceWarning   || '';
+  const confColor = conf === 'high' ? 'var(--green)' : conf === 'medium' ? 'var(--accent)' : conf === 'low' ? '#e05a5a' : 'var(--dimmer)';
+
+  let confBadge = '';
+  if (conf) {
+    confBadge = '<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:' + confColor + '22;color:' + confColor + ';border:1px solid ' + confColor + '44;text-transform:uppercase;letter-spacing:0.08em;">' +
+      conf + ' confidence</span>';
+  }
+  let warnBadge = '';
+  if (warn) {
+    warnBadge = '<div style="margin-top:8px;padding:8px 12px;background:#e05a5a18;border:1px solid #e05a5a44;border-radius:4px;font-size:11px;color:#e05a5a;">⚠ ' + escHtml(warn) + '</div>';
+  }
+
   return '<div class="tab-content" id="tab-provenance"'+(ACTIVE_TAB==='provenance'?'':' style="display:none"')+'>' +
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">' +
+    '<div style="display:flex;align-items:center;gap:8px;">' +
     '<span style="font-size:11px;color:var(--dimmer);">' + (hasAny ? 'Edit provenance data below' : 'No provenance data yet') + '</span>' +
+    confBadge +
+    '</div>' +
     '<button type="button" class="btn btn-accent btn-sm" id="ai-prov-btn"' +
       ' data-taxon-id="' + escHtml(t.id) + '"' +
-      ' data-climate-list="' + escHtml(climateList) + '"' +
       ' data-habitat-list="' + escHtml(habitatList) + '">' +
       '🤖 ' + (hasAny ? 'Re-fill with AI' : 'Fill with AI') +
     '</button>' +
     '</div>' +
+    warnBadge +
+    '<div style="' + (warnBadge ? 'margin-top:12px;' : '') + '">' +
     '<div class="form-row cols-2">' +
     '<div class="form-group"><label class="label">Country / Region</label>' +
     '<input type="text" id="f-country" value="'+escHtml(t.country||'')+'" placeholder="South Africa"></div>' +
-    '<div class="form-group"><label class="label">Climate</label><select id="f-climate">' +
-    '<option value="">— Select —</option>' +
-    (APP_DATA.climates||[]).map(c=>'<option value="'+c.id+'"'+(t.climate===c.id?' selected':'')+'>'+escHtml(c.name)+'</option>').join('') +
-    '</select></div></div>' +
     '<div class="form-group"><label class="label">Habitat Type</label><select id="f-habitat">' +
     '<option value="">— Select —</option>' +
     (APP_DATA.habitats||[]).map(h=>'<option value="'+h.id+'"'+(t.habitatId===h.id?' selected':'')+'>'+escHtml(h.name)+'</option>').join('') +
-    '</select></div>' +
+    '</select></div></div>' +
     '<div class="form-group"><label class="label">Native Range</label>' +
     '<textarea id="f-native-range" rows="2" placeholder="Scientific geographic range">'+escHtml(t.nativeRange||'')+'</textarea></div>' +
     '<div class="form-group"><label class="label">Native Habitat</label>' +
     '<textarea id="f-native-habitat" rows="4" placeholder="Habitat description paragraph">'+escHtml(t.nativeHabitat||'')+'</textarea></div>' +
-    '</div>';
+    '</div></div>';
 }
 
 function renderTabCare(t) {
@@ -1784,6 +1808,346 @@ function renderTabCare(t) {
     '<button class="btn btn-secondary btn-sm" id="fill-care-btn" type="button" style="flex-shrink:0;margin-top:2px;">Parse Care</button></div>' +
     '</div></div>';
 }
+
+// ─── MAP & CLIMATE TAB ────────────────────────────────────────────────────────
+
+const KOPPEN_LABELS = {
+  'Af':'Tropical Rainforest','Am':'Tropical Monsoon','Aw':'Tropical Savanna (dry winter)','As':'Tropical Savanna (dry summer)',
+  'BWh':'Hot Desert','BWk':'Cold Desert','BSh':'Hot Semi-Arid (Steppe)','BSk':'Cold Semi-Arid (Steppe)',
+  'Csa':'Hot-summer Mediterranean','Csb':'Warm-summer Mediterranean','Csc':'Cold-summer Mediterranean',
+  'Cwa':'Humid Subtropical (dry winter, hot summer)','Cwb':'Subtropical Highland (dry winter, warm summer)','Cwc':'Subtropical Highland (dry winter, cold summer)',
+  'Cfa':'Humid Subtropical','Cfb':'Oceanic','Cfc':'Subpolar Oceanic',
+  'Dsa':'Hot-summer Mediterranean Continental','Dsb':'Warm-summer Mediterranean Continental',
+  'Dsc':'Cold-summer Mediterranean Continental','Dsd':'Very Cold Mediterranean Continental',
+  'Dwa':'Monsoon-influenced Hot-summer Humid Continental','Dwb':'Monsoon-influenced Warm-summer Humid Continental',
+  'Dwc':'Monsoon-influenced Subarctic','Dwd':'Monsoon-influenced Extremely Cold Subarctic',
+  'Dfa':'Hot-summer Humid Continental','Dfb':'Warm-summer Humid Continental','Dfc':'Subarctic','Dfd':'Extremely Cold Subarctic',
+  'ET':'Tundra','EF':'Ice Cap','H':'Highland / Alpine'
+};
+
+// Country name → ISO 3166-1 alpha-2 code lookup
+const COUNTRY_CODES = {
+  'afghanistan':'AF','albania':'AL','algeria':'DZ','angola':'AO','argentina':'AR','australia':'AU',
+  'austria':'AT','bangladesh':'BD','belgium':'BE','belize':'BZ','benin':'BJ','bhutan':'BT',
+  'bolivia':'BO','botswana':'BW','brazil':'BR','brunei':'BN','bulgaria':'BG','burkina faso':'BF',
+  'burundi':'BI','cambodia':'KH','cameroon':'CM','canada':'CA','central african republic':'CF',
+  'chad':'TD','chile':'CL','china':'CN','colombia':'CO','comoros':'KM','congo':'CG',
+  'democratic republic of the congo':'CD','dr congo':'CD','costa rica':'CR','croatia':'HR',
+  'cuba':'CU','cyprus':'CY','czech republic':'CZ','denmark':'DK','ecuador':'EC','egypt':'EG',
+  'el salvador':'SV','equatorial guinea':'GQ','eritrea':'ER','ethiopia':'ET','fiji':'FJ',
+  'finland':'FI','france':'FR','french guiana':'GF','gabon':'GA','germany':'DE','ghana':'GH',
+  'greece':'GR','guatemala':'GT','guinea':'GN','guyana':'GY','haiti':'HT','honduras':'HN',
+  'hungary':'HU','india':'IN','indonesia':'ID','iran':'IR','iraq':'IQ','ireland':'IE',
+  'israel':'IL','italy':'IT','jamaica':'JM','japan':'JP','jordan':'JO','kenya':'KE',
+  'laos':'LA','lebanon':'LB','lesotho':'LS','liberia':'LR','libya':'LY','madagascar':'MG',
+  'malawi':'MW','malaysia':'MY','mali':'ML','mauritania':'MR','mauritius':'MU','mexico':'MX',
+  'mongolia':'MN','morocco':'MA','mozambique':'MZ','myanmar':'MM','namibia':'NA','nepal':'NP',
+  'netherlands':'NL','new caledonia':'NC','new zealand':'NZ','nicaragua':'NI','niger':'NE',
+  'nigeria':'NG','norway':'NO','oman':'OM','pakistan':'PK','panama':'PA','papua new guinea':'PG',
+  'paraguay':'PY','peru':'PE','philippines':'PH','poland':'PL','portugal':'PT','puerto rico':'PR',
+  'romania':'RO','russia':'RU','rwanda':'RW','saudi arabia':'SA','senegal':'SN',
+  'sierra leone':'SL','singapore':'SG','somalia':'SO','south africa':'ZA','south korea':'KR',
+  'south sudan':'SS','spain':'ES','sri lanka':'LK','sudan':'SD','suriname':'SR','swaziland':'SZ',
+  'eswatini':'SZ','sweden':'SE','switzerland':'CH','taiwan':'TW','tanzania':'TZ','thailand':'TH',
+  'togo':'TG','trinidad and tobago':'TT','tunisia':'TN','turkey':'TR','uganda':'UG',
+  'ukraine':'UA','united kingdom':'GB','uk':'GB','united states':'US','usa':'US',
+  'united states of america':'US','uruguay':'UY','venezuela':'VE','vietnam':'VN','zambia':'ZM',
+  'zimbabwe':'ZW'
+};
+
+function countryToCode(name) {
+  if (!name) return '';
+  const key = name.toLowerCase().trim().split(',')[0].trim(); // handle "Australia, Western Australia" etc.
+  return COUNTRY_CODES[key] || '';
+}
+
+let _mcMap = null; // Leaflet map instance (persists while tab is visible)
+let _mcMarker = null;
+
+function renderTabMapClimate(t) {
+  const mp  = t.mapPin || {};
+  const precision = mp.coordinatePrecision || 'exact';
+  const lat = mp.lat  != null ? mp.lat  : '';
+  const lng = mp.lng  != null ? mp.lng  : '';
+  const elev     = mp.elevationM  != null ? mp.elevationM  : '';
+  const region   = mp.regionCode  || '';
+  const country  = mp.countryCode || countryToCode(t.country) || '';
+  const included = mp.includedOnMap != null ? mp.includedOnMap
+                   : (t.entryType === 'species' || t.entryType === 'location');
+  const override = mp.override || false;
+
+  const koppenZone  = t.koppenZone  || '';
+  const koppenLabel = t.koppenLabel || (KOPPEN_LABELS[koppenZone] || '');
+  const elBand      = t.elevationBand || '';
+  const inatId      = t.inatTaxonId  || '';
+
+  const precOpts = [
+    {v:'exact',    l:'Exact Location'},
+    {v:'regional', l:'Regional (state/province)'},
+    {v:'country',  l:'Country Only'}
+  ].map(o => '<option value="'+o.v+'"'+(precision===o.v?' selected':'')+'>'+o.l+'</option>').join('');
+
+  const elBandOpts = [
+    {v:'', l:'— not set —'},
+    {v:'lowland',       l:'Lowland (0–500 m)'},
+    {v:'intermediate',  l:'Intermediate (500–1500 m)'},
+    {v:'highland',      l:'Highland (1500–2800 m)'},
+    {v:'ultra-highland',l:'Ultra-Highland (2800 m+)'}
+  ].map(o => '<option value="'+o.v+'"'+(elBand===o.v?' selected':'')+'>'+o.l+'</option>').join('');
+
+  const showLatLng = precision !== 'country';
+  const showRegion = precision === 'regional';
+  const latlngStyle = showLatLng ? '' : 'display:none';
+  const regionStyle = showRegion ? '' : 'display:none';
+
+  const koppenUnknown = koppenZone && !KOPPEN_LABELS[koppenZone];
+
+  return '<div class="tab-content" id="tab-mapclimate"'+(ACTIVE_TAB==='mapclimate'?'':' style="display:none"')+'>' +
+
+    // ── Map Pin section ──
+    '<div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">📍 Map Pin</div>' +
+
+    // Include on Map toggle
+    '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:14px;">' +
+    '<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">' +
+    '<input type="checkbox" id="f-map-included"'+(included?' checked':'')+' onchange="onMapIncludedChange(this)">Show on Climate Map</label>' +
+    (override ? '<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:var(--accent)22;color:var(--accent);border:1px solid var(--accent)44;">Manual override</span>' : '') +
+    '<input type="hidden" id="f-map-override" value="'+(override?'1':'0')+'">'+
+    '</div>' +
+
+    // Coordinate precision
+    '<div class="form-group"><label class="label">Coordinate Precision</label>' +
+    '<select id="f-map-precision" onchange="onPrecisionChange(this.value)">' + precOpts + '</select></div>' +
+
+    // Lat / Lng
+    '<div id="f-latlng-row" class="form-row cols-2" style="'+latlngStyle+'">' +
+    '<div class="form-group"><label class="label">Latitude</label>' +
+    '<input type="number" id="f-map-lat" value="'+escHtml(String(lat))+'" step="0.000001" min="-90" max="90" placeholder="-34.383" oninput="onLatLngInput()"></div>' +
+    '<div class="form-group"><label class="label">Longitude</label>' +
+    '<input type="number" id="f-map-lng" value="'+escHtml(String(lng))+'" step="0.000001" min="-180" max="180" placeholder="116.027" oninput="onLatLngInput()"></div>' +
+    '</div>' +
+
+    // Minimap
+    '<div id="f-minimap-wrap" style="'+latlngStyle+';margin-bottom:14px;">' +
+    '<div id="f-minimap" style="height:240px;border-radius:var(--r);border:1px solid var(--border);background:#111;"></div>' +
+    '<div style="font-size:10px;color:var(--dimmer);margin-top:4px;">Click map to place pin · Drag marker to adjust</div>' +
+    '</div>' +
+
+    // Elevation
+    '<div class="form-group"><label class="label">Elevation (m)</label>' +
+    '<input type="number" id="f-map-elev" value="'+escHtml(String(elev))+'" placeholder="meters above sea level"></div>' +
+
+    // Region code (shown only for regional precision)
+    '<div id="f-region-row" class="form-group" style="'+regionStyle+'">' +
+    '<label class="label">Region Code <span style="font-weight:300;opacity:0.6;">(ISO 3166-2)</span></label>' +
+    '<input type="text" id="f-map-region" value="'+escHtml(region)+'" placeholder="e.g. AU-WA, US-NC">' +
+    '<div style="font-size:10px;color:var(--dimmer);margin-top:3px;">State or province code — find at iso.org/obp/ui/#search</div>' +
+    '</div>' +
+
+    // Country code (always shown)
+    '<div class="form-group"><label class="label">Country Code <span style="font-weight:300;opacity:0.6;">(ISO 3166-1 alpha-2)</span></label>' +
+    '<input type="text" id="f-map-country" value="'+escHtml(country)+'" placeholder="e.g. AU, US, BR" maxlength="2" style="text-transform:uppercase"></div>' +
+
+    // Fetch climate data button
+    '<button type="button" class="btn btn-secondary btn-sm" id="fetch-climate-btn" onclick="doFetchClimateData()" style="margin-bottom:20px;">' +
+    '🌡 Fetch Climate Data from Coordinates</button>' +
+
+    // ── Köppen section ──
+    '<div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;padding-top:8px;border-top:1px solid var(--border);">🌍 Köppen Climate</div>' +
+
+    '<div class="form-row cols-2">' +
+    '<div class="form-group"><label class="label">Köppen Zone</label>' +
+    '<input type="text" id="f-koppen-zone" value="'+escHtml(koppenZone)+'" placeholder="e.g. Csb, Af, BWh" maxlength="4" style="text-transform:uppercase" oninput="onKoppenInput(this.value)">' +
+    (koppenUnknown ? '<div style="font-size:10px;color:#e05a5a;margin-top:3px;">Unknown zone code</div>' : '') +
+    '</div>' +
+    '<div class="form-group"><label class="label">Köppen Label</label>' +
+    '<div id="f-koppen-label-display" style="padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);font-size:13px;min-height:36px;color:'+(koppenLabel?'var(--fg)':'var(--dimmer)')+';">' +
+    escHtml(koppenLabel || 'Auto-populated from zone code') +
+    '</div>' +
+    '<input type="hidden" id="f-koppen-label" value="'+escHtml(koppenLabel)+'"></div>' +
+    '</div>' +
+
+    '<div class="form-group"><label class="label">Elevation Band</label>' +
+    '<select id="f-elev-band">' + elBandOpts + '</select></div>' +
+
+    // Climate normals (read-only display, populated by Fetch button)
+    '<div id="f-climate-normals-display" style="'+(t.climateNormals?'':'display:none')+';margin-bottom:14px;">' +
+    renderClimateNormalsDisplay(t.climateNormals) + '</div>' +
+    '<input type="hidden" id="f-climate-normals" value="'+escHtml(t.climateNormals ? JSON.stringify(t.climateNormals) : '')+'">'+
+
+    // ── iNaturalist section ──
+    '<div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;padding-top:8px;border-top:1px solid var(--border);">🔬 iNaturalist</div>' +
+
+    '<div class="form-group"><label class="label">iNaturalist Taxon ID</label>' +
+    '<input type="number" id="f-inat-id" value="'+escHtml(String(inatId||''))+'" placeholder="e.g. 62562">' +
+    '<div style="font-size:10px;color:var(--dimmer);margin-top:3px;">Find at inaturalist.org/taxa/<strong>62562</strong>-Taxon-Name</div>' +
+    '</div>' +
+
+    '</div>';
+}
+
+function renderClimateNormalsDisplay(cn) {
+  if (!cn) return '';
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const rows = months.map((m, i) => {
+    const tMean = cn.tempMean  && cn.tempMean[i]  != null ? cn.tempMean[i].toFixed(1)  : '—';
+    const tMin  = cn.tempMin   && cn.tempMin[i]   != null ? cn.tempMin[i].toFixed(1)   : '—';
+    const tMax  = cn.tempMax   && cn.tempMax[i]   != null ? cn.tempMax[i].toFixed(1)   : '—';
+    const prec  = cn.precipMm  && cn.precipMm[i]  != null ? cn.precipMm[i].toFixed(0)  : '—';
+    return '<tr><td style="padding:2px 8px;color:var(--dimmer);">'+m+'</td>' +
+      '<td style="padding:2px 8px;">'+tMean+'°C</td>' +
+      '<td style="padding:2px 8px;color:var(--dimmer);font-size:11px;">'+tMin+' / '+tMax+'</td>' +
+      '<td style="padding:2px 8px;">'+prec+' mm</td></tr>';
+  }).join('');
+  const fetched = cn.fetchedAt ? ' · fetched ' + cn.fetchedAt.slice(0,10) : '';
+  return '<div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--dimmer);margin-bottom:6px;">Climate Normals 1991–2020' + fetched + '</div>' +
+    '<div style="overflow-x:auto;"><table style="font-size:12px;border-collapse:collapse;width:100%;">' +
+    '<thead><tr>' +
+    '<th style="padding:2px 8px;text-align:left;color:var(--dimmer);font-weight:400;">Month</th>' +
+    '<th style="padding:2px 8px;text-align:left;color:var(--dimmer);font-weight:400;">Mean</th>' +
+    '<th style="padding:2px 8px;text-align:left;color:var(--dimmer);font-weight:400;">Min / Max</th>' +
+    '<th style="padding:2px 8px;text-align:left;color:var(--dimmer);font-weight:400;">Precip</th>' +
+    '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+}
+
+// ── Map & Climate interaction handlers ────────────────────────────────────────
+
+function onMapIncludedChange(checkbox) {
+  document.getElementById('f-map-override').value = '1';
+  const badge = checkbox.closest('div').querySelector('span[style*="accent"]');
+  if (!badge) {
+    const span = document.createElement('span');
+    span.style.cssText = 'font-size:10px;padding:2px 7px;border-radius:10px;background:var(--accent)22;color:var(--accent);border:1px solid var(--accent)44;';
+    span.textContent = 'Manual override';
+    checkbox.closest('label').after(span);
+  }
+}
+
+function onPrecisionChange(val) {
+  const latlngRow   = document.getElementById('f-latlng-row');
+  const minimapWrap = document.getElementById('f-minimap-wrap');
+  const regionRow   = document.getElementById('f-region-row');
+  const showLL = val !== 'country';
+  const showReg = val === 'regional';
+  if (latlngRow)   latlngRow.style.display   = showLL  ? '' : 'none';
+  if (minimapWrap) minimapWrap.style.display = showLL  ? '' : 'none';
+  if (regionRow)   regionRow.style.display   = showReg ? '' : 'none';
+  if (showLL) initMinimap();
+}
+
+function onLatLngInput() {
+  const lat = parseFloat(document.getElementById('f-map-lat')?.value);
+  const lng = parseFloat(document.getElementById('f-map-lng')?.value);
+  if (isNaN(lat) || isNaN(lng)) return;
+  if (_mcMap && _mcMarker) {
+    _mcMarker.setLatLng([lat, lng]);
+    _mcMap.setView([lat, lng], _mcMap.getZoom() < 4 ? 7 : _mcMap.getZoom());
+  }
+}
+
+function onKoppenInput(val) {
+  const code  = val.trim().toUpperCase();
+  const label = KOPPEN_LABELS[code] || '';
+  const disp  = document.getElementById('f-koppen-label-display');
+  const hidden= document.getElementById('f-koppen-label');
+  if (disp) {
+    disp.textContent = label || (code ? '⚠ Unknown zone code' : 'Auto-populated from zone code');
+    disp.style.color = label ? 'var(--fg)' : code ? '#e05a5a' : 'var(--dimmer)';
+  }
+  if (hidden) hidden.value = label;
+  // Sync the input to uppercase
+  const inp = document.getElementById('f-koppen-zone');
+  if (inp && inp.value !== code) inp.value = code;
+}
+
+function initMinimap() {
+  if (!window.L) return; // Leaflet not loaded yet
+  const container = document.getElementById('f-minimap');
+  if (!container) return;
+
+  const latVal = parseFloat(document.getElementById('f-map-lat')?.value);
+  const lngVal = parseFloat(document.getElementById('f-map-lng')?.value);
+  const hasCoords = !isNaN(latVal) && !isNaN(lngVal);
+  const center = hasCoords ? [latVal, lngVal] : [20, 0];
+  const zoom   = hasCoords ? 7 : 2;
+
+  if (_mcMap) {
+    // Map already exists — just refresh size and recenter
+    _mcMap.invalidateSize();
+    if (hasCoords) _mcMap.setView(center, zoom);
+    return;
+  }
+
+  _mcMap = L.map('f-minimap', { center, zoom });
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '©OpenStreetMap ©CartoDB',
+    subdomains: 'abcd', maxZoom: 19
+  }).addTo(_mcMap);
+
+  if (hasCoords) {
+    _mcMarker = L.marker(center, { draggable: true }).addTo(_mcMap);
+    _mcMarker.on('dragend', function() {
+      const pos = _mcMarker.getLatLng();
+      const latInp = document.getElementById('f-map-lat');
+      const lngInp = document.getElementById('f-map-lng');
+      if (latInp) latInp.value = pos.lat.toFixed(6);
+      if (lngInp) lngInp.value = pos.lng.toFixed(6);
+    });
+  }
+
+  _mcMap.on('click', function(e) {
+    const { lat, lng } = e.latlng;
+    const latInp = document.getElementById('f-map-lat');
+    const lngInp = document.getElementById('f-map-lng');
+    if (latInp) latInp.value = lat.toFixed(6);
+    if (lngInp) lngInp.value = lng.toFixed(6);
+    if (_mcMarker) {
+      _mcMarker.setLatLng([lat, lng]);
+    } else {
+      _mcMarker = L.marker([lat, lng], { draggable: true }).addTo(_mcMap);
+      _mcMarker.on('dragend', function() {
+        const pos = _mcMarker.getLatLng();
+        if (latInp) latInp.value = pos.lat.toFixed(6);
+        if (lngInp) lngInp.value = pos.lng.toFixed(6);
+      });
+    }
+  });
+}
+
+async function doFetchClimateData() {
+  const lat = parseFloat(document.getElementById('f-map-lat')?.value);
+  const lng = parseFloat(document.getElementById('f-map-lng')?.value);
+  if (isNaN(lat) || isNaN(lng)) { showToast('Enter lat/lng coordinates first', 'error'); return; }
+
+  const btn = document.getElementById('fetch-climate-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '🌡 Fetching…'; }
+  try {
+    const resp = await fetch(`/api/climate?lat=${lat}&lng=${lng}`);
+    const d = await resp.json();
+    if (!d.ok) { showToast('Climate fetch failed: ' + (d.error || 'unknown'), 'error'); return; }
+
+    const cn = {
+      source: 'open-meteo', fetchedAt: new Date().toISOString().slice(0,10),
+      lat, lng,
+      tempMean:  d.tempMean,
+      tempMin:   d.tempMin,
+      tempMax:   d.tempMax,
+      precipMm:  d.precipMm
+    };
+
+    const hidden = document.getElementById('f-climate-normals');
+    if (hidden) hidden.value = JSON.stringify(cn);
+
+    const display = document.getElementById('f-climate-normals-display');
+    if (display) { display.innerHTML = renderClimateNormalsDisplay(cn); display.style.display = ''; }
+
+    showToast('Climate normals fetched — review then Save', 'success', 5000);
+  } catch(e) { showToast('Climate fetch error: ' + e.message, 'error'); }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '🌡 Fetch Climate Data from Coordinates'; } }
+}
+
+// Initialise minimap when Map & Climate tab is shown
+const _origShowTab = typeof showTab === 'function' ? showTab : null;
 
 function renderTabLinks(t) {
   const shopLinks = t.shopLinks || [];
@@ -1845,6 +2209,14 @@ function renderTabReview(t) {
 function renderPublish() {
   return '<h1 class="page-title">Publish</h1>' +
     '<div class="page-sub">Commit data.json to GitHub — gallery updates within seconds</div>' +
+    '<div class="card" style="margin-bottom:16px;">' +
+    '<div class="card-header"><span class="card-title">Backup</span></div>' +
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
+    '<button class="btn btn-secondary btn-sm" id="backup-download-btn" onclick="doBackupDownload()">⬇ Download Backup</button>' +
+    '<button class="btn btn-secondary btn-sm" id="backup-snapshot-btn" onclick="doBackupSnapshot()">📸 Save Local Snapshot</button>' +
+    '</div>' +
+    '<div id="backup-result" style="margin-top:8px;font-size:11px;color:var(--dimmer);"></div>' +
+    '</div>' +
     '<div class="push-panel">' +
     '<div class="push-panel-header">Git Status</div>' +
     '<div class="push-panel-body">' +
@@ -1861,6 +2233,27 @@ function renderPublish() {
     '<div class="card"><div class="card-header"><span class="card-title">Recent Publishes</span></div>' +
     '<div id="publish-history"><div style="color:var(--dimmer);font-size:12px;">Loading history…</div></div>' +
     '</div>';
+}
+
+function doBackupDownload() {
+  window.location.href = '/api/backup/download';
+  const el = document.getElementById('backup-result');
+  if (el) el.textContent = 'Download started — check your Downloads folder.';
+}
+
+async function doBackupSnapshot() {
+  const btn = document.getElementById('backup-snapshot-btn');
+  if (btn) btn.disabled = true;
+  try {
+    const resp = await fetch('/api/backup', { method: 'POST' });
+    const d = await resp.json();
+    const el = document.getElementById('backup-result');
+    if (d.ok && el) el.textContent = '✓ Snapshot saved: ' + d.file;
+    else if (el) el.textContent = '✗ ' + (d.error || 'snapshot failed');
+  } catch(e) {
+    const el = document.getElementById('backup-result');
+    if (el) el.textContent = '✗ ' + e.message;
+  } finally { if (btn) btn.disabled = false; }
 }
 
 function loadGitStatus() {
@@ -2592,32 +2985,99 @@ function renderDriveImport() {
 }
 
 function renderDrivePreview(selCount) {
-  const matchColors = { exact: 'var(--dimmer)', similar: 'var(--accent)', new: 'var(--green)' };
-  const matchLabels = { exact: 'Exists', similar: '⚠ Similar', new: 'New' };
+  const matchColors = {
+    exact:     'var(--dimmer)',
+    matched:   'var(--blue)',
+    ambiguous: '#e8a030',
+    similar:   'var(--accent)',
+    new:       'var(--green)'
+  };
+  const matchLabels = {
+    exact:     'Exists',
+    matched:   '✓ Matched',
+    ambiguous: '⚠ Ambiguous',
+    similar:   '⚠ Similar',
+    new:       'New'
+  };
+
+  const rows = DRIVE_PREVIEW.map(t => {
+    const checked  = DRIVE_SELECTED.has(t.id);
+    const matchClr = matchColors[t.driveMatch] || 'var(--green)';
+    const matchLbl = matchLabels[t.driveMatch] || 'New';
+    const indent   = t.parentId ? 'margin-left:22px;' : '';
+    const rowStyle = 'display:flex;flex-direction:column;gap:5px;padding:8px 10px;margin-bottom:3px;' +
+      'border-radius:var(--r);border:1px solid ' + (checked ? 'rgba(200,169,110,0.4)' : 'var(--border)') + ';' +
+      'background:' + (checked ? 'var(--accent-bg)' : 'transparent') + ';' +
+      'transition:background 0.1s,border-color 0.1s;' + indent;
+
+    // Top row: checkbox + badge + name + photo info
+    let photoInfo = '';
+    if (t.driveMatch === 'new') {
+      photoInfo = t.photos.length
+        ? '<span style="font-size:10px;color:var(--green);flex-shrink:0;">' + t.photos.length + ' 📷 new</span>'
+        : '';
+    } else if (t.driveMatch === 'matched' || t.driveMatch === 'exact') {
+      photoInfo = t.driveNewPhotoCount > 0
+        ? '<span style="font-size:10px;color:var(--green);flex-shrink:0;" data-drive-new-count="' + escHtml(t.id) + '">+' + t.driveNewPhotoCount + ' new 📷</span>'
+        : '<span style="font-size:10px;color:var(--dimmer);flex-shrink:0;" data-drive-new-count="' + escHtml(t.id) + '">✓ up to date</span>';
+    } else if (t.driveMatch === 'ambiguous') {
+      photoInfo = '<span style="font-size:10px;color:#e8a030;flex-shrink:0;" data-drive-new-count="' + escHtml(t.id) + '">' +
+        (t.driveNewPhotoCount > 0 ? '+' + t.driveNewPhotoCount + ' new 📷' : '0 new 📷') + '</span>';
+    } else {
+      photoInfo = t.photos.length
+        ? '<span style="font-size:10px;color:var(--accent);flex-shrink:0;">' + t.photos.length + ' 📷</span>'
+        : '';
+    }
+
+    const topRow =
+      '<div style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;" class="drive-row-top" data-drive-id="' + escHtml(t.id) + '">' +
+      '<div class="mass-sel-indicator" style="flex-shrink:0;' + (checked ? 'border-color:var(--accent);background:var(--accent);color:var(--bg);' : '') + '">' + (checked ? '✓' : '') + '</div>' +
+      '<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(0,0,0,0.3);color:' + matchClr + ';flex-shrink:0;">' + matchLbl + '</span>' +
+      '<span style="font-style:italic;font-family:var(--font-d);font-size:13px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escHtml(t.displayName) + '</span>' +
+      (t.group ? '<span class="pill" style="flex-shrink:0;">' + escHtml(t.group) + '</span>' : '') +
+      photoInfo +
+      '</div>';
+
+    // Detail row: shows matched name or ambiguous dropdown
+    let detailRow = '';
+    if (t.driveMatch === 'matched') {
+      detailRow = '<div style="display:flex;align-items:center;gap:8px;padding-left:34px;">' +
+        '<span style="font-size:10px;color:var(--dimmer);">→</span>' +
+        '<span style="font-size:11px;font-style:italic;font-family:var(--font-d);color:var(--blue);">' + escHtml(t.driveMatchName) + '</span>' +
+        '</div>';
+    } else if (t.driveMatch === 'similar') {
+      detailRow = '<div style="display:flex;align-items:center;gap:8px;padding-left:34px;">' +
+        '<span style="font-size:10px;color:var(--dimmer);">≈</span>' +
+        '<span style="font-size:11px;font-style:italic;font-family:var(--font-d);color:var(--accent);">' + escHtml(t.driveMatchName) + '</span>' +
+        '</div>';
+    } else if (t.driveMatch === 'ambiguous') {
+      // Dropdown to resolve ambiguity — changing it updates matchedId + photo count
+      const opts = (t.driveAmbiguous || []).map(a =>
+        '<option value="' + escHtml(a.id) + '"' + (a.id === t.driveMatchId ? ' selected' : '') + '>' +
+        escHtml(a.displayName) + ' (+' + a.newPhotoCount + ' photos)</option>'
+      ).join('');
+      detailRow = '<div style="display:flex;align-items:center;gap:8px;padding-left:34px;" onclick="event.stopPropagation()">' +
+        '<span style="font-size:10px;color:var(--dimmer);flex-shrink:0;">Merge into:</span>' +
+        '<select data-drive-amb-id="' + escHtml(t.id) + '" style="flex:1;font-size:11px;padding:3px 6px;">' +
+        opts +
+        '</select>' +
+        '</div>';
+    }
+
+    return '<div class="drive-import-row' + (checked ? ' drive-row-checked' : '') + '" style="' + rowStyle + '">' +
+      topRow + detailRow + '</div>';
+  }).join('');
+
   return '<div class="card">' +
     '<div class="card-header"><span class="card-title">Preview</span>' +
     '<span style="font-size:11px;color:var(--dimmer);">' + DRIVE_PREVIEW.length + ' folders scanned</span></div>' +
     '<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">' +
     '<span style="font-size:11px;color:var(--accent);" id="drive-sel-count">' + selCount + ' selected</span>' +
     '<button class="btn btn-secondary btn-sm" id="drive-sel-all-btn">Select All</button>' +
-    '<button class="btn btn-secondary btn-sm" id="drive-sel-new-btn">Select New Only</button>' +
+    '<button class="btn btn-secondary btn-sm" id="drive-sel-new-btn">New Only</button>' +
     '<button class="btn btn-secondary btn-sm" id="drive-sel-none-btn">Deselect All</button>' +
     '</div>' +
-    '<div style="max-height:480px;overflow-y:auto;">' +
-    DRIVE_PREVIEW.map(t => {
-      const checked  = DRIVE_SELECTED.has(t.id);
-      const matchClr = matchColors[t.driveMatch] || 'var(--green)';
-      const matchLbl = matchLabels[t.driveMatch] || 'New';
-      const indent   = t.parentId ? 'margin-left:22px;' : '';
-      return '<div class="drive-import-row' + (checked ? ' drive-row-checked' : '') + '" data-drive-id="' + escHtml(t.id) + '" style="display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:3px;border-radius:var(--r);border:1px solid ' + (checked ? 'rgba(200,169,110,0.4)' : 'var(--border)') + ';background:' + (checked ? 'var(--accent-bg)' : 'transparent') + ';cursor:pointer;user-select:none;transition:background 0.1s,border-color 0.1s;' + indent + '">' +
-        '<div class="mass-sel-indicator" style="' + (checked ? 'border-color:var(--accent);background:var(--accent);color:var(--bg);' : '') + '">' + (checked ? '✓' : '') + '</div>' +
-        '<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(0,0,0,0.3);color:' + matchClr + ';flex-shrink:0;">' + matchLbl + '</span>' +
-        '<span style="font-style:italic;font-family:var(--font-d);font-size:13px;flex:1;">' + escHtml(t.displayName) + '</span>' +
-        (t.group ? '<span class="pill" style="flex-shrink:0;">' + escHtml(t.group) + '</span>' : '') +
-        (t.photos.length ? '<span style="font-size:10px;color:var(--accent);flex-shrink:0;">' + t.photos.length + ' 📷</span>' : '') +
-        (t.driveMatchName ? '<span style="font-size:10px;color:var(--dimmer);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Similar: ' + escHtml(t.driveMatchName) + '">≈ ' + escHtml(t.driveMatchName) + '</span>' : '') +
-        '</div>';
-    }).join('') + '</div>' +
+    '<div style="max-height:520px;overflow-y:auto;">' + rows + '</div>' +
     '<div style="display:flex;gap:10px;margin-top:14px;align-items:center;">' +
     '<button class="btn btn-primary" id="import-drive-btn">Import ' + selCount + ' Selected</button>' +
     '<button class="btn btn-secondary btn-sm" id="clear-drive-btn">Clear</button>' +
@@ -2645,11 +3105,13 @@ function parseDriveTree(tree) {
       const subFolders = nodeKids.filter(c => c.type === 'folder');
       const [sp, sub, entryType] = parseSpeciesFromTitle(spNode.name, genus);
       const displayName = buildAutoDisplayName(genus, sp, sub, entryType) || (genus + ' ' + spNode.name).trim();
-      const match = detectDriveMatch(displayName);
+      const match = detectDriveMatch(displayName, genus, photos);
       const parentItem = {
         id: generateId(), genus, species: sp, subspecies: sub,
         entryType: entryType || 'species', displayName, commonName: '', group, photos,
         driveFolderId: spNode.id, driveMatch: match.type, driveMatchName: match.name,
+        driveMatchId: match.matchedId, driveNewPhotoCount: match.newPhotoCount,
+        driveAmbiguous: match.ambiguousMatches,
         care: { override: false }, shopLinks: [], externalLinks: [], notes: '',
         parentId: '', isHybrid: spNode.name.includes(' x ') || spNode.name.includes(' × '),
         isGrex: false, flagged: match.type === 'similar',
@@ -2660,13 +3122,15 @@ function parseDriveTree(tree) {
       subFolders.forEach(subNode => {
         const subPhotos  = (subNode.children || []).filter(c => c.type === 'file').map(c => 'drive:' + c.id);
         const subDisplay = displayName + ' ' + subNode.name;
-        const subMatch   = detectDriveMatch(subDisplay);
+        const subMatch   = detectDriveMatch(subDisplay, genus, subPhotos);
         const [sp3,,type3] = parseSpeciesFromTitle(subNode.name, '');
         items.push({
           id: generateId(), genus, species: sp, subspecies: sp3 || subNode.name,
           entryType: type3 || 'cultivar_unreg', displayName: subDisplay, commonName: '', group,
           photos: subPhotos, driveFolderId: subNode.id,
           driveMatch: subMatch.type, driveMatchName: subMatch.name,
+          driveMatchId: subMatch.matchedId, driveNewPhotoCount: subMatch.newPhotoCount,
+          driveAmbiguous: subMatch.ambiguousMatches,
           care: { override: false }, shopLinks: [], externalLinks: [], notes: '',
           parentId: parentItem.id, isHybrid: false, isGrex: false, flagged: subMatch.type === 'similar',
           country: '', habitatId: '', climate: '', nativeRange: '', nativeHabitat: ''
@@ -2677,13 +3141,71 @@ function parseDriveTree(tree) {
   return items;
 }
 
-function detectDriveMatch(displayName) {
-  const exact = APP_DATA.taxa.find(t => t.displayName === displayName);
-  if (exact) return { type: 'exact', name: exact.displayName };
-  const norm = normalizeForMatch(displayName);
-  const similar = APP_DATA.taxa.find(t => matchScore(normalizeForMatch(t.displayName), norm) > 0.75);
-  if (similar) return { type: 'similar', name: similar.displayName };
-  return { type: 'new', name: '' };
+function detectDriveMatch(driveDisplayName, genus, drivePhotos) {
+  drivePhotos = drivePhotos || [];
+
+  function countNewPhotos(taxon) {
+    if (!taxon) return drivePhotos.length;
+    const existing = new Set(taxon.photos || []);
+    return drivePhotos.filter(p => !existing.has(p)).length;
+  }
+
+  // Tier 1: exact display name match
+  const exact = APP_DATA.taxa.find(t => t.displayName === driveDisplayName);
+  if (exact) {
+    return { type: 'exact', name: exact.displayName, matchedId: exact.id,
+             newPhotoCount: countNewPhotos(exact), ambiguousMatches: [] };
+  }
+
+  // Tier 2: word-based match within same genus
+  // Strategy: extract all meaningful words from the Drive folder name that are NOT
+  // the genus name itself. Then find taxa of the same genus where ALL those words
+  // appear in the taxon's normalized display name.
+  // This handles "Dionaea Akai Ryu" → "Dionaea muscipula 'Akai Ryu'" because
+  // unique words ["akai","ryu"] both appear in the normalized DB name.
+  // It also uses species epithets to resolve ambiguity: "Drosera capensis Albino"
+  // won't match "Drosera aliciae 'Albino'" because "capensis" != "aliciae".
+  const norm      = normalizeForMatch(driveDisplayName);
+  const genusLow  = (genus || '').toLowerCase();
+  const allWords  = norm.split(' ').filter(w => w.length > 2);
+  const uniqWords = allWords.filter(w => w !== genusLow);
+
+  if (uniqWords.length > 0) {
+    const sameGenus = APP_DATA.taxa.filter(t =>
+      (t.genus || '').toLowerCase() === genusLow);
+    const wordMatches = sameGenus.filter(t => {
+      const tWords = normalizeForMatch(t.displayName).split(' ');
+      return uniqWords.every(w => tWords.includes(w));
+    });
+
+    if (wordMatches.length === 1) {
+      const m = wordMatches[0];
+      return { type: 'matched', name: m.displayName, matchedId: m.id,
+               newPhotoCount: countNewPhotos(m), ambiguousMatches: [] };
+    }
+
+    if (wordMatches.length > 1) {
+      const amb = wordMatches.map(t => ({
+        id: t.id, displayName: t.displayName, newPhotoCount: countNewPhotos(t)
+      }));
+      // Default to first candidate; user picks via dropdown
+      return { type: 'ambiguous', name: amb[0].displayName, matchedId: amb[0].id,
+               newPhotoCount: amb[0].newPhotoCount, ambiguousMatches: amb };
+    }
+  }
+
+  // Tier 3: fuzzy cross-genus fallback (lowered threshold from 0.75 to 0.65)
+  let bestScore = 0, bestTaxon = null;
+  APP_DATA.taxa.forEach(t => {
+    const s = matchScore(normalizeForMatch(t.displayName), norm);
+    if (s > bestScore) { bestScore = s; bestTaxon = t; }
+  });
+  if (bestScore >= 0.65 && bestTaxon) {
+    return { type: 'similar', name: bestTaxon.displayName, matchedId: bestTaxon.id,
+             newPhotoCount: countNewPhotos(bestTaxon), ambiguousMatches: [] };
+  }
+
+  return { type: 'new', name: '', matchedId: null, newPhotoCount: drivePhotos.length, ambiguousMatches: [] };
 }
 
 // ═══ DRIVE IMPORT ACTIONS ════════════════════════════════════
@@ -2698,11 +3220,26 @@ async function doDriveScan() {
     const data = await apiPost('/api/drive/scan', { folderId });
     DRIVE_PREVIEW  = parseDriveTree(data.tree || []);
     // Auto-select new and similar (flag similar for review)
-    DRIVE_SELECTED = new Set(DRIVE_PREVIEW.filter(t => t.driveMatch !== 'exact').map(t => t.id));
+    // Auto-select: new, similar, ambiguous always; matched/exact only when they have new photos
+    DRIVE_SELECTED = new Set(DRIVE_PREVIEW.filter(t => {
+      if (t.driveMatch === 'new' || t.driveMatch === 'similar' || t.driveMatch === 'ambiguous') return true;
+      if (t.driveMatch === 'matched' || t.driveMatch === 'exact') return t.driveNewPhotoCount > 0;
+      return false;
+    }).map(t => t.id));
     render();
     const newCount  = DRIVE_PREVIEW.filter(t => t.driveMatch === 'new').length;
+    const matCount  = DRIVE_PREVIEW.filter(t => t.driveMatch === 'matched').length;
+    const ambCount  = DRIVE_PREVIEW.filter(t => t.driveMatch === 'ambiguous').length;
     const simCount  = DRIVE_PREVIEW.filter(t => t.driveMatch === 'similar').length;
-    showToast('Found ' + DRIVE_PREVIEW.length + ' folders — ' + newCount + ' new, ' + simCount + ' similar (flagged)', 'success');
+    const uptodate  = DRIVE_PREVIEW.filter(t => (t.driveMatch === 'exact' || t.driveMatch === 'matched') && t.driveNewPhotoCount === 0).length;
+    showToast(
+      'Found ' + DRIVE_PREVIEW.length + ' folders — ' +
+      newCount + ' new, ' + matCount + ' matched, ' +
+      (ambCount ? ambCount + ' ambiguous, ' : '') +
+      (simCount ? simCount + ' similar, ' : '') +
+      uptodate + ' up to date',
+      'success'
+    );
   } catch(e) {
     // Show error persistently on the page, not just as a toast
     const root = document.getElementById('drive-preview-root');
@@ -2724,9 +3261,14 @@ function doImportDrive() {
   const toImport = DRIVE_PREVIEW.filter(t => DRIVE_SELECTED.has(t.id));
   if (!toImport.length) { showToast('No items selected', 'error'); return; }
   toImport.forEach(t => {
-    const existing = APP_DATA.taxa.findIndex(x => x.displayName === t.displayName);
+    // Use driveMatchId for matched/ambiguous/similar so the merge lands on the right
+    // taxon even when the Drive folder name differs from the DB display name.
+    const existing = t.driveMatchId
+      ? APP_DATA.taxa.findIndex(x => x.id === t.driveMatchId)
+      : APP_DATA.taxa.findIndex(x => x.displayName === t.displayName);
     const clean = { ...t };
     delete clean.driveMatch; delete clean.driveMatchName; delete clean.driveFolderId;
+    delete clean.driveMatchId; delete clean.driveNewPhotoCount; delete clean.driveAmbiguous;
     if (existing >= 0) {
       // Merge: add Drive photos to existing taxon without overwriting care/shop data
       const ex = APP_DATA.taxa[existing];
@@ -2790,10 +3332,44 @@ function collectFormTaxon() {
 
   // Provenance
   const country       = document.getElementById('f-country')?.value?.trim()       || '';
-  const climate       = document.getElementById('f-climate')?.value               || '';
   const habitatId     = document.getElementById('f-habitat')?.value               || '';
   const nativeRange   = document.getElementById('f-native-range')?.value?.trim()  || '';
   const nativeHabitat = document.getElementById('f-native-habitat')?.value?.trim()|| '';
+  // Preserve AI confidence metadata if present (set by AI fill, not a form input)
+  const provenanceConfidence = existing.provenanceConfidence || '';
+  const provenanceWarning    = existing.provenanceWarning    || '';
+
+  // Map & Climate
+  const mapIncluded   = document.getElementById('f-map-included')?.checked ?? null;
+  const mapOverride   = document.getElementById('f-map-override')?.value === '1';
+  const mapPrecision  = document.getElementById('f-map-precision')?.value || 'exact';
+  const mapLat        = parseFloat(document.getElementById('f-map-lat')?.value) || null;
+  const mapLng        = parseFloat(document.getElementById('f-map-lng')?.value) || null;
+  const mapElev       = parseFloat(document.getElementById('f-map-elev')?.value) || null;
+  const mapRegion     = document.getElementById('f-map-region')?.value?.trim().toUpperCase() || null;
+  const mapCountry    = document.getElementById('f-map-country')?.value?.trim().toUpperCase() || null;
+  const koppenZone    = (document.getElementById('f-koppen-zone')?.value?.trim().toUpperCase()) || null;
+  const koppenLabel   = document.getElementById('f-koppen-label')?.value?.trim() || null;
+  const elevationBand = document.getElementById('f-elev-band')?.value || null;
+  const inatTaxonId   = parseInt(document.getElementById('f-inat-id')?.value) || null;
+  const cnRaw         = document.getElementById('f-climate-normals')?.value;
+  let climateNormals  = null;
+  try { if (cnRaw) climateNormals = JSON.parse(cnRaw); } catch(_) {}
+
+  // Build mapPin object — only include if the tab was ever touched (mapIncluded !== null)
+  let mapPin = existing.mapPin || null;
+  if (mapIncluded !== null) {
+    const defaultIncluded = (entryType === 'species' || entryType === 'location');
+    mapPin = {
+      includedOnMap: mapIncluded,
+      override: mapOverride || (mapIncluded !== defaultIncluded),
+      coordinatePrecision: mapPrecision,
+      lat: mapLat, lng: mapLng,
+      elevationM:  mapElev,
+      regionCode:  mapRegion  || null,
+      countryCode: mapCountry || null
+    };
+  }
 
   // Care
   const override = document.getElementById('f-care-override')?.checked || false;
@@ -2819,8 +3395,12 @@ function collectFormTaxon() {
   const notes = document.getElementById('f-notes')?.value?.trim() || '';
 
   return { id, genus, species, subspecies, entryType, displayName, commonName,
-           group, photos, country, climate, habitatId, nativeRange, nativeHabitat,
-           care, shopLinks, externalLinks, notes, parentId, isHybrid, isGrex, flagged };
+           group, photos, country, habitatId, nativeRange, nativeHabitat,
+           provenanceConfidence, provenanceWarning,
+           mapPin, koppenZone, koppenLabel, elevationBand, inatTaxonId, climateNormals,
+           care, shopLinks, externalLinks, notes, parentId, isHybrid, isGrex, flagged,
+           // Preserve existing fields not managed by this form
+           slug: existing.slug || null };
 }
 
 // ═══ EVENT HANDLERS ══════════════════════════════════════════
@@ -3064,19 +3644,26 @@ function attachPageEvents() {
     if (e.target.id === 'drive-sel-all-btn') { DRIVE_PREVIEW.forEach(r => DRIVE_SELECTED.add(r.id)); refreshDrivePreview(); return; }
     if (e.target.id === 'drive-sel-none-btn'){ DRIVE_SELECTED.clear(); refreshDrivePreview(); return; }
     if (e.target.id === 'drive-sel-new-btn') {
-      DRIVE_SELECTED.clear();
-      DRIVE_PREVIEW.forEach(r => { if (r.matchType !== 'exact') DRIVE_SELECTED.add(r.id); });
+      DRIVE_SELECTED = new Set(DRIVE_PREVIEW.filter(t => {
+        if (t.driveMatch === 'new' || t.driveMatch === 'similar' || t.driveMatch === 'ambiguous') return true;
+        if (t.driveMatch === 'matched' || t.driveMatch === 'exact') return t.driveNewPhotoCount > 0;
+        return false;
+      }).map(t => t.id));
       refreshDrivePreview(); return;
     }
     // Drive row click — toggle selection
-    const driveRow = e.target.closest('[data-drive-id]');
+    const driveRow = e.target.closest('.drive-row-top[data-drive-id]');
     if (driveRow) {
       const id = driveRow.dataset.driveId;
       if (DRIVE_SELECTED.has(id)) DRIVE_SELECTED.delete(id);
       else DRIVE_SELECTED.add(id);
       const sel = DRIVE_SELECTED.has(id);
-      driveRow.style.background  = sel ? 'var(--accent-bg)' : 'transparent';
-      driveRow.style.borderColor = sel ? 'rgba(200,169,110,0.4)' : 'var(--border)';
+      // Style update targets the outer .drive-import-row wrapper
+      const outerRow = driveRow.closest('.drive-import-row');
+      if (outerRow) {
+        outerRow.style.background  = sel ? 'var(--accent-bg)' : 'transparent';
+        outerRow.style.borderColor = sel ? 'rgba(200,169,110,0.4)' : 'var(--border)';
+      }
       const ind = driveRow.querySelector('.mass-sel-indicator');
       if (ind) { ind.style.borderColor = sel ? 'var(--accent)' : 'var(--dimmer)'; ind.style.background = sel ? 'var(--accent)' : 'transparent'; ind.style.color = sel ? 'var(--bg)' : ''; ind.textContent = sel ? '✓' : ''; }
       const lbl = document.getElementById('drive-sel-count');
@@ -3171,6 +3758,41 @@ function attachPageEvents() {
     // Genus photo inputs — save on change
     if (e.target.classList.contains('genus-photo-input')) { scheduleGenusPhotoSave(e.target); }
     // Group name rename (on blur below)
+  });
+
+  // Delegated change events
+  main.addEventListener('change', e => {
+    // Ambiguous Drive match dropdown — user picks which taxon to merge into
+    if (e.target.dataset.driveAmbId) {
+      const driveId   = e.target.dataset.driveAmbId;
+      const taxonId   = e.target.value;
+      const item      = DRIVE_PREVIEW.find(t => t.id === driveId);
+      const taxon     = APP_DATA.taxa.find(x => x.id === taxonId);
+      if (item && taxon) {
+        item.driveMatchId   = taxonId;
+        item.driveMatchName = taxon.displayName;
+        // Recompute new photo count for the newly selected taxon
+        const existing = new Set(taxon.photos || []);
+        item.driveNewPhotoCount = (item.photos || []).filter(p => !existing.has(p)).length;
+        // Update the photo count badge in the row without full re-render
+        const countEl = document.querySelector('[data-drive-new-count="' + driveId + '"]');
+        if (countEl) {
+          countEl.textContent = item.driveNewPhotoCount > 0
+            ? '+' + item.driveNewPhotoCount + ' new 📷'
+            : '0 new 📷';
+        }
+        // Auto-select if there are new photos, deselect if not
+        if (item.driveNewPhotoCount > 0) {
+          DRIVE_SELECTED.add(driveId);
+        } else {
+          DRIVE_SELECTED.delete(driveId);
+        }
+        // Update selection count badge
+        const selCnt = document.getElementById('drive-sel-count');
+        if (selCnt) selCnt.textContent = DRIVE_SELECTED.size + ' selected';
+      }
+      return;
+    }
   });
 
   // Group name rename on blur
@@ -3954,29 +4576,35 @@ async function doDriveList() {
 // Focused provenance fetch — returns plain data object or null
 async function fetchProvenanceAI(taxon) {
   if (!SERVER_CONFIG.hasAnthropicKey) { showToast('Anthropic API key not configured', 'error'); return null; }
-  const climates = (APP_DATA.climates || []).map(c => '"' + c.id + '" (' + c.name + ')').join(', ');
   const habitats = (APP_DATA.habitats || []).map(h => '"' + h.id + '" (' + h.name + ')').join(', ');
   const et = ENTRY_TYPES.find(e => e.id === taxon.entryType) || {};
   const identity = taxon.displayName
     + (taxon.genus  ? ' (genus: ' + taxon.genus + ')' : '')
     + (taxon.group  ? ', group: ' + taxon.group : '')
     + (et.label     ? ', entry type: ' + et.label : '');
-  const cultivarNote = (taxon.entryType === 'registered_cultivar' || taxon.entryType === 'unregistered_form')
-    ? '\nNote: this is a cultivar/selected form — provide the parent species native range and habitat, not cultivar-specific info.' : '';
+  const cultivarNote = (taxon.entryType === 'cultivar_reg' || taxon.entryType === 'cultivar_unreg')
+    ? '\nNote: this is a cultivar/selected form — provide the PARENT SPECIES native range and habitat, not cultivar-specific info.' : '';
   const prompt =
-    'You are an expert botanist specialising in carnivorous plants. Research this specific taxon and return ONLY a JSON object — no explanation, no markdown.\n\n' +
+    'You are an expert botanist specialising in carnivorous plants.\n\n' +
+    'Research this specific taxon and return ONLY a JSON object — no explanation, no markdown, no code fences.\n\n' +
     'Taxon: ' + identity + cultivarNote + '\n\n' +
-    'JSON fields (omit any you are not confident about):\n' +
-    '  "country"      : primary country or countries of origin, comma-separated\n' +
-    '  "nativeRange"  : 1–2 sentences geographic range (state/province level where known)\n' +
-    '  "nativeHabitat": 2–3 sentences describing soil, hydrology, associated vegetation, elevation\n' +
-    '  "climate"      : exactly one of these IDs: ' + climates + '\n' +
-    '  "habitatId"    : exactly one of these IDs: ' + habitats + '\n\n' +
+    'CRITICAL RULES:\n' +
+    '- Do NOT guess or extrapolate from related species. Only provide data you are confident applies specifically to THIS taxon.\n' +
+    '- If this taxon is rare, obscure, or you have limited reliable information, set confidence to "low" and explain in warning.\n' +
+    '- If you are unsure whether information is for this taxon or a similar one, omit that field and note it in warning.\n' +
+    '- Never invent plausible-sounding data. Omit fields you cannot verify.\n\n' +
+    'JSON fields:\n' +
+    '  "confidence"   : REQUIRED — "high" (well-documented taxon, certain data) | "medium" (good data, minor gaps) | "low" (rare/obscure, limited sources, or data may be for related taxon)\n' +
+    '  "warning"      : string or null — explain any uncertainty, missing data, or risk of confusion with related species\n' +
+    '  "country"      : primary country or countries of origin, comma-separated (omit if uncertain)\n' +
+    '  "nativeRange"  : 1–2 sentences geographic range at state/province level (omit if uncertain)\n' +
+    '  "nativeHabitat": 2–3 sentences describing soil type, hydrology, associated vegetation, elevation (omit if uncertain)\n' +
+    '  "habitatId"    : exactly one of these IDs: ' + habitats + ' (omit if uncertain)\n\n' +
     'Return only the JSON object, nothing else.';
   try {
     const resp = await apiPost('/api/ai/research', {
       model: 'claude-sonnet-4-5',
-      max_tokens: 700,
+      max_tokens: 800,
       messages: [{ role: 'user', content: prompt }]
     });
     const text = (resp.content && resp.content[0]?.text) || '';
@@ -3999,13 +4627,40 @@ async function doFillProvenance() {
     // Fill visible form fields — user can adjust before clicking Save
     const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
     set('f-country',       data.country);
-    set('f-climate',       data.climate);
     set('f-habitat',       data.habitatId);
     set('f-native-range',  data.nativeRange);
     set('f-native-habitat',data.nativeHabitat);
 
-    const filled = Object.keys(data).filter(k => data[k]).length;
-    showToast('AI filled ' + filled + ' field' + (filled !== 1 ? 's' : '') + ' — review then Save', 'success', 5000);
+    // Store confidence metadata on the taxon in APP_DATA so it persists on Save
+    const t = APP_DATA.taxa.find(x => x.id === taxonId);
+    if (t) {
+      t.provenanceConfidence = data.confidence || '';
+      t.provenanceWarning    = data.warning    || '';
+    }
+
+    const conf = data.confidence || 'unknown';
+    const confColor = conf === 'high' ? '#4caf50' : conf === 'medium' ? 'var(--accent)' : '#e05a5a';
+    const filled = ['country','habitatId','nativeRange','nativeHabitat'].filter(k => data[k]).length;
+
+    let msg = 'AI filled ' + filled + ' field' + (filled !== 1 ? 's' : '') + ' · confidence: ' + conf;
+    showToast(msg, conf === 'low' ? 'error' : conf === 'medium' ? 'info' : 'success', 7000);
+
+    if (data.warning) {
+      // Show warning banner in the provenance tab
+      let warnEl = document.getElementById('prov-ai-warning');
+      if (!warnEl) {
+        warnEl = document.createElement('div');
+        warnEl.id = 'prov-ai-warning';
+        warnEl.style.cssText = 'margin-bottom:12px;padding:8px 12px;background:#e05a5a18;border:1px solid #e05a5a44;border-radius:4px;font-size:11px;color:#e05a5a;';
+        document.getElementById('tab-provenance')?.prepend(warnEl);
+      }
+      warnEl.innerHTML = '⚠ <strong>AI Warning:</strong> ' + escHtml(data.warning);
+    }
+
+    // Re-render confidence badge in tab header area
+    const badgeEl = document.querySelector('#tab-provenance [style*="confidence"]');
+    // (badge is part of rendered HTML; a full re-render would lose form edits, so just update via toast above)
+
   } catch(e) { showToast('AI error: ' + e.message, 'error'); }
   finally {
     if (btn) { btn.disabled = false; btn.textContent = '🤖 Re-fill with AI'; }
@@ -4013,31 +4668,43 @@ async function doFillProvenance() {
 }
 
 // Batch: update taxon objects directly and save
+// Low-confidence results are flagged but NOT auto-saved — user must review them manually.
 async function doMassProvenance() {
   const ids = [...MASS_SELECTED];
   if (!ids.length) return;
-  // Progress toast
-  let done = 0;
+  let done = 0, saved = 0, skipped = [];
   const updateProgress = () => showToast('AI Provenance: ' + done + ' / ' + ids.length + ' done…', 'info', 60000);
   updateProgress();
   for (const id of ids) {
     const t = APP_DATA.taxa.find(x => x.id === id);
-    if (!t) continue;
+    if (!t) { done++; updateProgress(); continue; }
     const data = await fetchProvenanceAI(t);
     if (data) {
-      if (data.country)      t.country      = data.country;
-      if (data.nativeRange)  t.nativeRange  = data.nativeRange;
-      if (data.nativeHabitat)t.nativeHabitat= data.nativeHabitat;
-      if (data.climate)      t.climate      = data.climate;
-      if (data.habitatId)    t.habitatId    = data.habitatId;
+      const conf = data.confidence || 'low';
+      t.provenanceConfidence = conf;
+      t.provenanceWarning    = data.warning || '';
+
+      if (conf === 'low') {
+        // Flag taxon but do NOT save AI data — requires manual review
+        t.flagged = true;
+        skipped.push(t.displayName);
+      } else {
+        // high or medium — apply data
+        if (data.country)       t.country      = data.country;
+        if (data.nativeRange)   t.nativeRange  = data.nativeRange;
+        if (data.nativeHabitat) t.nativeHabitat= data.nativeHabitat;
+        if (data.habitatId)     t.habitatId    = data.habitatId;
+        saved++;
+      }
     }
     done++;
     updateProgress();
-    // Small pause to be kind to the API
     await new Promise(r => setTimeout(r, 400));
   }
   await saveData();
-  showToast('Provenance filled for ' + done + ' taxa', 'success');
+  let msg = 'Provenance filled: ' + saved + ' saved';
+  if (skipped.length) msg += ' · ' + skipped.length + ' low-confidence flagged for review: ' + skipped.slice(0,3).join(', ') + (skipped.length > 3 ? '…' : '');
+  showToast(msg, skipped.length ? 'info' : 'success', 10000);
   render();
 }
 
@@ -4096,8 +4763,10 @@ async function doBatchProvenance(mode) {
   HAB_BATCH_TOTAL   = targets.length;
   render();
 
+  // Auto-snapshot before batch operation
+  try { await fetch('/api/backup', { method: 'POST' }); } catch(_) {}
+
   const BATCH    = 15;
-  const climates = (APP_DATA.climates || []).map(c => '"' + c.id + '" (' + c.name + ')').join(', ');
   const habitats = (APP_DATA.habitats || []).map(h => '"' + h.id + '" (' + h.name + ')').join(', ');
   let updated = 0;
 
@@ -4112,17 +4781,18 @@ async function doBatchProvenance(mode) {
         'You are an expert botanist specialising in carnivorous plants.\n\n' +
         'Research each of the following taxa and return ONLY a JSON array — no explanation, no markdown.\n\n' +
         'Taxa:\n' + JSON.stringify(taxaList, null, 2) + '\n\n' +
-        'Valid climate IDs: ' + climates + '\n' +
         'Valid habitatId IDs: ' + habitats + '\n\n' +
+        'CRITICAL: Do NOT guess or extrapolate from related species. Only provide data you are confident applies to THIS specific taxon.\n\n' +
         'Return a JSON array, one object per taxon, matching the input "idx". ' +
         'For cultivars/forms (entryType contains "cultivar" or "form"), use the parent species provenance. ' +
-        'Only include fields you are confident about. Each object:\n' +
+        'Each object:\n' +
         '  "idx"          : integer (same as input)\n' +
-        '  "country"      : primary countries of origin, comma-separated\n' +
-        '  "nativeRange"  : 1–2 sentences geographic range (state/province level where known)\n' +
-        '  "nativeHabitat": 2–3 sentences: soil, hydrology, vegetation, elevation\n' +
-        '  "climate"      : one valid climate ID\n' +
-        '  "habitatId"    : one valid habitatId ID\n\n' +
+        '  "confidence"   : "high" | "medium" | "low"\n' +
+        '  "warning"      : string or null — note any uncertainty or risk of confusion with related species\n' +
+        '  "country"      : primary countries of origin, comma-separated (omit if uncertain)\n' +
+        '  "nativeRange"  : 1–2 sentences geographic range at state/province level (omit if uncertain)\n' +
+        '  "nativeHabitat": 2–3 sentences: soil, hydrology, vegetation, elevation (omit if uncertain)\n' +
+        '  "habitatId"    : one valid habitatId ID (omit if uncertain)\n\n' +
         'Return only the JSON array, nothing else.';
       try {
         const resp = await apiPost('/api/ai/research', {
@@ -4137,11 +4807,17 @@ async function doBatchProvenance(mode) {
           for (const r of results) {
             const taxon = batch[r.idx];
             if (!taxon) continue;
-            if (r.country)       taxon.country       = r.country;
-            if (r.nativeRange)   taxon.nativeRange   = r.nativeRange;
-            if (r.nativeHabitat) taxon.nativeHabitat = r.nativeHabitat;
-            if (r.climate)       taxon.climate       = r.climate;
-            if (r.habitatId)     taxon.habitatId     = r.habitatId;
+            taxon.provenanceConfidence = r.confidence || 'low';
+            taxon.provenanceWarning    = r.warning    || '';
+            if ((r.confidence || 'low') === 'low') {
+              // Low confidence — flag for review, do not overwrite data
+              taxon.flagged = true;
+            } else {
+              if (r.country)       taxon.country       = r.country;
+              if (r.nativeRange)   taxon.nativeRange   = r.nativeRange;
+              if (r.nativeHabitat) taxon.nativeHabitat = r.nativeHabitat;
+              if (r.habitatId)     taxon.habitatId     = r.habitatId;
+            }
             updated++;
           }
         }

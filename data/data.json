@@ -1,10 +1,12 @@
 {
   "meta": {
-    "version": "2.0",
+    "version": "2.1",
     "savedAt": "2026-04-22T06:06:40.834Z",
     "publishedAt": "",
     "taxaCount": 270,
-    "githubRepo": "bogmanplantenstein/bogmangallery"
+    "githubRepo": "bogmanplantenstein/bogmangallery",
+    "climateMapVersion": "1.0",
+    "climateMapUpdatedAt": null
   },
   "taxa": [
     {
@@ -11711,27 +11713,46 @@
       "slug": "pinguicula-moranensis"
     }
   ],
-  "habitats": [],
-  "climates": [
+  "habitats": [
     {
-      "id": "highland_tropical",
-      "name": "Highland Tropical"
+      "id": "temperate_bog",
+      "name": "Temperate Bog / Fen"
     },
     {
-      "id": "lowland_tropical",
-      "name": "Lowland Tropical"
+      "id": "mediterranean_heath",
+      "name": "Mediterranean Heathland"
     },
     {
-      "id": "mediterranean",
-      "name": "Mediterranean"
+      "id": "pine_savanna",
+      "name": "Subtropical Pine Savanna / Pocosin"
     },
     {
-      "id": "subtropical",
-      "name": "Subtropical"
+      "id": "tropical_lowland_peat",
+      "name": "Tropical Lowland Peat Swamp"
     },
     {
-      "id": "temperate",
-      "name": "Temperate"
+      "id": "tropical_savanna",
+      "name": "Tropical Seasonal Wetland / Savanna"
+    },
+    {
+      "id": "highland_meadow",
+      "name": "Highland / Montane Meadow"
+    },
+    {
+      "id": "granite_outcrop",
+      "name": "Granite Outcrop / Laterite"
+    },
+    {
+      "id": "limestone_seep",
+      "name": "Limestone Seep / Cliff"
+    },
+    {
+      "id": "coastal_wetland",
+      "name": "Sandy Coastal Wetland"
+    },
+    {
+      "id": "alpine",
+      "name": "Alpine / Subalpine"
     }
   ],
   "extSites": [
