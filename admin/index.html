@@ -1117,6 +1117,9 @@ let DUPE_AI_RUNNING = false;    // Claude review in progress
 let HAB_BATCH_RUNNING  = false; // batch provenance research in progress
 let HAB_BATCH_DONE     = 0;
 let HAB_BATCH_TOTAL    = 0;
+let GEO_BATCH_RUNNING  = false; // batch geocode in progress
+let GEO_BATCH_DONE     = 0;
+let GEO_BATCH_TOTAL    = 0;
 let HAB_SUGGEST_TEXT   = '';    // AI habitat grouping suggestion JSON
 let HAB_SUGGEST_RUNNING = false;
 let ADMIN_LB_IDX  = 0;
@@ -1633,7 +1636,7 @@ function showTab(tabId) {
     if (precision !== 'country') setTimeout(initMinimap, 50);
   }
   // Destroy map instance when navigating away so it can be re-created fresh on next open
-  if (tabId !== 'mapclimate' && _mcMap) { _mcMap.remove(); _mcMap = null; _mcMarker = null; }
+  if (tabId !== 'mapclimate' && _mcMap) { _mcMap.remove(); _mcMap = null; _mcMarker = null; _mcCircle = null; }
 }
 
 function renderTabIdentity(t) {
@@ -1933,9 +1936,14 @@ function renderTabMapClimate(t) {
     '<div style="font-size:10px;color:var(--dimmer);margin-top:4px;">Click map to place pin · Drag marker to adjust</div>' +
     '</div>' +
 
-    // Elevation
+    // Elevation + Range Radius (side by side)
+    '<div class="form-row cols-2">' +
     '<div class="form-group"><label class="label">Elevation (m)</label>' +
     '<input type="number" id="f-map-elev" value="'+escHtml(String(elev))+'" placeholder="meters above sea level"></div>' +
+    '<div class="form-group"><label class="label">Range Radius (km) <span style="font-weight:300;opacity:0.6;">approx.</span></label>' +
+    '<input type="number" id="f-map-radius" value="'+escHtml(String(mp.rangeRadiusKm != null ? mp.rangeRadiusKm : ''))+'" placeholder="e.g. 120" min="0" oninput="onRadiusInput()">' +
+    '<div style="font-size:10px;color:var(--dimmer);margin-top:3px;">Draws circle on map. Set by AI infer or manually.</div>' +
+    '</div></div>' +
 
     // Region code (shown only for regional precision)
     '<div id="f-region-row" class="form-group" style="'+regionStyle+'">' +
@@ -1948,9 +1956,14 @@ function renderTabMapClimate(t) {
     '<div class="form-group"><label class="label">Country Code <span style="font-weight:300;opacity:0.6;">(ISO 3166-1 alpha-2)</span></label>' +
     '<input type="text" id="f-map-country" value="'+escHtml(country)+'" placeholder="e.g. AU, US, BR" maxlength="2" style="text-transform:uppercase"></div>' +
 
-    // Fetch climate data button
-    '<button type="button" class="btn btn-secondary btn-sm" id="fetch-climate-btn" onclick="doFetchClimateData()" style="margin-bottom:20px;">' +
-    '🌡 Fetch Climate Data from Coordinates</button>' +
+    // AI infer + Fetch climate buttons
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">' +
+    '<button type="button" class="btn btn-accent btn-sm" id="infer-range-btn" onclick="doInferFromRange()">' +
+    '🤖 Infer from Range Text</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" id="fetch-climate-btn" onclick="doFetchClimateData()">' +
+    '🌡 Fetch Climate Data</button>' +
+    '</div>' +
+    '<div id="infer-range-result" style="display:none;margin-top:-14px;margin-bottom:14px;padding:8px 12px;border-radius:4px;font-size:11px;"></div>' +
 
     // ── Köppen section ──
     '<div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;padding-top:8px;border-top:1px solid var(--border);">🌍 Köppen Climate</div>' +
@@ -2043,6 +2056,8 @@ function onLatLngInput() {
     _mcMarker.setLatLng([lat, lng]);
     _mcMap.setView([lat, lng], _mcMap.getZoom() < 4 ? 7 : _mcMap.getZoom());
   }
+  const r = parseFloat(document.getElementById('f-map-radius')?.value);
+  if (!isNaN(r)) updateMinimapCircle(lat, lng, r);
 }
 
 function onKoppenInput(val) {
@@ -2071,10 +2086,14 @@ function initMinimap() {
   const center = hasCoords ? [latVal, lngVal] : [20, 0];
   const zoom   = hasCoords ? 7 : 2;
 
+  const radiusKm = parseFloat(document.getElementById('f-map-radius')?.value) || null;
+
   if (_mcMap) {
-    // Map already exists — just refresh size and recenter
     _mcMap.invalidateSize();
-    if (hasCoords) _mcMap.setView(center, zoom);
+    if (hasCoords) {
+      _mcMap.setView(center, zoom);
+      if (radiusKm) updateMinimapCircle(latVal, lngVal, radiusKm);
+    }
     return;
   }
 
@@ -2086,6 +2105,8 @@ function initMinimap() {
 
   if (hasCoords) {
     _mcMarker = L.marker(center, { draggable: true }).addTo(_mcMap);
+    // Draw radius circle if one exists
+    if (radiusKm) updateMinimapCircle(latVal, lngVal, radiusKm);
     _mcMarker.on('dragend', function() {
       const pos = _mcMarker.getLatLng();
       const latInp = document.getElementById('f-map-lat');
@@ -2144,6 +2165,259 @@ async function doFetchClimateData() {
     showToast('Climate normals fetched — review then Save', 'success', 5000);
   } catch(e) { showToast('Climate fetch error: ' + e.message, 'error'); }
   finally { if (btn) { btn.disabled = false; btn.textContent = '🌡 Fetch Climate Data from Coordinates'; } }
+}
+
+// ── Range circle helpers ──────────────────────────────────────────────────────
+
+let _mcCircle = null; // Leaflet circle instance
+
+function updateMinimapCircle(lat, lng, radiusKm) {
+  if (!_mcMap) return;
+  const r = parseFloat(radiusKm);
+  if (_mcCircle) { _mcMap.removeLayer(_mcCircle); _mcCircle = null; }
+  if (r > 0 && !isNaN(lat) && !isNaN(lng)) {
+    _mcCircle = L.circle([lat, lng], {
+      radius: r * 1000, // metres
+      color: '#c8a96e', weight: 1.5,
+      fillColor: '#c8a96e', fillOpacity: 0.12
+    }).addTo(_mcMap);
+    // Fit map to circle bounds
+    try { _mcMap.fitBounds(_mcCircle.getBounds(), { padding: [20, 20] }); } catch(_) {}
+  }
+}
+
+function onRadiusInput() {
+  const lat = parseFloat(document.getElementById('f-map-lat')?.value);
+  const lng = parseFloat(document.getElementById('f-map-lng')?.value);
+  const r   = parseFloat(document.getElementById('f-map-radius')?.value);
+  if (!isNaN(lat) && !isNaN(lng)) updateMinimapCircle(lat, lng, r);
+}
+
+// ── Single-taxon: Infer coordinates from range text ───────────────────────────
+
+async function doInferFromRange() {
+  const btn = document.getElementById('infer-range-btn');
+  const res = document.getElementById('infer-range-result');
+  if (btn) { btn.disabled = true; btn.textContent = '🤖 Inferring…'; }
+  if (res) res.style.display = 'none';
+
+  try {
+    const taxonId = EDIT_TAXON_ID;
+    const taxon   = APP_DATA.taxa.find(t => t.id === taxonId) || {};
+    const nativeRange   = taxon.nativeRange   || '';
+    const nativeHabitat = taxon.nativeHabitat || '';
+    const country       = taxon.country       || '';
+
+    if (!nativeRange && !nativeHabitat) {
+      showToast('No native range or habitat text to infer from — fill Provenance tab first', 'error');
+      return;
+    }
+
+    const data = await fetchGeoFromRange(taxon);
+    if (!data) { showToast('AI returned no coordinate data', 'error'); return; }
+
+    // Fill form fields
+    const setVal = (id, val) => { const el = document.getElementById(id); if (el && val != null) el.value = val; };
+    if (data.lat != null) setVal('f-map-lat',    data.lat.toFixed(6));
+    if (data.lng != null) setVal('f-map-lng',    data.lng.toFixed(6));
+    if (data.coordinatePrecision) setVal('f-map-precision', data.coordinatePrecision);
+    if (data.countryCode) { setVal('f-map-country', data.countryCode.toUpperCase()); }
+    if (data.regionCode)  setVal('f-map-region',  data.regionCode.toUpperCase());
+    if (data.rangeRadiusKm != null) setVal('f-map-radius', data.rangeRadiusKm);
+
+    // Trigger precision UI update
+    if (data.coordinatePrecision) onPrecisionChange(data.coordinatePrecision);
+
+    // Update minimap
+    if (data.lat != null && data.lng != null) {
+      initMinimap();
+      if (_mcMap) {
+        if (_mcMarker) _mcMarker.setLatLng([data.lat, data.lng]);
+        else { _mcMarker = L.marker([data.lat, data.lng], { draggable: true }).addTo(_mcMap); }
+        _mcMap.setView([data.lat, data.lng], data.coordinatePrecision === 'country' ? 4 : data.coordinatePrecision === 'regional' ? 6 : 9);
+      }
+      updateMinimapCircle(data.lat, data.lng, data.rangeRadiusKm);
+    }
+
+    // Show confidence result banner
+    if (res) {
+      const conf = data.confidence || 'unknown';
+      const confBg = conf === 'high' ? '#4caf5018' : conf === 'medium' ? 'var(--accent)18' : '#e05a5a18';
+      const confBorder = conf === 'high' ? '#4caf5044' : conf === 'medium' ? 'var(--accent)44' : '#e05a5a44';
+      const confColor  = conf === 'high' ? '#4caf50'   : conf === 'medium' ? 'var(--accent)'   : '#e05a5a';
+      res.style.cssText = 'display:block;padding:8px 12px;border-radius:4px;font-size:11px;background:'+confBg+';border:1px solid '+confBorder+';color:'+confColor+';';
+      res.innerHTML = '<strong>' + conf.charAt(0).toUpperCase() + conf.slice(1) + ' confidence</strong>' +
+        (data.warning ? ' — ' + escHtml(data.warning) : '') +
+        (data.rangeRadiusKm ? ' · Range radius: ~' + data.rangeRadiusKm + ' km' : '');
+    }
+
+    showToast('Coordinates inferred — review and Save', conf === 'low' ? 'info' : 'success', 5000);
+  } catch(e) { showToast('Infer error: ' + e.message, 'error'); }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '🤖 Infer from Range Text'; } }
+}
+
+// ── Shared geocode AI call (single taxon) ─────────────────────────────────────
+
+async function fetchGeoFromRange(taxon) {
+  if (!SERVER_CONFIG.hasAnthropicKey) { showToast('Anthropic API key not configured', 'error'); return null; }
+  const et = ENTRY_TYPES.find(e => e.id === taxon.entryType) || {};
+  const isCultivar = taxon.entryType === 'cultivar_reg' || taxon.entryType === 'cultivar_unreg';
+  const prompt =
+    'You are an expert botanist and geographer specialising in carnivorous plants.\n\n' +
+    'Given the provenance data below, infer the best map coordinates for the native range centroid of this taxon.\n' +
+    (isCultivar ? 'This is a cultivar — use the parent species native range.\n' : '') +
+    '\nTaxon: ' + taxon.displayName +
+    (taxon.country       ? '\nCountry: '        + taxon.country       : '') +
+    (taxon.nativeRange   ? '\nNative Range: '   + taxon.nativeRange   : '') +
+    (taxon.nativeHabitat ? '\nNative Habitat: ' + taxon.nativeHabitat : '') +
+    '\n\nReturn ONLY a JSON object — no explanation, no markdown:\n' +
+    '{\n' +
+    '  "confidence": "high" | "medium" | "low",\n' +
+    '  "warning": string or null,\n' +
+    '  "lat": decimal latitude WGS84 (range centroid),\n' +
+    '  "lng": decimal longitude WGS84 (range centroid),\n' +
+    '  "coordinatePrecision": "exact" | "regional" | "country",\n' +
+    '  "countryCode": "ISO 3166-1 alpha-2",\n' +
+    '  "regionCode": "ISO 3166-2 subdivision code or null",\n' +
+    '  "rangeRadiusKm": number (approximate radius of range in km, null for country-level)\n' +
+    '}\n\n' +
+    'coordinatePrecision rules:\n' +
+    '  "exact"    — specific locality or small area, radius < 50 km\n' +
+    '  "regional" — state/province level spread\n' +
+    '  "country"  — very widespread across a whole country or continent\n\n' +
+    'rangeRadiusKm: if the text gives a specific distance (e.g. "75-mile radius"), convert and use it;\n' +
+    '  otherwise estimate from the described area (e.g. "Albany to Manypeaks region" ≈ 80 km).\n' +
+    '  For country-level ranges return null.\n\n' +
+    'confidence "high" only if you are confident of the specific coordinates from named localities.\n' +
+    'confidence "low" if place names are very obscure or location is uncertain.';
+  try {
+    const resp = await apiPost('/api/ai/research', {
+      model: 'claude-sonnet-4-5',
+      max_tokens: 400,
+      messages: [{ role: 'user', content: prompt }]
+    });
+    const text = (resp.content && resp.content[0]?.text) || '';
+    const m = text.match(/\{[\s\S]+\}/);
+    if (m) return JSON.parse(m[0]);
+  } catch(e) { console.warn('Geo infer failed for', taxon.displayName, ':', e.message); }
+  return null;
+}
+
+// ── Batch geocode ─────────────────────────────────────────────────────────────
+
+async function doBatchGeocode(mode) {
+  if (GEO_BATCH_RUNNING) return;
+  if (!SERVER_CONFIG.hasAnthropicKey) { showToast('Anthropic API key not configured', 'error'); return; }
+
+  const allTaxa = APP_DATA.taxa || [];
+  const targets = mode === 'empty'
+    ? allTaxa.filter(t => (!t.mapPin || t.mapPin.lat == null) && (t.nativeRange || t.nativeHabitat))
+    : allTaxa.filter(t => t.nativeRange || t.nativeHabitat);
+
+  if (!targets.length) { showToast('No taxa with range text to geocode', 'info'); return; }
+
+  GEO_BATCH_RUNNING = true;
+  GEO_BATCH_DONE    = 0;
+  GEO_BATCH_TOTAL   = targets.length;
+  render();
+
+  // Auto-snapshot before batch
+  try { await fetch('/api/backup', { method: 'POST' }); } catch(_) {}
+
+  let saved = 0, skipped = [];
+  const BATCH = 20;
+
+  try {
+    for (let start = 0; start < targets.length; start += BATCH) {
+      const batch = targets.slice(start, start + BATCH);
+
+      // Build compact list for AI
+      const taxaList = batch.map((t, i) => ({
+        idx: i,
+        name: t.displayName,
+        country: t.country || '',
+        nativeRange:   (t.nativeRange   || '').slice(0, 300),
+        nativeHabitat: (t.nativeHabitat || '').slice(0, 200),
+        isCultivar: (t.entryType === 'cultivar_reg' || t.entryType === 'cultivar_unreg')
+      }));
+
+      const prompt =
+        'You are an expert botanist and geographer specialising in carnivorous plants.\n\n' +
+        'For each taxon below, infer map coordinates for its native range centroid.\n' +
+        'For cultivars (isCultivar: true), use the parent species range.\n\n' +
+        'Return ONLY a JSON array — no explanation, no markdown:\n' +
+        '[\n' +
+        '  {\n' +
+        '    "idx": integer (same as input),\n' +
+        '    "confidence": "high" | "medium" | "low",\n' +
+        '    "warning": string or null,\n' +
+        '    "lat": decimal latitude WGS84,\n' +
+        '    "lng": decimal longitude WGS84,\n' +
+        '    "coordinatePrecision": "exact" | "regional" | "country",\n' +
+        '    "countryCode": "ISO 3166-1 alpha-2",\n' +
+        '    "regionCode": "ISO 3166-2 or null",\n' +
+        '    "rangeRadiusKm": number or null\n' +
+        '  }\n' +
+        ']\n\n' +
+        'coordinatePrecision: "exact" < 50km · "regional" = state/province · "country" = very widespread\n' +
+        'rangeRadiusKm: convert any mentioned distance; estimate from area description; null for country-level\n' +
+        'confidence "high" only if you know the specific coordinates. "low" if uncertain or obscure.\n' +
+        'CRITICAL: Do not guess for obscure localities — use "low" confidence and a warning instead.\n\n' +
+        'Taxa:\n' + JSON.stringify(taxaList, null, 2);
+
+      try {
+        const resp = await apiPost('/api/ai/research', {
+          model: 'claude-sonnet-4-5',
+          max_tokens: 3000,
+          messages: [{ role: 'user', content: prompt }]
+        });
+        const text = (resp.content && resp.content[0]?.text) || '';
+        const m = text.match(/\[[\s\S]+\]/);
+        if (m) {
+          const results = JSON.parse(m[0]);
+          for (const r of results) {
+            const taxon = batch[r.idx];
+            if (!taxon) continue;
+            const conf = r.confidence || 'low';
+            if (conf === 'low') {
+              taxon.flagged = true;
+              if (!taxon.mapPin) taxon.mapPin = {};
+              taxon.mapPin.geocodeWarning = r.warning || 'Low confidence — verify manually';
+              skipped.push(taxon.displayName);
+            } else {
+              taxon.mapPin = {
+                ...( taxon.mapPin || {} ),
+                lat: r.lat, lng: r.lng,
+                coordinatePrecision: r.coordinatePrecision || 'regional',
+                countryCode: r.countryCode || null,
+                regionCode:  r.regionCode  || null,
+                rangeRadiusKm: r.rangeRadiusKm || null,
+                includedOnMap: taxon.mapPin?.includedOnMap ??
+                  (taxon.entryType === 'species' || taxon.entryType === 'location'),
+                override: taxon.mapPin?.override || false,
+                geocodeConfidence: conf,
+                geocodeWarning:    r.warning || null
+              };
+              saved++;
+            }
+          }
+        }
+      } catch(e) { console.warn('Batch geocode chunk failed:', e.message); }
+
+      GEO_BATCH_DONE += batch.length;
+      showToast('Geocoding: ' + GEO_BATCH_DONE + ' / ' + GEO_BATCH_TOTAL + ' done…', 'info', 30000);
+      await new Promise(r => setTimeout(r, 500));
+    }
+
+    await saveData();
+    let msg = '✓ Geocoded: ' + saved + ' saved';
+    if (skipped.length) msg += ' · ' + skipped.length + ' low-confidence flagged: ' + skipped.slice(0, 3).join(', ') + (skipped.length > 3 ? '…' : '');
+    showToast(msg, skipped.length ? 'info' : 'success', 10000);
+  } finally {
+    GEO_BATCH_RUNNING = false;
+    GEO_BATCH_DONE    = 0;
+    render();
+  }
 }
 
 // Initialise minimap when Map & Climate tab is shown
@@ -2501,6 +2775,8 @@ function renderHabitats() {
 
   const taxaCount  = (APP_DATA.taxa || []).length;
   const emptyCount = (APP_DATA.taxa || []).filter(t => !t.nativeHabitat && !t.nativeRange && !t.country).length;
+  const geoEmptyCount = (APP_DATA.taxa || []).filter(t => (!t.mapPin || t.mapPin.lat == null) && (t.nativeRange || t.nativeHabitat)).length;
+  const geoTotalCount = (APP_DATA.taxa || []).filter(t => t.nativeRange || t.nativeHabitat).length;
 
   const batchProg = HAB_BATCH_RUNNING
     ? '<div style="margin-top:8px;color:var(--dim);font-size:12px;">⏳ Researching… ' + HAB_BATCH_DONE + ' / ' + HAB_BATCH_TOTAL + ' done</div>'
@@ -2545,6 +2821,26 @@ function renderHabitats() {
     '</div>' +
     batchProg +
     suggestSection +
+    '</div>' +
+
+    // ── Batch Geocode card ──
+    '<div class="card" style="margin-top:16px;">' +
+    '<div class="card-header"><span class="card-title">📍 Batch Geocode from Range Text</span></div>' +
+    '<div style="color:var(--dim);font-size:11px;margin-bottom:10px;">' +
+    'AI infers lat/lng, country/region codes, coordinate precision, and range radius from each taxon\'s native range and habitat text. ' +
+    'Low-confidence results are flagged for manual review, not auto-saved. ' +
+    'Run <em>Fill Empty</em> first to geocode only taxa without coordinates.</div>' +
+    '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
+    '<button class="btn btn-secondary" id="geo-batch-empty-btn"' + (GEO_BATCH_RUNNING ? ' disabled' : '') + '>' +
+    (GEO_BATCH_RUNNING ? '⏳ Running…' : '📍 Geocode Empty (' + geoEmptyCount + ' taxa)') + '</button>' +
+    '<button class="btn btn-secondary" id="geo-batch-all-btn"' + (GEO_BATCH_RUNNING ? ' disabled' : '') + '>' +
+    (GEO_BATCH_RUNNING ? '⏳ Running…' : '🔄 Re-geocode All (' + geoTotalCount + ' taxa)') + '</button>' +
+    '</div>' +
+    (GEO_BATCH_RUNNING
+      ? '<div style="margin-top:8px;color:var(--dim);font-size:12px;">⏳ Geocoding… ' + GEO_BATCH_DONE + ' / ' + GEO_BATCH_TOTAL + ' done</div>'
+      : (GEO_BATCH_DONE > 0
+        ? '<div style="margin-top:8px;color:var(--green);font-size:12px;">✓ Batch complete — ' + GEO_BATCH_DONE + ' taxa processed</div>'
+        : '')) +
     '</div>';
 }
 
@@ -3346,6 +3642,7 @@ function collectFormTaxon() {
   const mapLat        = parseFloat(document.getElementById('f-map-lat')?.value) || null;
   const mapLng        = parseFloat(document.getElementById('f-map-lng')?.value) || null;
   const mapElev       = parseFloat(document.getElementById('f-map-elev')?.value) || null;
+  const mapRadius     = parseFloat(document.getElementById('f-map-radius')?.value) || null;
   const mapRegion     = document.getElementById('f-map-region')?.value?.trim().toUpperCase() || null;
   const mapCountry    = document.getElementById('f-map-country')?.value?.trim().toUpperCase() || null;
   const koppenZone    = (document.getElementById('f-koppen-zone')?.value?.trim().toUpperCase()) || null;
@@ -3365,7 +3662,8 @@ function collectFormTaxon() {
       override: mapOverride || (mapIncluded !== defaultIncluded),
       coordinatePrecision: mapPrecision,
       lat: mapLat, lng: mapLng,
-      elevationM:  mapElev,
+      elevationM:    mapElev,
+      rangeRadiusKm: mapRadius,
       regionCode:  mapRegion  || null,
       countryCode: mapCountry || null
     };
@@ -3589,6 +3887,9 @@ function attachPageEvents() {
     // Habitat batch research buttons
     if (e.target.id === 'hab-batch-empty-btn') { doBatchProvenance('empty'); return; }
     if (e.target.id === 'hab-batch-all-btn')   { doBatchProvenance('all');   return; }
+    // Batch geocode buttons
+    if (e.target.id === 'geo-batch-empty-btn') { doBatchGeocode('empty'); return; }
+    if (e.target.id === 'geo-batch-all-btn')   { doBatchGeocode('all');   return; }
     if (e.target.id === 'hab-suggest-btn')     { doSuggestHabitats();        return; }
     if (e.target.id === 'hab-apply-suggest-btn') { doApplyHabitatSuggestions(); return; }
 
