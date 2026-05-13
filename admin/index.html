@@ -2204,16 +2204,20 @@ async function doInferFromRange() {
   try {
     const taxonId = EDIT_TAXON_ID;
     const taxon   = APP_DATA.taxa.find(t => t.id === taxonId) || {};
-    const nativeRange   = taxon.nativeRange   || '';
-    const nativeHabitat = taxon.nativeHabitat || '';
-    const country       = taxon.country       || '';
+
+    // Read from live form fields so unsaved Provenance edits are picked up
+    const nativeRange   = document.getElementById('f-native-range')?.value?.trim()   || taxon.nativeRange   || '';
+    const nativeHabitat = document.getElementById('f-native-habitat')?.value?.trim() || taxon.nativeHabitat || '';
+    const country       = document.getElementById('f-country')?.value?.trim()         || taxon.country       || '';
 
     if (!nativeRange && !nativeHabitat) {
       showToast('No native range or habitat text to infer from — fill Provenance tab first', 'error');
       return;
     }
 
-    const data = await fetchGeoFromRange(taxon);
+    // Merge live values so fetchGeoFromRange gets current form state
+    const liveTaxon = Object.assign({}, taxon, { nativeRange, nativeHabitat, country });
+    const data = await fetchGeoFromRange(liveTaxon);
     if (!data) { showToast('AI returned no coordinate data', 'error'); return; }
 
     // Fill form fields
@@ -2228,6 +2232,9 @@ async function doInferFromRange() {
     // Trigger precision UI update
     if (data.coordinatePrecision) onPrecisionChange(data.coordinatePrecision);
 
+    // Populate Köppen zone + label (auto-resolved via onKoppenInput)
+    if (data.koppenZone) onKoppenInput(data.koppenZone);
+
     // Update minimap
     if (data.lat != null && data.lng != null) {
       initMinimap();
@@ -2240,15 +2247,16 @@ async function doInferFromRange() {
     }
 
     // Show confidence result banner
+    const conf = data.confidence || 'unknown';
     if (res) {
-      const conf = data.confidence || 'unknown';
       const confBg = conf === 'high' ? '#4caf5018' : conf === 'medium' ? 'var(--accent)18' : '#e05a5a18';
       const confBorder = conf === 'high' ? '#4caf5044' : conf === 'medium' ? 'var(--accent)44' : '#e05a5a44';
       const confColor  = conf === 'high' ? '#4caf50'   : conf === 'medium' ? 'var(--accent)'   : '#e05a5a';
       res.style.cssText = 'display:block;padding:8px 12px;border-radius:4px;font-size:11px;background:'+confBg+';border:1px solid '+confBorder+';color:'+confColor+';';
       res.innerHTML = '<strong>' + conf.charAt(0).toUpperCase() + conf.slice(1) + ' confidence</strong>' +
         (data.warning ? ' — ' + escHtml(data.warning) : '') +
-        (data.rangeRadiusKm ? ' · Range radius: ~' + data.rangeRadiusKm + ' km' : '');
+        (data.koppenZone ? ' · Köppen: ' + escHtml(data.koppenZone) : '') +
+        (data.rangeRadiusKm ? ' · Range: ~' + data.rangeRadiusKm + ' km' : '');
     }
 
     showToast('Coordinates inferred — review and Save', conf === 'low' ? 'info' : 'success', 5000);
@@ -2279,7 +2287,8 @@ async function fetchGeoFromRange(taxon) {
     '  "coordinatePrecision": "exact" | "regional" | "country",\n' +
     '  "countryCode": "ISO 3166-1 alpha-2",\n' +
     '  "regionCode": "ISO 3166-2 subdivision code or null",\n' +
-    '  "rangeRadiusKm": number (approximate radius of range in km, null for country-level)\n' +
+    '  "rangeRadiusKm": number (approximate radius of range in km, null for country-level),\n' +
+    '  "koppenZone": "Köppen climate code for this location (e.g. Cfa, Af, Csb, BWh) — use the zone that best describes the native habitat climate. Null only if genuinely unknown."\n' +
     '}\n\n' +
     'coordinatePrecision rules:\n' +
     '  "exact"    — specific locality or small area, radius < 50 km\n' +
@@ -2288,12 +2297,14 @@ async function fetchGeoFromRange(taxon) {
     'rangeRadiusKm: if the text gives a specific distance (e.g. "75-mile radius"), convert and use it;\n' +
     '  otherwise estimate from the described area (e.g. "Albany to Manypeaks region" ≈ 80 km).\n' +
     '  For country-level ranges return null.\n\n' +
+    'koppenZone: infer from the geographic location and any habitat clues in the text.\n' +
+    '  Valid codes: Af Am Aw As BWh BWk BSh BSk Csa Csb Csc Cwa Cwb Cfa Cfb Cfc Dfa Dfb Dfc ET EF H\n\n' +
     'confidence "high" only if you are confident of the specific coordinates from named localities.\n' +
     'confidence "low" if place names are very obscure or location is uncertain.';
   try {
     const resp = await apiPost('/api/ai/research', {
       model: 'claude-sonnet-4-5',
-      max_tokens: 400,
+      max_tokens: 600,
       messages: [{ role: 'user', content: prompt }]
     });
     const text = (resp.content && resp.content[0]?.text) || '';
