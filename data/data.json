@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.1",
-    "savedAt": "2026-04-22T06:06:40.834Z",
+    "savedAt": "2026-05-12T22:32:18.199Z",
     "publishedAt": "",
     "taxaCount": 270,
     "githubRepo": "bogmanplantenstein/bogmangallery",
@@ -3919,10 +3919,26 @@
         "sq:https://images.squarespace-cdn.com/content/v1/63bf996ad0753d0f67c46012/75255402-6968-439e-8ce2-2944bbff1f35/IMG_1805.JPEG"
       ],
       "country": "Australia",
-      "climate": "lowland_tropical",
-      "habitatId": "",
-      "nativeRange": "This species has a very limited distribution in the Australian Northern Territory. It is endemic to the area between Darwin and Berry Springs and has also been found on Bathurst Island.",
-      "nativeHabitat": "It grows in the loamy sand of seasonally flooded depressions and in the shallow margins of freshwater lagoons.",
+      "habitatId": "tropical_savanna",
+      "nativeRange": "Endemic to the Northern Territory, Australia, particularly in the Darwin and Arnhem Land regions.",
+      "nativeHabitat": "Grows in shallow seasonal wetlands, sedgelands, and on the margins of billabongs and waterholes. Occurs in sandy or sandy-loam soils that are inundated during the wet season (November-April) and dry out during the dry season. Associated with tropical savanna vegetation including sedges, grasses, and scattered eucalypts.",
+      "provenanceConfidence": "medium",
+      "provenanceWarning": "This is an unregistered form of Byblis aquatica. Parent species B. aquatica is relatively well-documented but geographically restricted. Data provided is for the parent species native range and habitat.",
+      "mapPin": {
+        "includedOnMap": true,
+        "override": true,
+        "coordinatePrecision": "exact",
+        "lat": null,
+        "lng": null,
+        "elevationM": null,
+        "regionCode": null,
+        "countryCode": "AU"
+      },
+      "koppenZone": null,
+      "koppenLabel": null,
+      "elevationBand": null,
+      "inatTaxonId": null,
+      "climateNormals": null,
       "care": {
         "override": true,
         "temp": "Temperatures from 60-100F, prefers high humidity but can adapt to lower humidity. These love heat and grow incredibly fast when kept hot",
@@ -5997,7 +6013,9 @@
       "isHybrid": false,
       "isGrex": false,
       "flagged": false,
-      "slug": "byblis-filifolia"
+      "slug": "byblis-filifolia",
+      "provenanceConfidence": "medium",
+      "provenanceWarning": "Byblis filifolia is a relatively poorly documented species compared to other Byblis taxa. Some habitat and range details are limited in literature, and there may be confusion with other annual Byblis species in northern Australia."
     },
     {
       "id": "txn_zuvftphec5c",
@@ -6379,11 +6397,27 @@
       "photos": [
         "drive:1CFcez8JCjNfHVdr9f8gWs40RcGV3k5_Q"
       ],
-      "country": "South Africa",
-      "climate": "mediterranean",
-      "habitatId": "mediterranean",
-      "nativeRange": "Endemic to the Western Cape Province of South Africa, in mountainous regions of the Cape Fold Belt.",
-      "nativeHabitat": "Grows in seepage areas and wet sandy soils on mountain slopes and plateaus. Occurs in fynbos vegetation with seasonal moisture from winter rainfall, often in areas with high humidity and cooler temperatures. Found at elevations typically between 300-1200 meters.",
+      "country": "Brazil",
+      "habitatId": "highland_meadow",
+      "nativeRange": "Southeastern Brazil.",
+      "nativeHabitat": "Grows in campos rupestres montane grassland habitat.",
+      "provenanceConfidence": "low",
+      "provenanceWarning": "Drosera ascendens is a poorly documented species with very limited information available in scientific literature. The species name appears in taxonomic lists but detailed ecological and distributional data are scarce. There is risk of confusion with other highland Drosera species from the same region.",
+      "mapPin": {
+        "includedOnMap": true,
+        "override": false,
+        "coordinatePrecision": "exact",
+        "lat": null,
+        "lng": null,
+        "elevationM": null,
+        "regionCode": null,
+        "countryCode": "ZA"
+      },
+      "koppenZone": null,
+      "koppenLabel": null,
+      "elevationBand": null,
+      "inatTaxonId": null,
+      "climateNormals": null,
       "care": {
         "override": false
       },
