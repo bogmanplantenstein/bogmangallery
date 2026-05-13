@@ -1882,10 +1882,13 @@ function renderTabMapClimate(t) {
                    : (t.entryType === 'species' || t.entryType === 'location');
   const override = mp.override || false;
 
-  const koppenZone  = t.koppenZone  || '';
-  const koppenLabel = t.koppenLabel || (KOPPEN_LABELS[koppenZone] || '');
-  const elBand      = t.elevationBand || '';
-  const inatId      = t.inatTaxonId  || '';
+  const koppenZoneRaw = t.koppenZone || '';
+  // Resolve canonical key case-insensitively (guards against legacy all-caps stored values)
+  const koppenCanon  = Object.keys(KOPPEN_LABELS).find(k => k.toUpperCase() === koppenZoneRaw.toUpperCase()) || koppenZoneRaw;
+  const koppenZone   = koppenCanon;
+  const koppenLabel  = t.koppenLabel || (KOPPEN_LABELS[koppenCanon] || '');
+  const elBand       = t.elevationBand || '';
+  const inatId       = t.inatTaxonId  || '';
 
   const precOpts = [
     {v:'exact',    l:'Exact Location'},
@@ -1906,7 +1909,7 @@ function renderTabMapClimate(t) {
   const latlngStyle = showLatLng ? '' : 'display:none';
   const regionStyle = showRegion ? '' : 'display:none';
 
-  const koppenUnknown = koppenZone && !KOPPEN_LABELS[koppenZone];
+  const koppenUnknown = koppenZone && !KOPPEN_LABELS[koppenCanon];
 
   return '<div class="tab-content" id="tab-mapclimate"'+(ACTIVE_TAB==='mapclimate'?'':' style="display:none"')+'>' +
 
@@ -2064,18 +2067,21 @@ function onLatLngInput() {
 }
 
 function onKoppenInput(val) {
-  const code  = val.trim().toUpperCase();
-  const label = KOPPEN_LABELS[code] || '';
-  const disp  = document.getElementById('f-koppen-label-display');
-  const hidden= document.getElementById('f-koppen-label');
+  const raw = val.trim().toUpperCase();
+  // KOPPEN_LABELS keys are mixed-case standard notation ('Cfa', 'BWh', 'ET', …)
+  // Do a case-insensitive find so user input 'CFA', 'cfa', or 'Cfa' all resolve correctly
+  const canonKey = Object.keys(KOPPEN_LABELS).find(k => k.toUpperCase() === raw) || '';
+  const label    = canonKey ? KOPPEN_LABELS[canonKey] : '';
+  const disp     = document.getElementById('f-koppen-label-display');
+  const hidden   = document.getElementById('f-koppen-label');
   if (disp) {
-    disp.textContent = label || (code ? '⚠ Unknown zone code' : 'Auto-populated from zone code');
-    disp.style.color = label ? 'var(--fg)' : code ? '#e05a5a' : 'var(--dimmer)';
+    disp.textContent = label || (raw ? '⚠ Unknown zone code' : 'Auto-populated from zone code');
+    disp.style.color = label ? 'var(--white)' : raw ? '#e05a5a' : 'var(--dimmer)';
   }
   if (hidden) hidden.value = label;
-  // Sync the input to uppercase
+  // Store canonical mixed-case form ('Cfa' not 'CFA') — CSS text-transform handles visual display
   const inp = document.getElementById('f-koppen-zone');
-  if (inp && inp.value !== code) inp.value = code;
+  if (inp) inp.value = canonKey || val.trim();
 }
 
 function initMinimap() {
@@ -2206,20 +2212,25 @@ async function doInferFromRange() {
 
   try {
     const taxonId = EDIT_TAXON_ID;
-    const taxon   = APP_DATA.taxa.find(t => t.id === taxonId) || {};
+    const saved   = APP_DATA.taxa.find(t => t.id === taxonId) || {};
 
-    // Read from live form fields so unsaved Provenance edits are picked up
-    const nativeRange   = document.getElementById('f-native-range')?.value?.trim()   || taxon.nativeRange   || '';
-    const nativeHabitat = document.getElementById('f-native-habitat')?.value?.trim() || taxon.nativeHabitat || '';
-    const country       = document.getElementById('f-country')?.value?.trim()         || taxon.country       || '';
+    // Read provenance from live form fields (picks up unsaved AI fill results)
+    const nativeRange   = document.getElementById('f-native-range')?.value?.trim()   || saved.nativeRange   || '';
+    const nativeHabitat = document.getElementById('f-native-habitat')?.value?.trim() || saved.nativeHabitat || '';
+    const country       = document.getElementById('f-country')?.value?.trim()         || saved.country       || '';
 
     if (!nativeRange && !nativeHabitat) {
       showToast('No native range or habitat text to infer from — fill Provenance tab first', 'error');
       return;
     }
 
-    // Merge live values so fetchGeoFromRange gets current form state
-    const liveTaxon = Object.assign({}, taxon, { nativeRange, nativeHabitat, country });
+    // Merge identity from live form fields too — critical for new unsaved taxa
+    const liveTaxon = Object.assign({}, saved, {
+      displayName: document.getElementById('f-display-name')?.value?.trim() || saved.displayName || '',
+      genus:       document.getElementById('f-genus')?.value                || saved.genus       || '',
+      entryType:   document.getElementById('f-entry-type')?.value           || saved.entryType   || 'species',
+      nativeRange, nativeHabitat, country
+    });
     const data = await fetchGeoFromRange(liveTaxon);
     if (!data) { showToast('AI returned no coordinate data', 'error'); return; }
 
@@ -3660,7 +3671,7 @@ function collectFormTaxon() {
   const mapRadius     = parseFloat(document.getElementById('f-map-radius')?.value) || null;
   const mapRegion     = document.getElementById('f-map-region')?.value?.trim().toUpperCase() || null;
   const mapCountry    = document.getElementById('f-map-country')?.value?.trim().toUpperCase() || null;
-  const koppenZone    = (document.getElementById('f-koppen-zone')?.value?.trim().toUpperCase()) || null;
+  const koppenZone    = document.getElementById('f-koppen-zone')?.value?.trim() || null; // canonical mixed-case e.g. 'Cfa'
   const koppenLabel   = document.getElementById('f-koppen-label')?.value?.trim() || null;
   const elevationBand = document.getElementById('f-elev-band')?.value || null;
   const inatTaxonId   = parseInt(document.getElementById('f-inat-id')?.value) || null;
