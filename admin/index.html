@@ -1743,6 +1743,9 @@ function renderTabProvenance(t) {
   }
 
   return '<div class="tab-content" id="tab-provenance"'+(ACTIVE_TAB==='provenance'?'':' style="display:none"')+'>' +
+    // Hidden inputs for AI confidence metadata — readable by collectFormTaxon() regardless of save state
+    '<input type="hidden" id="f-prov-confidence" value="'+escHtml(conf)+'">' +
+    '<input type="hidden" id="f-prov-warning"    value="'+escHtml(warn)+'">' +
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">' +
     '<div style="display:flex;align-items:center;gap:8px;">' +
     '<span style="font-size:11px;color:var(--dimmer);">' + (hasAny ? 'Edit provenance data below' : 'No provenance data yet') + '</span>' +
@@ -3642,9 +3645,10 @@ function collectFormTaxon() {
   const habitatId     = document.getElementById('f-habitat')?.value               || '';
   const nativeRange   = document.getElementById('f-native-range')?.value?.trim()  || '';
   const nativeHabitat = document.getElementById('f-native-habitat')?.value?.trim()|| '';
-  // Preserve AI confidence metadata if present (set by AI fill, not a form input)
-  const provenanceConfidence = existing.provenanceConfidence || '';
-  const provenanceWarning    = existing.provenanceWarning    || '';
+  // AI confidence metadata — read from hidden form inputs (set by doFillProvenance)
+  // Falls back to existing saved value so it's preserved on saves that don't re-run AI fill
+  const provenanceConfidence = document.getElementById('f-prov-confidence')?.value || existing.provenanceConfidence || '';
+  const provenanceWarning    = document.getElementById('f-prov-warning')?.value    || existing.provenanceWarning    || '';
 
   // Map & Climate
   const mapIncluded   = document.getElementById('f-map-included')?.checked ?? null;
@@ -4932,8 +4936,25 @@ async function doFillProvenance() {
   if (btn) { btn.disabled = true; btn.textContent = '🤖 Researching…'; }
   try {
     const taxonId = btn?.dataset.taxonId || EDIT_TAXON_ID;
-    const taxon = APP_DATA.taxa.find(t => t.id === taxonId) || {};
-    const data = await fetchProvenanceAI(taxon);
+    const saved = APP_DATA.taxa.find(t => t.id === taxonId) || {};
+
+    // Build taxon from live form values so the AI sees current (possibly unsaved) identity
+    // This also handles new taxa that don't exist in APP_DATA yet
+    const liveTaxon = Object.assign({}, saved, {
+      displayName: document.getElementById('f-display-name')?.value?.trim() || saved.displayName || '',
+      genus:       document.getElementById('f-genus')?.value                || saved.genus       || '',
+      species:     document.getElementById('f-species')?.value?.trim()      || saved.species     || '',
+      subspecies:  document.getElementById('f-subspecies')?.value?.trim()   || saved.subspecies  || '',
+      entryType:   document.getElementById('f-entry-type')?.value           || saved.entryType   || 'species',
+      group:       document.getElementById('f-group')?.value?.trim()        || saved.group       || '',
+    });
+
+    if (!liveTaxon.displayName && !liveTaxon.genus) {
+      showToast('Fill in the Identity tab (Display Name) before using AI fill', 'error');
+      return;
+    }
+
+    const data = await fetchProvenanceAI(liveTaxon);
     if (!data) { showToast('AI returned no data', 'error'); return; }
 
     // Fill visible form fields — user can adjust before clicking Save
@@ -4943,12 +4964,14 @@ async function doFillProvenance() {
     set('f-native-range',  data.nativeRange);
     set('f-native-habitat',data.nativeHabitat);
 
-    // Store confidence metadata on the taxon in APP_DATA so it persists on Save
+    // Write confidence to hidden form inputs (works for new AND existing taxa)
+    const confInput = document.getElementById('f-prov-confidence');
+    const warnInput = document.getElementById('f-prov-warning');
+    if (confInput) confInput.value = data.confidence || '';
+    if (warnInput) warnInput.value = data.warning    || '';
+    // Also update APP_DATA for existing taxa so the confidence badge re-renders on next open
     const t = APP_DATA.taxa.find(x => x.id === taxonId);
-    if (t) {
-      t.provenanceConfidence = data.confidence || '';
-      t.provenanceWarning    = data.warning    || '';
-    }
+    if (t) { t.provenanceConfidence = data.confidence || ''; t.provenanceWarning = data.warning || ''; }
 
     const conf = data.confidence || 'unknown';
     const confColor = conf === 'high' ? '#4caf50' : conf === 'medium' ? 'var(--accent)' : '#e05a5a';
