@@ -1555,7 +1555,7 @@ function renderTaxaItems(taxa) {
       (MASS_MODE
         ? '<div class="mass-sel-indicator">' + (checked ? '✓' : '') + '</div>'
         : (ph
-          ? '<img class="taxa-thumb" src="' + escHtml(ph) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
+          ? '<img class="taxa-thumb" src="' + escHtml(ph) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">'
           : '<div class="taxa-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--dimmer);font-size:18px;">🌿</div>')
       ) +
       '<div style="flex:1;min-width:0;">' +
@@ -1683,7 +1683,7 @@ function renderTabPhotos(t) {
   if (photos.length) {
     const tiles = photos.map((src, i) =>
       '<div class="photo-tile" draggable="true" data-photo-idx="' + i + '" data-photo-src="' + escHtml(src) + '">' +
-      '<img src="' + escHtml(resolvePhotoUrl(src, 'w200')) + '" alt="" loading="lazy" onerror="this.style.opacity=\'0\'">' +
+      '<img src="' + escHtml(resolvePhotoUrl(src, 'w200')) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=\'0.15\'">' +
       '<span class="photo-tile-num">#' + (i + 1) + '</span>' +
       '<span class="photo-tile-badge' + (src.startsWith('drive:') ? ' drive' : '') + '">' + photoSourceLabel(src) + '</span>' +
       '<button class="photo-tile-remove" data-remove-photo="' + i + '" type="button" title="Remove">×</button>' +
@@ -2576,7 +2576,7 @@ function renderGenusPhotos() {
     const slots = Array.from({length:6}, (_,i) => {
       const src = photos[i] || '';
       return '<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">' +
-        (src ? '<img src="'+escHtml(resolvePhotoUrl(src,'w80'))+'" style="width:48px;height:36px;object-fit:cover;border-radius:2px;border:1px solid var(--border);" alt="" onerror="this.style.opacity=\'0\'">' : '<div style="width:48px;height:36px;background:var(--bg3);border:1px dashed var(--dimmer);border-radius:2px;flex-shrink:0;"></div>') +
+        (src ? '<img src="'+escHtml(resolvePhotoUrl(src,'w80'))+'" style="width:48px;height:36px;object-fit:cover;border-radius:2px;border:1px solid var(--border);" alt="" referrerpolicy="no-referrer" onerror="this.style.opacity=\'0.15\'">' : '<div style="width:48px;height:36px;background:var(--bg3);border:1px dashed var(--dimmer);border-radius:2px;flex-shrink:0;"></div>') +
         '<span class="pill '+(src.startsWith('drive:')?'blue':'accent')+'" style="flex-shrink:0;font-size:9px;">'+photoSourceLabel(src)+'</span>' +
         '<input type="text" class="genus-photo-input" data-genus="'+genus+'" data-idx="'+i+'" value="'+escHtml(src)+'" placeholder="sq:URL or drive:ID" style="flex:1;">' +
         (src ? '<button class="photo-remove-btn" data-remove-genus-photo="'+genus+':'+i+'" type="button">×</button>' : '') +
@@ -4327,7 +4327,7 @@ function addPhotoRow(src) {
   div.dataset.photoIdx = i;
   div.dataset.photoSrc = src;
   div.innerHTML =
-    '<img src="' + escHtml(resolvePhotoUrl(src, 'w200')) + '" alt="" loading="lazy" onerror="this.style.opacity=\'0\'">' +
+    '<img src="' + escHtml(resolvePhotoUrl(src, 'w200')) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.opacity=\'0.15\'">' +
     '<span class="photo-tile-num">#' + (i + 1) + '</span>' +
     '<span class="photo-tile-badge' + (src.startsWith('drive:') ? ' drive' : '') + '">' + photoSourceLabel(src) + '</span>' +
     '<button class="photo-tile-remove" data-remove-photo="' + i + '" type="button" title="Remove">×</button>';
@@ -4457,7 +4457,7 @@ function injectAdminLightbox() {
   el.innerHTML =
     '<button class="admin-lb-close" id="admin-lb-close" type="button">×</button>' +
     '<button class="admin-lb-nav admin-lb-prev" id="admin-lb-prev" type="button">&#8249;</button>' +
-    '<img class="admin-lb-img" id="admin-lb-img" src="" alt="">' +
+    '<img class="admin-lb-img" id="admin-lb-img" src="" alt="" referrerpolicy="no-referrer">' +
     '<button class="admin-lb-nav admin-lb-next" id="admin-lb-next" type="button">&#8250;</button>' +
     '<div class="admin-lb-footer">' +
     '<button class="admin-lb-remove" id="admin-lb-remove" type="button">Remove this photo</button>' +
@@ -4506,7 +4506,7 @@ function updateAdminLb() {
   const ctr  = document.getElementById('admin-lb-counter');
   const prev = document.getElementById('admin-lb-prev');
   const next = document.getElementById('admin-lb-next');
-  if (img) img.src = resolvePhotoUrl(src, 'w1600');
+  if (img) { img.src = resolvePhotoUrl(src, 'w1600'); img.referrerPolicy = 'no-referrer'; }
   if (ctr) ctr.textContent = ADMIN_LB_SRCS.length > 1 ? (ADMIN_LB_IDX + 1) + ' / ' + ADMIN_LB_SRCS.length : '';
   const multi = ADMIN_LB_SRCS.length > 1;
   if (prev) prev.style.display = multi ? '' : 'none';
